@@ -13,53 +13,56 @@ public class Main {
 		String data, endereco, documento;
 		List<Veiculo> veiculos;
 		Sinistro sinistro;
-		System.out.println("Digite o numero referente a operacao desejada\n1. Gerar sinistro,\n" + 
-			"2. Visualizar sinistros,\n3. Listar Sinistros,\n4. Sair.");
-		operacao = scanner.nextInt();
-		scanner.nextLine();
-		switch (operacao) {
-			case 1:
-				try {
-					System.out.println("Digite a data do sinistro:");
-					data = scanner.nextLine();
-					System.out.println("Digite o endereco do sinistro:");
-					endereco = scanner.nextLine();
-					System.out.println("Digite o numero referente ao cliente:");
-					for (i = 0; i < seg.getListaClientes().size(); i++) {
-						System.out.println(String.valueOf(i + 1) + ". " +
-							seg.getListaClientes().get(i).getNome());
+		do {
+			System.out.println("Digite o numero referente a operacao desejada\n1. Gerar sinistro,\n" + 
+				"2. Visualizar sinistros,\n3. Listar Sinistros,\n4. Sair.");
+			operacao = scanner.nextInt();
+			scanner.nextLine();
+			switch (operacao) {
+				case 1:
+					try {
+						System.out.println("Digite a data do sinistro:");
+						data = scanner.nextLine();
+						System.out.println("Digite o endereco do sinistro:");
+						endereco = scanner.nextLine();
+						System.out.println("Digite o numero referente ao cliente:");
+						for (i = 0; i < seg.getListaClientes().size(); i++) {
+							System.out.println(String.valueOf(i + 1) + ". " +
+								seg.getListaClientes().get(i).getNome());
+						}
+						numCliente = scanner.nextInt();
+						scanner.nextLine();
+						veiculos = seg.getListaClientes().get(numCliente - 1).getListaVeiculos();
+						System.out.println("Digite o numero referente ao veículo:");
+						for (i = 0; i < veiculos.size(); i++) {
+							System.out.println(String.valueOf(i + 1) + ". " +
+								veiculos.get(i).getPlaca());
+						}
+						numVeiculo = scanner.nextInt();
+						scanner.nextLine();
+						sinistro = new Sinistro(data, endereco, seg, veiculos.get(numVeiculo - 1),
+												seg.getListaClientes().get(numCliente - 1));
+						seg.gerarSinistro(sinistro);
+					} catch (InputMismatchException e) { // Não digitou um inteiro em scanner.nextInt()
+						System.out.println("Erro: valor invalido.");
+					} catch (IndexOutOfBoundsException e) { // Digitou índice que não está na lista
+						System.out.println("Erro: valor invalido.");
 					}
-					numCliente = scanner.nextInt();
-					scanner.nextLine();
-					veiculos = seg.getListaClientes().get(numCliente - 1).getListaVeiculos();
-					System.out.println("Digite o numero referente ao veículo:");
-					for (i = 0; i < veiculos.size(); i++) {
-						System.out.println(String.valueOf(i + 1) + ". " +
-							veiculos.get(i).getPlaca());
-					}
-					numVeiculo = scanner.nextInt();
-					scanner.nextLine();
-					sinistro = new Sinistro(data, endereco, seg, veiculos.get(numVeiculo - 1),
-											seg.getListaClientes().get(numCliente - 1));
-					seg.gerarSinistro(sinistro);
-					seg.getListaSinistros().add(sinistro);
-				} catch (InputMismatchException e) { // Não digitou um inteiro em scanner.nextInt()
-					System.out.println("Erro: valor invalido.");
-				} catch (IndexOutOfBoundsException e) { // Digitou índice que não está na lista
-					System.out.println("Erro: valor invalido.");
-				}
-				break;
-			case 2:
-				System.out.println("Digite o documento do qual deseja buscar os sinistros:");
-				documento = scanner.nextLine();
-				if (! seg.visualizarSinistro(documento));
-					System.out.println("Nao ha sinistros cadastrados nesse documento");
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-		}
+					break;
+				case 2:
+					System.out.println("Digite o documento do qual deseja buscar os sinistros:");
+					documento = scanner.nextLine();
+					if (! seg.visualizarSinistro(documento));
+						System.out.println("Nao ha sinistros cadastrados nesse documento");
+					break;
+				case 3:
+					System.out.println("Sinistros registrados:");
+					seg.listarSinistros();
+					break;
+				case 4:
+					break;
+			}
+		} while (operacao != 4);
 	}
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -102,7 +105,7 @@ public class Main {
 		seg.listarClientes("PJ"); //cliente2
 		System.out.println();
 
-		// Usando gerarSinistro(), visualizarSinistro() e listarSinistro()
+		// Usando gerarSinistro(), visualizarSinistro() e listarSinistro() pelo menu
 		menuSeguradora(seg, scanner);
 
 		// Chamando toString() restantes
