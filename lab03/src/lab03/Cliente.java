@@ -10,12 +10,13 @@ public class Cliente {
 	// Propriedades
 	private String nome;
 	private String endereco;
-	private List<Veiculo> listaVeiculos = new ArrayList<Veiculo>();
+	private List<Veiculo> listaVeiculos;
 
 	// Construtor
 	public Cliente(String nome, String endereco, Veiculo...veiculos) {
 		this.nome = nome;
 		this.endereco = endereco;
+		listaVeiculos = new ArrayList<Veiculo>();
 		for (Veiculo v:veiculos)
 			listaVeiculos.add(v);
 	}
@@ -26,9 +27,8 @@ public class Cliente {
 		String str = String.format("Cliente - %s:\n- Endereco: %s;\n- Veiculos:", nome, endereco);
 		if (listaVeiculos.isEmpty())
 			str += "\n- Nenhum veiculo cadastrado.";
-		for (int i = 0; i < listaVeiculos.size(); i++) {
+		for (int i = 0; i < listaVeiculos.size(); i++)
 			str += "\n- " + (i + 1) + ". " + listaVeiculos.get(i).getPlaca();
-		}
 		return str;
 	}
 	

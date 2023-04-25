@@ -44,7 +44,7 @@ public class ClientePJ extends Cliente {
         // ou por 6, 4, 3, ..., 1, se numDigito == 1, e soma em aux:
         for (i = 0; i < (4 + numDigito); i++)
             aux += charAtToInt(cnpj, i) * (5 + numDigito - i);
-        // Multiplica 5° dígito em diante por 9, 8, 7, ..., 2 e soma em aux:
+        // Multiplica 5° ou 6° dígito em diante por 9, 8, 7, ..., 2 e soma em aux:
         for (i = 4 + numDigito; i < (12 + numDigito); i++)
             aux += charAtToInt(cnpj, i) * (13 + numDigito - i);
         aux %= 11;

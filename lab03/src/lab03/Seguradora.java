@@ -25,9 +25,33 @@ public class Seguradora {
 	// toString
 	@Override
 	public String toString() {
+		int i;
 		String str = String.format("Seguradora - %s:\n- Telefone: %s;\n" +
-				"- E-mail: %s;\n- Endereco: %s.", nome, telefone, email, endereco);
+			"- E-mail: %s;\n- Endereco: %s;\n", nome, telefone, email, endereco);
+		str += "- Clientes:";
+		for (i = 0; i < listaClientes.size(); i++) {
+			str += " " + listaClientes.get(i).getNome();
+			if (i != listaClientes.size() - 1)
+				str += ",";
+			else
+				str += ";";
+		}
+		str += "\n- Sinistros:";
+		for (i = 0; i < listaSinistros.size(); i++) {
+			str += " " + listaSinistros.get(i).getId();
+			if (i != listaSinistros.size() - 1)
+				str += ",";
+			else
+				str += ".";
+		}
 		return str;
+	}
+
+	// Métodos privados
+	/* Retorna true se o documento for igual ao CPF/CNPJ de cliente, false caso contrario */
+	private boolean checaDocumento(Cliente cliente, String documento) {
+		return cliente instanceof ClientePF && ((ClientePF) cliente).getCpf().equals(documento) ||
+			cliente instanceof ClientePJ && ((ClientePJ) cliente).getCnpj().equals(documento);
 	}
 
 	// Métodos da classe
@@ -41,8 +65,7 @@ public class Seguradora {
 		Cliente cliente;
 		for (int i = 0; i < listaClientes.size(); i++) {
 			cliente = listaClientes.get(i);
-			if (cliente instanceof ClientePF && ((ClientePF) cliente).getCpf().equals(documento) ||
-					cliente instanceof ClientePJ && ((ClientePJ) cliente).getCnpj().equals(documento)) {
+			if (checaDocumento(cliente, documento)) {
 				listaClientes.remove(i);
 				return true;
 			}
@@ -55,13 +78,11 @@ public class Seguradora {
 	public void listarClientes(String tipoCliente) {
 		int i, cont = 0;
 		if (tipoCliente.equals("PF")) {
-			System.out.println("Clientes PF:");
 			for (i = 0; i < listaClientes.size(); i++)
 				if (listaClientes.get(i) instanceof ClientePF)
 					System.out.println(String.valueOf(++cont) + ". " +
 						listaClientes.get(i).getNome());
 		} else {
-			System.out.println("Clientes PJ:");
 			for (i = 0; i < listaClientes.size(); i++)
 				if (listaClientes.get(i) instanceof ClientePJ)
 					System.out.println(String.valueOf(++cont) + ". " + 
@@ -69,10 +90,8 @@ public class Seguradora {
 		}
 	}
 	/* Adiciona o Sinistro s a listaSinistros. Retorna um boolean indicando se adicionou. */
-	public boolean gerarSinistro(Sinistro s) {
-		if (listaSinistros.add(s))
-			return true;
-		return false;
+	public boolean gerarSinistro(String data, String endereco, Veiculo veiculo, Cliente cliente) {
+		return listaSinistros.add(new Sinistro(data, endereco, this, veiculo, cliente));
 	}
 	/* Imprime todos os sinistros relacionados ao cliente com o documento passado como argumento
 	 * na seguradora, no formato de Sinistro.toString(). Retorna true caso ache algum sinistro,
@@ -83,8 +102,7 @@ public class Seguradora {
 		Cliente cliente;
 		for (int i = 0; i < listaSinistros.size(); i++) {
 			cliente = listaSinistros.get(i).getCliente();
-			if (cliente instanceof ClientePF && ((ClientePF) cliente).getCpf().equals(documento) ||
-					cliente instanceof ClientePJ && ((ClientePJ) cliente).getCnpj().equals(documento)) {
+			if (checaDocumento(cliente, documento)) {
 				System.out.println(++numSinistros + ". " + listaSinistros.get(i));
 				encontrou = true;
 			}
@@ -94,8 +112,13 @@ public class Seguradora {
 	/* Imprime "i. <id do sinistro>\n" dos sinistros na ordem em que foram registrados,
 	 * onde i é o índice + 1 do sinistro em listaSinistros. */
 	public void listarSinistros() {
-		for (int i = 0; i < listaSinistros.size(); i++)
-			System.out.println(String.valueOf(i + 1) + ". " + listaSinistros.get(i).getId());
+		if (listaSinistros.isEmpty()) {
+			System.out.println("Nao ha sinistros cadastrados.");
+		}
+		else {
+			for (int i = 0; i < listaSinistros.size(); i++)
+				System.out.println(String.valueOf(i + 1) + ". " + listaSinistros.get(i).getId());
+		}
 	}
 
 	// Getters e setters

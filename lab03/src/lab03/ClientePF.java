@@ -49,7 +49,7 @@ public class ClientePF extends Cliente {
     // Métodos privados
 	/* Calcula um digito verificador de String cpf. A conta para ambos é a mesma, alterando
 	 * apenas a posição dos outros dígitos usados na conta. Para calcular o primeiro,
-	 * ini = 0 e fim = 9. Já para calcular o segundo, ini = 1 e fim = 10. */
+	 * ini = 0 e fim = 9. Ja para calcular o segundo, ini = 1 e fim = 10. */
 	private static int digitoVerificadorCPF(String cpf, int ini, int fim) {
 		int aux = 0; // guarda os resultados das operacões com os dígitos
 		for (int i = ini; i < fim; i++)
@@ -57,8 +57,8 @@ public class ClientePF extends Cliente {
 		aux %= 11;
         return aux < 2 ? 0 : 11 - aux; // se aux == (0 ou 1): dígito = 0, senão: dígito = 11 - aux
 	}
-	/* Retorna true se os digitos verificadores do CPF passado como argumento são válidos,
-     * false caso contrário */
+	/* Retorna true se os digitos verificadores do CPF passado como argumento são validos,
+     * false caso contrario */
 	private static boolean digitosValidosCPF(String cpf) {
 		if (digitoVerificadorCPF(cpf, 0, 9) == charAtToInt(cpf, 9) &&
 				digitoVerificadorCPF(cpf, 1, 10) == charAtToInt(cpf, 10))
@@ -67,9 +67,9 @@ public class ClientePF extends Cliente {
 	}
 
 	// Métodos públicos
-	/* Retorna true se o CPF for válido, false caso contrário. Para que um CPF seja válido,
-	 * é necessário que ele tenha 11 caracteres numéricos, sendo ao menos um número diferente
-	 * dos demais e que os digitos verificadores sejam válidos. */
+	/* Retorna true se o CPF for valido, false caso contrario. Para que um CPF seja valido,
+	 * é necessario que ele tenha 11 caracteres numéricos, sendo ao menos um número diferente
+	 * dos demais e que os digitos verificadores sejam validos. */
 	public static boolean validarCPF(String cpf) {
 		cpf = cpf.replaceAll("[^0-9]", ""); // Remove caracteres não numéricos
 		if (cpf.length() != 11 || todosCharIguais(cpf) || ! digitosValidosCPF(cpf))
