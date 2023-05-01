@@ -22,9 +22,14 @@ public class ClientePJ extends Cliente {
         }
     }
 
-    // toString
+    // toString()
+	/* ClientePJ - <nome>:
+	 * - Endereco: <endereco>
+	 * - Veiculo(s): Nenhum veiculo cadastrado OU <veiculo1.placa>, <veiculo2.placa>, ...
+     * - CNPJ: <cnpj>
+     * - Data de fundacao: <dataFundacao> */
     public String toString() {
-        String str = super.toString().replace("Cliente", "Cliente PJ");
+        String str = super.toString().replace("Cliente", "ClientePJ");
         str += String.format("\n- CNPJ: %s\n- Data de fundacao: %s",
             cnpj, parseString(dataFundacao));
 		return str;

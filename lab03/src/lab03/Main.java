@@ -22,7 +22,7 @@ public class Main {
 	 * ClientePF ou ClientePJ, respectivamente. Retorna "Nao possui documento cadastrado"
 	 * quando é da classe Cliente. */
 	private static String documento(Cliente cliente) {
-		String str = "Nao possui documento cadastrado"; // valor padrão
+		String str = "Nao possui documento cadastrado"; // valor padrão (classe Cliente)
 		if (cliente instanceof ClientePF)
 			str = "CPF " + ((ClientePF) cliente).getCpf();
 		else if (cliente instanceof ClientePJ)
@@ -78,7 +78,7 @@ public class Main {
 		System.out.println("Digite o documento do qual deseja visualizar " +
 				"os sinistros:");
 		documento = scanner.nextLine(); // deve ser escrito no mesmo formato que o cadastrado
-		System.out.println("Sinistros registrados para " + documento + ":");
+		System.out.println("Sinistros cadastrados para " + documento + ":");
 		if (! seg.visualizarSinistro(documento))
 			System.out.println("Nao ha sinistros cadastrados para esse documento.");
 	}
@@ -92,7 +92,7 @@ public class Main {
 			operacao = scanner.nextLine();
 			switch (operacao) {
 				case "1": // gerar sinistro
-					if (! lerSinistro(seg, scanner))
+					if (! lerSinistro(seg, scanner)) // erro em alguma das entradas
 						System.out.println("Tente novamente.");
 					else
 						System.out.println("Cadastro realizado com sucesso.");

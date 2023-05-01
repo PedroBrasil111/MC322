@@ -31,9 +31,18 @@ public class ClientePF extends Cliente {
         }
     }
     
-    // toString
+    // toString()
+    /* ClientePF - <nome>:
+	 * - Endereco: <endereco>
+	 * - Veiculo(s): Nenhum veiculo cadastrado OU <veiculo1.placa>, <veiculo2.placa>, ...
+     * - CPF: <cpf>
+     * - Data de nascimento: <dataNascimento>
+     * - Data da licenca: <dataLicenca>
+     * - Genero: <genero>
+     * - Educacao: <educacao>
+     * - Classe economica: <classeEconomica> */
     public String toString() {
-        String str = super.toString().replace("Cliente", "Cliente PF");
+        String str = super.toString().replace("Cliente", "ClientePF");
         str += String.format("\n- CPF: %s\n- Data de nascimento: %s\n- Data da licenca: %s" + 
                 "\n- Genero: %s\n- Educacao: %s\n- Classe economica: %s", cpf,
                 parseString(dataNascimento), parseString(dataLicenca), genero,

@@ -15,7 +15,11 @@ public class Veiculo {
 		this.anoFabricacao = anoFabricacao;
 	}
 
-	// toString
+	// toString()
+	/* Veiculo - placa <placa>:
+	 * - Marca: <marca>
+	 * - Modelo: <modelo>
+	 * - Ano de fabricacao: <anoFabricacao> */
 	public String toString() {
 		String str = String.format("Veiculo - placa %s:\n- Marca: %s\n- Modelo: %s" +
 				"\n- Ano de fabricacao: %d", placa, marca, modelo, anoFabricacao);

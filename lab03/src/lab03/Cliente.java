@@ -21,7 +21,10 @@ public class Cliente {
 			listaVeiculos.add(v);
 	}
 
-	// toString
+	// toString()
+	/* Cliente - <nome>:
+	 * - Endereco: <endereco>
+	 * - Veiculo(s): Nenhum veiculo cadastrado OU <veiculo1.placa>, <veiculo2.placa>, ... */
 	public String toString() {
 		String str = String.format("Cliente - %s:\n- Endereco: %s\n- Veiculo(s): ",
 				nome, endereco);

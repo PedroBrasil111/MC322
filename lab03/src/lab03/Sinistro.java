@@ -20,7 +20,13 @@ public class Sinistro {
 		this.cliente = cliente;
 	}
 
-	// toString
+	// toString()
+	/* Sinistro - id <id>:
+	 * - Data: <data>
+	 * - Endereco: <endereco>
+	 * - Seguradora: <seguradora.nome>
+	 * - Veiculo: <veiculo.placa>
+	 * - Cliente: <cliente.nome> */
 	public String toString() {
 		String str = String.format("Sinistro - id %d:\n- Data: %s\n- Endereco: %s\n" +
 				"- Seguradora: %s\n- Veiculo: %s\n- Cliente: %s", id, data, endereco,
