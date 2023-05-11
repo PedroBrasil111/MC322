@@ -114,23 +114,19 @@ public enum MenuOperacoes {
             genero = scanner.nextLine();
             System.out.println("Data da licenca");
             do {
-                try {
-                    data1 = Validacao.parseDate(scanner.nextLine());
+                data1 = FuncoesData.parseDate(scanner.nextLine());
+                if (data1 != null)
                     break;
-                } catch (ParseException e) {
-                    System.out.println("Formato invalido");
-                }
+                System.out.println("Data invalida. Tente novamente");
             } while (true);
             System.out.println("Educacao");
             educacao = scanner.nextLine();
             System.out.println("Data de nascimento");
             do {
-                try {
-                    data2 = Validacao.parseDate(scanner.nextLine());
+                data2 = FuncoesData.parseDate(scanner.nextLine());
+                if (data2 != null)
                     break;
-                } catch (ParseException e) {
-                    System.out.println("Formato invalido");
-                }
+                System.out.println("Data invalida. Tente novamente");
             } while (true);
             System.out.println("Classe economica");
             classeEconomica = scanner.nextLine();
@@ -141,12 +137,10 @@ public enum MenuOperacoes {
             documento = scanner.nextLine();
             System.out.println("Data de fundacao");
             do {
-                try {
-                    data1 = Validacao.parseDate(scanner.nextLine());
+                data1 = FuncoesData.parseDate(scanner.nextLine());
+                if (data1 != null)
                     break;
-                } catch (ParseException e) {
-                    System.out.println("Formato invalido");
-                }
+                System.out.println("Data invalida. Tente novamente");
             } while (true);
             System.out.println("Quantidade de funcionarios");
             do {

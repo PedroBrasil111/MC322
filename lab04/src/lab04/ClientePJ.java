@@ -35,7 +35,7 @@ public class ClientePJ extends Cliente {
     public String toString() {
         String str = super.toString().replace("Cliente", "ClientePJ");
         str += String.format("\n- CNPJ: %s\n- Data de fundacao: %s",
-            cnpj, Validacao.parseString(dataFundacao));
+            cnpj, FuncoesData.dateToString(dataFundacao));
 		return str;
     }
 

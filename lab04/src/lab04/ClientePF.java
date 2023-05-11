@@ -49,14 +49,14 @@ public class ClientePF extends Cliente {
         String str = super.toString().replace("Cliente", "ClientePF");
         str += String.format("\n- CPF: %s\n- Data de nascimento: %s\n- Data da licenca: %s" + 
                 "\n- Genero: %s\n- Educacao: %s\n- Classe economica: %s", cpf,
-                Validacao.parseString(dataNascimento), Validacao.parseString(dataLicenca), genero,
+                FuncoesData.dateToString(dataNascimento), FuncoesData.dateToString(dataLicenca), genero,
                 educacao, classeEconomica);
         return str;
     }
 
     public double calculaScore() {
         CalcSeguro fatorIdade;
-        int idade = Validacao.calcularIdade(dataNascimento);
+        int idade = FuncoesData.calcularIdade(dataNascimento);
         if (idade >= 18 && idade <= 90) {
             fatorIdade = CalcSeguro.values()[(idade / 30) + 1]; // fator se altera a cada 30 anos
             return CalcSeguro.VALOR_BASE.getValor() * fatorIdade.getValor() *
