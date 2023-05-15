@@ -1,6 +1,5 @@
 package lab04;
 
-import java.text.ParseException;
 import java.util.Date;
 
 public class ClientePF extends Cliente {
@@ -24,14 +23,6 @@ public class ClientePF extends Cliente {
         this.classeEconomica = classeEconomica;
         this.dataLicenca = dataLicenca;
         this.dataNascimento = dataNascimento;
-        // try {
-        //     data = parseDate(dataLicenca);
-        //     this.dataLicenca = data;
-        //     data = parseDate(dataNascimento);
-        //     this.dataNascimento = data;
-        // } catch (ParseException e) { // dataNascimento/Licenca não está no formato dd/MM/yyyy
-        //     e.printStackTrace();
-        // }
     }
     
     // toString()
@@ -49,20 +40,22 @@ public class ClientePF extends Cliente {
         String str = super.toString().replace("Cliente", "ClientePF");
         str += String.format("\n- CPF: %s\n- Data de nascimento: %s\n- Data da licenca: %s" + 
                 "\n- Genero: %s\n- Educacao: %s\n- Classe economica: %s", cpf,
-                Validacao.parseString(dataNascimento), Validacao.parseString(dataLicenca), genero,
+                Data.dateToString(dataNascimento), Data.dateToString(dataLicenca), genero,
                 educacao, classeEconomica);
         return str;
     }
 
+    /* Retorna o valor do score para o cliente. Para pessoa jurídica, o score é dado por
+     * (VALOR_BASE * FATOR_IDADE * quantidadeCarros). FATOR_BASE varia com a idade do cliente. */
     public double calculaScore() {
         CalcSeguro fatorIdade;
-        int idade = Validacao.calcularIdade(dataNascimento);
+        int idade = Data.calcularIdade(dataNascimento);
         if (idade >= 18 && idade <= 90) {
             fatorIdade = CalcSeguro.values()[(idade / 30) + 1]; // fator se altera a cada 30 anos
             return CalcSeguro.VALOR_BASE.getValor() * fatorIdade.getValor() *
                     getListaVeiculos().size();
-        } else // idade invalida
-            return 0.;
+        } else // idades inválidas / cálculo não especificado
+            return CalcSeguro.VALOR_BASE.getValor();
     }
 
     //Getters e setters

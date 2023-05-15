@@ -2,9 +2,6 @@ package lab04;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class Cliente {
 	// Propriedades
@@ -43,8 +40,10 @@ public class Cliente {
 		return str;
 	}
 
+	/* Retorna o valor do score para o cliente. Para clientes do tipo Cliente,
+	 * não é especificada forma de calcular. Portanto, retorna o valor base para essa classe. */
 	public double calculaScore() {
-		return 0.;
+		return CalcSeguro.VALOR_BASE.getValor();
 	}
 
 	// Getters e setters

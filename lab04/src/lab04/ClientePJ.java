@@ -1,7 +1,6 @@
 package lab04;
 
 import java.util.Date;
-import java.text.ParseException;
 
 public class ClientePJ extends Cliente {
     // Propriedades
@@ -13,16 +12,9 @@ public class ClientePJ extends Cliente {
     public ClientePJ(String nome, String endereco, String cnpj, Date dataFundacao,
             int qtdeFuncionarios, Veiculo...veiculos) {
         super(nome, endereco, veiculos);
-        // Date data;
         this.cnpj = cnpj;
         this.dataFundacao = dataFundacao;
         this.qtdeFuncionarios = qtdeFuncionarios;
-        // try {
-        //     data = parseDate(dataFundacao);
-        //     this.dataFundacao = data;
-        // } catch (ParseException e) { //dataFundacao não está no formato dd/MM/yyyy
-        //     e.printStackTrace();
-        // }
     }
 
     // toString()
@@ -35,13 +27,15 @@ public class ClientePJ extends Cliente {
     public String toString() {
         String str = super.toString().replace("Cliente", "ClientePJ");
         str += String.format("\n- CNPJ: %s\n- Data de fundacao: %s",
-            cnpj, Validacao.parseString(dataFundacao));
+            cnpj, Data.dateToString(dataFundacao));
 		return str;
     }
 
+    /* Retorna o valor do score para o cliente. Para pessoa jurídica, o score é dado por
+     * (VALOR_BASE * (1 + (quantidadeFunc)/100) * quantidadeCarros). */
     public double calculaScore() {
         return CalcSeguro.VALOR_BASE.getValor() * (1 + (qtdeFuncionarios / 100)) *
-                getListaVeiculos().size(); 
+                getListaVeiculos().size();
     }
 
     // Getters e setters

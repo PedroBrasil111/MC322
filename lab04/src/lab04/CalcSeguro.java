@@ -1,5 +1,7 @@
 package lab04;
 
+/* Contém o valor base para o preco de um seguro e os fatores para cada faixa de idade */
+
 public enum CalcSeguro {
     VALOR_BASE (100.),
     FATOR_18_30 (1.2),

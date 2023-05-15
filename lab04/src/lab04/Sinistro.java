@@ -14,6 +14,8 @@ public class Sinistro {
 	// Construtor
 	public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo,
 			Cliente cliente) {
+		// gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
+		// Porém, esse id varia a cada iteracão do programa.
 		id = hashCode();
 		this.data = data;
 		this.endereco = endereco;
@@ -31,8 +33,8 @@ public class Sinistro {
 	 * - Cliente: <cliente.nome> */
 	public String toString() {
 		String str = String.format("Sinistro - id %d:\n- Data: %s\n- Endereco: %s\n" +
-				"- Seguradora: %s\n- Veiculo: %s\n- Cliente: %s", id, data, endereco,
-				seguradora.getNome(), veiculo.getPlaca(), cliente.getNome());
+				"- Seguradora: %s\n- Veiculo: %s\n- Cliente: %s", id, Data.dateToString(data),
+				endereco, seguradora.getNome(), veiculo.getPlaca(), cliente.getNome());
 		return str;
 	}
 

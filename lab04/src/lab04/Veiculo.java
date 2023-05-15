@@ -16,12 +16,12 @@ public class Veiculo {
 	}
 
 	// toString()
-	/* Veiculo - placa <placa>:
+	/* Veiculo - Placa <placa>:
 	 * - Marca: <marca>
 	 * - Modelo: <modelo>
 	 * - Ano de fabricacao: <anoFabricacao> */
 	public String toString() {
-		String str = String.format("Veiculo - placa %s:\n- Marca: %s\n- Modelo: %s" +
+		String str = String.format("Veiculo - Placa %s:\n- Marca: %s\n- Modelo: %s" +
 				"\n- Ano de fabricacao: %d", placa, marca, modelo, anoFabricacao);
 		return str;
 	}

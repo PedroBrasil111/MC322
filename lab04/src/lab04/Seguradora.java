@@ -10,8 +10,10 @@ public class Seguradora {
 	private String telefone;
 	private String email;
 	private String endereco;
-	private List<Sinistro> listaSinistros;
-	private List<Cliente> listaClientes;
+	private List<Sinistro> listaSinistros; // lista com sinistros cobertos pela seguradora
+	private List<Cliente> listaClientes; // lista com clientes que contratam a seguradora
+	// lista com todas as seguradoras instanciadas
+	private static final List<Seguradora> listaSeguradoras = new ArrayList<Seguradora>();
 
 	// Construtor
 	public Seguradora(String nome, String telefone, String email, String endereco) {
@@ -21,6 +23,7 @@ public class Seguradora {
 		this.endereco = endereco;
 		listaSinistros = new ArrayList<Sinistro>();
 		listaClientes = new ArrayList<Cliente>();
+		listaSeguradoras.add(this);
 	}
 
 	// toString()
@@ -56,23 +59,58 @@ public class Seguradora {
 			}
 		return str;
 	}
-
+	
 	// Métodos privados
 	/* Retorna true se o documento for igual ao CPF/CNPJ de cliente, false caso contrario */
 	private boolean comparaDocumento(Cliente cliente, String documento) {
 		// checando classe com instanceof para então fazer casting e usar getCpf ou getCnpj
 		return cliente instanceof ClientePF && ((ClientePF) cliente).getCpf().equals(documento) ||
-				cliente instanceof ClientePJ && ((ClientePJ) cliente).getCnpj().equals(documento);
+		cliente instanceof ClientePJ && ((ClientePJ) cliente).getCnpj().equals(documento);
+	}
+	/* Retorna uma string no formato "<cliente.nome> - <tipoDocumento>: <cliente.documento>"
+	* onde tipoDocumento é CPF ou CNPJ e cliente.documento é seu valor. Se cliente for do
+	* tipo Cliente, restorna "<cliente.nome> - Nao possui documento cadastrado" */
+	private String strClienteDocumento(Cliente cliente) {
+		String str = cliente.getNome();
+		if (cliente instanceof ClientePF)
+		str += " - CPF: " + ((ClientePF) cliente).getCpf();
+		else if (cliente instanceof ClientePJ)
+		str += " - CNPJ: " + ((ClientePJ) cliente).getCnpj();
+		else
+			str += " - Nao possui documento cadastrado ";
+			return str;
 	}
 
-	// Métodos da classe
+	// Métodos para valor do seguro
+	/* Calcula e atribui o valor para c.valorSeguro. Valor é dado por 
+	 * c.calculaScore() * (1 + this.listaSinistros.size()). */
+	public void calcularPrecoSeguroCliente(Cliente c) {
+		c.setValorSeguro(c.calculaScore() * (1 + listaSinistros.size()));
+	}
+	/* Atualiza o preco do seguro para todos os clientes. Deve ser chamado manualmente se
+	 * for removido ou adicionado um veículo a listaClientes de algum cliente ou
+	 * alterada a quantidade de funcionarios de algum ClientePF */
+	public void atualizarValoresSeguro() {
+		for (Cliente c: listaClientes) {
+			calcularPrecoSeguroCliente(c);
+		}
+	}
+	/* Retorna a receita total da seguradora. */
+	public double calcularReceita() {
+		double soma = 0;
+		for (Cliente c: listaClientes)
+			soma += c.getValorSeguro();
+		return soma;
+	}
+
+	// Métodos para clientes
 	/* Adiciona o cliente a listaClientes. Retorna um boolean indicando se foi adicionado. */
 	public boolean cadastrarCliente(Cliente cliente) {
-		calcularPrecoSeguroCliente(cliente);
-		return listaClientes.add(cliente);
+		calcularPrecoSeguroCliente(cliente); // atribui o valor do seguro para o cliente
+		return listaClientes.add(cliente); // boolean indicando se adicionou à lista
 	}
 	/* Remove o primeiro cliente de listaClientes com o documento especificado.
-	 * Retorna true se removeu algo, false caso contrário. */
+	* Retorna true se removeu algo, false caso contrário. */
 	public boolean removerCliente(String documento) {
 		for (int i = 0; i < listaClientes.size(); i++) {
 			if (comparaDocumento(listaClientes.get(i), documento)) {
@@ -82,30 +120,60 @@ public class Seguradora {
 		}
 		return false;
 	}
-	/* Imprime "i. <cliente.nome>\n" para cada cliente cadastrado com tipoCliente especificado.
-	 * i vai do intervalo de 1 até o núm. total de clientes de tipoCliente.
-	 * tipoCliente == "PF" para listar ClientePF, e tipoCliente == "PJ" para listar ClientePJ. */
+	/* Imprime "i. <cliente.nome> - <cliente.documento>\n" para cada cliente cadastrado com 
+	* tipoCliente especificado. <cliente. documento> é a string "CPF/CNPJ" e <cliente.documento>
+	* o número do documento. i vai do intervalo de 0 até o núm. total de clientes de
+	* tipoCliente - 1. tipoCliente == "PF" para listar ClientePF, tipoCliente == "PJ" para listar
+	* ClientePJ, e se tipoCliente for diferente dos casos citados, lista todos os clientes. */
 	public void listarClientes(String tipoCliente) {
 		int i, cont = 0;
 		if (tipoCliente.equals("PF")) {
 			for (i = 0; i < listaClientes.size(); i++)
 				if (listaClientes.get(i) instanceof ClientePF)
-					System.out.println(String.valueOf(++cont) + ". " +
-							listaClientes.get(i).getNome());
+					System.out.println(String.valueOf(cont++) + ". " +
+							strClienteDocumento(listaClientes.get(i)));
 		} else if (tipoCliente.equals("PJ")) {
-			for (i = 0; i < listaClientes.size(); i++)
+				for (i = 0; i < listaClientes.size(); i++)
 				if (listaClientes.get(i) instanceof ClientePJ)
-					System.out.println(String.valueOf(++cont) + ". " + 
-							listaClientes.get(i).getNome());
+					System.out.println(String.valueOf(cont++) + ". " +
+							strClienteDocumento(listaClientes.get(i)));
+		} else { // imprime todos os clientes
+			for (i = 0; i < listaClientes.size(); i++)
+				System.out.println(String.valueOf(i) + ". " +
+						strClienteDocumento(listaClientes.get(i)));
 		}
-		// Não imprime se tipoCliente != "PF" ou "PJ"
 	}
-	/* Adiciona o Sinistro s a listaSinistros. Retorna um boolean indicando se adicionou. */
+	/* Transfere o seguro de clienteTransf para clienteReceb. Retorna boolean indicando se
+	 * a transferencia ocorreu (nao ocorre quando clienteTransf.equals(clienteReceb)).
+	 * Atualiza os precos dos seguros automaticamente. */
+	public boolean transferirSeguro(Cliente clienteTransf, Cliente clienteReceb) {
+		if (clienteTransf.equals(clienteReceb))
+			return false;
+		// adiciona os veículos de clienteTransf aos de clienteReceb
+		for (int i = 0; i < clienteTransf.getListaVeiculos().size(); i++)
+			clienteReceb.getListaVeiculos().add(clienteTransf.getListaVeiculos().get(i));
+		// remove os veículos de clienteTransf
+		clienteTransf.getListaVeiculos().clear();
+		// recalcula os precos dos seguros (clienteTransf.valorSeguro será 0)
+		calcularPrecoSeguroCliente(clienteTransf);
+		calcularPrecoSeguroCliente(clienteReceb);
+		return true;
+	}
+
+	// Métodos para sinistros
+	/* Adiciona um sinistro com os dados passados como argumento à seguradora. Retorna um boolean
+	 * indicando se adicionou. Atualiza automaticamente o preco do seguro para cada cliente. */
 	public boolean gerarSinistro(Date data, String endereco, Veiculo veiculo, Cliente cliente) {
 		boolean add = listaSinistros.add(new Sinistro(data, endereco, this, veiculo, cliente));
-		for (Cliente c: listaClientes)
-			calcularPrecoSeguroCliente(c); // número de sinistros aumentou, então preco também
+		atualizarValoresSeguro(); // adicionar sinistro muda o preco de seguro p/ todos clientes
 		return add;
+	}
+	/* Remove o sinistro s de listaSinistros e retorna um boolean indicando se removeu.
+	 * Atualiza automaticamente o preco do seguro para cada cliente. */
+	public boolean removerSinistro(Sinistro s) {
+		boolean removeu = listaSinistros.remove(s);
+		atualizarValoresSeguro();
+		return removeu;
 	}
 	/* Imprime todos os sinistros relacionados ao cliente com o documento passado como argumento
 	 * na seguradora, no formato de Sinistro.toString(). Retorna true caso ache algum sinistro,
@@ -122,22 +190,13 @@ public class Seguradora {
 		return encontrou;
 	}
 	/* Imprime "i. <id do sinistro>\n" dos sinistros na ordem em que foram cadastrados,
-	 * onde i é o índice + 1 do sinistro em listaSinistros. */
+	 * onde i é o índice do sinistro em listaSinistros. */
 	public void listarSinistros() {
 		if (listaSinistros.isEmpty())
 			System.out.println("Nao ha sinistros cadastrados.");
 		else
 			for (int i = 0; i < listaSinistros.size(); i++)
-				System.out.println(String.valueOf(i + 1) + ". " + listaSinistros.get(i).getId());
-	}
-	public void calcularPrecoSeguroCliente(Cliente c) {
-		c.setValorSeguro(c.calculaScore() * (1 + listaSinistros.size()));
-	}
-	public double calcularReceita() {
-		double soma = 0;
-		for (Cliente c: listaClientes)
-			soma += c.getValorSeguro();
-		return soma;
+				System.out.println(String.valueOf(i) + ". " + listaSinistros.get(i).getId());
 	}
 
 	// Getters e setters
@@ -176,6 +235,9 @@ public class Seguradora {
 	}
 	public void setListaClientes(List<Cliente> listaClientes) {
 		this.listaClientes = listaClientes;
+	}
+	public static List<Seguradora> getListaSeguradoras() {
+		return listaSeguradoras;
 	}
 
 }
