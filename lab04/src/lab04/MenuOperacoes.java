@@ -45,4 +45,5 @@ public enum MenuOperacoes {
 	public SubmenuOperacoes[] getSubmenu() {
 		return submenu;
 	}
+
 }
