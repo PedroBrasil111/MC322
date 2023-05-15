@@ -14,7 +14,7 @@ public class Sinistro {
 	// Construtor
 	public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo,
 			Cliente cliente) {
-		// gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
+		// Gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
 		// Porém, esse id varia a cada iteracão do programa.
 		id = hashCode();
 		this.data = data;

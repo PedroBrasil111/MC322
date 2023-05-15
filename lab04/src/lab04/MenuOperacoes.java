@@ -1,9 +1,10 @@
 package lab04;
-/* enum para menu externo
-Cada constante é vista como uma descrição e uma lista de outras constantes (que são as constantes do submenu)
 
-new SubmenuOperacoes[]{} cria uma lista de constantes do submenu.
-*/
+/* Adaptado de https://github.com/rebecapadovani/ExemploEnumMenu
+ * enum para menu externo.
+ * Cada constante é vista como uma descrição e uma lista de outras constantes (que são as constantes do submenu)
+ * new SubmenuOperacoes[]{} cria uma lista de constantes do submenu. */
+
 public enum MenuOperacoes {
 	CADASTROS("Cadastros", new SubmenuOperacoes[] {
 			SubmenuOperacoes.CADASTRAR_CLIENTE,
@@ -13,8 +14,10 @@ public enum MenuOperacoes {
 	}),
 	LISTAR("Listar", new SubmenuOperacoes[] {
 			SubmenuOperacoes.LISTAR_CLIENTES,
-			SubmenuOperacoes.LISTAR_SINISTROS,
-			SubmenuOperacoes.LISTAR_VEICULOS,
+			SubmenuOperacoes.LISTAR_SINISTROS_SEGURADORA,
+			SubmenuOperacoes.LISTAR_SINISTROS_CLIENTE,
+			SubmenuOperacoes.LISTAR_VEICULOS_SEGURADORA,
+			SubmenuOperacoes.LISTAR_VEICULOS_CLIENTE,
 			SubmenuOperacoes.VOLTAR
 	}),
 	EXCLUIR("Excluir", new SubmenuOperacoes[] {
