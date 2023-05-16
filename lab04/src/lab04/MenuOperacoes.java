@@ -6,29 +6,30 @@ package lab04;
  * new SubmenuOperacoes[]{} cria uma lista de constantes do submenu. */
 
 public enum MenuOperacoes {
+	SAIR("Sair", new SubmenuOperacoes[] {}),
 	CADASTROS("Cadastros", new SubmenuOperacoes[] {
+			SubmenuOperacoes.VOLTAR,
 			SubmenuOperacoes.CADASTRAR_CLIENTE,
 			SubmenuOperacoes.CADASTRAR_VEICULO,
-			SubmenuOperacoes.CADASTRAR_SEGURADORA,
-			SubmenuOperacoes.VOLTAR
+			SubmenuOperacoes.CADASTRAR_SEGURADORA
 	}),
 	LISTAR("Listar", new SubmenuOperacoes[] {
+			SubmenuOperacoes.VOLTAR,
 			SubmenuOperacoes.LISTAR_CLIENTES,
 			SubmenuOperacoes.LISTAR_SINISTROS_SEGURADORA,
 			SubmenuOperacoes.LISTAR_SINISTROS_CLIENTE,
 			SubmenuOperacoes.LISTAR_VEICULOS_SEGURADORA,
-			SubmenuOperacoes.LISTAR_VEICULOS_CLIENTE,
-			SubmenuOperacoes.VOLTAR
+			SubmenuOperacoes.LISTAR_VEICULOS_CLIENTE
 	}),
 	EXCLUIR("Excluir", new SubmenuOperacoes[] {
+			SubmenuOperacoes.VOLTAR,
 			SubmenuOperacoes.EXCLUIR_CLIENTE,
 			SubmenuOperacoes.EXCLUIR_VEICULO,
-			SubmenuOperacoes.EXCLUIR_SINISTRO,
-			SubmenuOperacoes.VOLTAR}),
+			SubmenuOperacoes.EXCLUIR_SINISTRO
+	}),
 	GERAR_SINISTRO("Gerar Sinistro", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
 	TRANSFERIR_SEGURO("Transferir Seguro", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
-	CALCULAR_RECEITA("Calcular Receita", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
-	SAIR("Sair", new SubmenuOperacoes[] {});
+	CALCULAR_RECEITA("Calcular Receita", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR});
 	
 	//atributos
 	private final String descricao;

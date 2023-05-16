@@ -4,18 +4,18 @@ package lab04;
  * Define as constantes dos submenus */
 
 public enum SubmenuOperacoes {
+	VOLTAR("Voltar"),
 	CADASTRAR_CLIENTE("Cadastrar cliente"),
 	CADASTRAR_VEICULO("Cadastrar veiculo"),
 	CADASTRAR_SEGURADORA("Cadastrar seguradora"),
-	LISTAR_CLIENTES("Listar cliente"),
+	LISTAR_CLIENTES("Listar clientes por seguradora"),
 	LISTAR_SINISTROS_SEGURADORA("Listar sinistros por seguradora"),
 	LISTAR_SINISTROS_CLIENTE("Listar sinistros por cliente"),
 	LISTAR_VEICULOS_SEGURADORA("Listar veiculos por seguradora"),
 	LISTAR_VEICULOS_CLIENTE("Listar veiculos por cliente"),
 	EXCLUIR_CLIENTE("Excluir cliente"),
 	EXCLUIR_VEICULO("Excluir veiculo"),
-	EXCLUIR_SINISTRO("Excluir sininstro"),
-	VOLTAR("Voltar");
+	EXCLUIR_SINISTRO("Excluir sininstro");
 	
 	//atributo
 	private final String descricao;

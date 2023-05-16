@@ -142,7 +142,7 @@ public class Validacao {
         // construcao de arrayIntData, com [0]: dia, [1]: mes, [2]: ano (em inteiro)
         if (! ArrayStringToInt(arrayData, arrayIntData))
             return false;
-        // ano deve estar entre 1700 e 2200 (escolha arbitrária), mes entre 1 e 12 e dia > 0
+        // ano deve estar entre 1700 e 2200 (escolha arbitrária), mes entre 1 e 12 e dia >= 0
         if (arrayIntData[2] < 1700 || arrayIntData[2] > 2200 ||
                 arrayIntData[1] < 1 || arrayIntData[1] > 12 || arrayIntData[0] < 0)
             return false;

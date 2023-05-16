@@ -70,12 +70,12 @@ public class Seguradora {
 	private String strClienteDocumento(Cliente cliente) {
 		String str = cliente.getNome();
 		if (cliente instanceof ClientePF)
-		str += " - CPF: " + ((ClientePF) cliente).getCpf();
+			str += " - CPF: " + ((ClientePF) cliente).getCpf();
 		else if (cliente instanceof ClientePJ)
-		str += " - CNPJ: " + ((ClientePJ) cliente).getCnpj();
-		else
+			str += " - CNPJ: " + ((ClientePJ) cliente).getCnpj();
+		else // tipo Cliente
 			str += " - Nao possui documento cadastrado ";
-			return str;
+		return str;
 	}
 
 	// Métodos para valor do seguro
@@ -183,13 +183,13 @@ public class Seguradora {
 	 * i vai de 0 ao número de veículos - 1. Retorna boolean indicando se houve impressão. */
 	public boolean listarVeiculos() {
 		int cont = 0;
-		boolean imprimiu = false;
-		for (Cliente c: listaClientes) {
-			for (Veiculo v: c.getListaVeiculos())
-				System.out.println(String.valueOf(cont++) + ". Placa " + v.getPlaca());
-			imprimiu = true;
+		if (! listaClientes.isEmpty()) {
+			for (Cliente c: listaClientes) 
+				for (Veiculo v: c.getListaVeiculos())
+					System.out.println(String.valueOf(cont++) + ". Placa " + v.getPlaca());
+			return true;
 		}
-		return imprimiu;
+		return false;
 	}
 
 	// Métodos para sinistros

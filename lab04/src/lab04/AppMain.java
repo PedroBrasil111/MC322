@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /* Classe contendo o método main. Implementa o menu e os métodos necessários
- * para ler instrucões do usuário e realizar as operacões desejadas.*/
+ * para ler instrucões do usuário e realizar as operacões desejadas. */
 
 public class AppMain {
 	/* Lista contendo todas as seguradoras instanciadas (base para utilizar os menus) */
@@ -43,7 +43,8 @@ public class AppMain {
 					data = Data.stringToDate(input);
 					break;
 				}
-				System.out.println("Erro. Digite uma data valida no formato especificado.");
+				System.out.println("Erro. Data invalida ou fora do formato especificado." +
+						"Tente digitar novamente.");
 			} while (true);
 			return data;
 		}
@@ -76,19 +77,44 @@ public class AppMain {
 			} while (true);
 			return nome;
 		}
+		/* Lê até que um CNPJ válido seja dado e o reteorna */
+		public static String lerCnpj() {
+			String cnpj;
+			do {
+				cnpj = lerString();
+				if (! Validacao.validarCNPJ(cnpj))
+					System.out.println("CNPJ invalido. Tente digitar novamente.");
+				else
+					break;
+			} while (true);
+			return cnpj;
+		}
+		/* Lê até que um CPF válido seja dado e o retorna */
+		public static String lerCpf() {
+			String cpf;
+			do {
+				cpf = Leitura.lerString();
+				if (! Validacao.validarCPF(cpf))
+					System.out.println("CPF invalido. Tente digitar novamente.");
+				else
+					break;
+			} while (true);
+			return cpf;
+		}
 		public static void fechar() {
 			scanner.close();
 		}
+
 	}
 
 	/* Métodos para os menus (adaptados de https://github.com/rebecapadovani/ExemploEnumMenu) */
 	//exibir menu externo
 	private static void exibirMenuExterno() {
 		MenuOperacoes menuOpcoes[] = MenuOperacoes.values();
-		System.out.println("Menu principal");
-		for(MenuOperacoes op: menuOpcoes) {
-			System.out.println(op.ordinal() + " - " + op.getDescricao());
-		}
+		System.out.println("** Menu principal **");
+		for (int i = 1; i < menuOpcoes.length; i++)
+			System.out.println(String.valueOf(i) + " - " + menuOpcoes[i].getDescricao());
+		System.out.println("0 - " + menuOpcoes[0].getDescricao());
 	}
 	/* exibir submenus
 	 * se a lista de constantes do submenu for percorrida da mesma forma que o meu externo, a opcão Voltar
@@ -98,10 +124,11 @@ public class AppMain {
 	 */
 	private static void exibirSubmenu(MenuOperacoes op) {
 		SubmenuOperacoes[] submenu = op.getSubmenu();
-		System.out.println(op.getDescricao());
-		for(int i=0; i<submenu.length; i++) {
+		System.out.println("** " + op.getDescricao() + " **");
+		for(int i = 1; i < submenu.length; i++) {
 			System.out.println(i +" - " + submenu[i].getDescricao());
 		}
+		System.out.println("0 - " + submenu[0].getDescricao());
 	}
 	//ler opcões do menu externo
 	private static MenuOperacoes lerOpcaoMenuExterno() {
@@ -165,6 +192,7 @@ public class AppMain {
 				break;
 			case LISTAR_VEICULOS_SEGURADORA:
 				operacaoListarVeiculosSeguradora();
+				break;
 			case LISTAR_VEICULOS_CLIENTE:
 				operacaoListarVeiculosCliente();
 				break;
@@ -239,9 +267,10 @@ public class AppMain {
 		listaSeguradoras.add(seg);
 	}
 
-	/* Métodos para requisicão e impressão de dados */
+	/* Métodos para requisicão e impressão de dados. Todas as operacões pedem para que seja
+	 * selecionada uma seguradora e, se necessario, clientes e veiculos para serem realizadas.*/
 	/* Requisita a escolha de uma das seguradoras registradas e a retorna.
-	 * Retorna null e imprime mensagem de retorno se nao existem seguradoras cadastradas. */
+	 * Retorna null e imprime mensagem de retorno se nao há seguradoras cadastradas. */
 	public static Seguradora requisitarSeguradora() {
 		int pos;
 		if (listarSeguradoras()) {
@@ -252,7 +281,7 @@ public class AppMain {
 		return null;
 	}
 	/* Requisita a escolha de um dos clientes registrados em seg e o retorna.
-	 * Retorna null e imprime mensagem de retorno se nao existem clientes cadastrados. */
+	 * Retorna null e imprime mensagem de retorno se nao há clientes cadastrados. */
 	public static Cliente requisitarCliente(Seguradora seg) {
 		int pos;
 		if (seg.listarClientes("")) { // lista todos os clientes
@@ -263,7 +292,7 @@ public class AppMain {
 		return null;
 	}
 	/* Requisita a escolha de um dos veiculos registrados sob o cliente.
-	 * Retorna null e imprime mensagem de retorno se nao existem veiculos cadastrados. */
+	 * Retorna null e imprime mensagem de retorno se nao há veiculos cadastrados. */
 	public static Veiculo requisitarVeiculo(Cliente cliente) {
 		int pos;
 		if (cliente.listarVeiculos()) {
@@ -296,24 +325,25 @@ public class AppMain {
 	/* Lista as seguradoras em Seguradora.listaSeguradoras no formato "i - Seguradora.nome",
 	 * onde i é o índice da seguradora na lista. Retorna boolean indicando se imprimiu. */
 	public static boolean listarSeguradoras() {
-		boolean imprimiu = false;
-		for (int i = 0; i < listaSeguradoras.size(); i++) {
-			System.out.println(String.valueOf(i) + " - " +
-					listaSeguradoras.get(i).getNome());
-			imprimiu = true;
+		if (! listaSeguradoras.isEmpty()) {
+			for (int i = 0; i < listaSeguradoras.size(); i++)
+				System.out.println(String.valueOf(i) + " - " +
+						listaSeguradoras.get(i).getNome());
+			return true;
 		}
-		return imprimiu;
+		return false;
 	}
 
 	/* Métodos para as operacões dos menus */
 	// Gerar sinistro
 	public static void operacaoGerarSinistro() {
+		Seguradora seg;
 		Date data;
 		String endereco;
-		Seguradora seg;
 		Cliente cliente;
 		Veiculo veiculo;
-		System.out.println("Geracao de sinistro");
+		System.out.println("** Geracao de sinistro **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora na qual deseja cadastrar o sinistro:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
@@ -327,15 +357,16 @@ public class AppMain {
 		System.out.println("Digite o numero referente ao veiculo:");
 		veiculo = requisitarVeiculo(cliente);
 		if (veiculo == null) return;
-		seg.gerarSinistro(data, endereco, veiculo, cliente);
-		System.out.println("Sinistro gerado com sucesso.");
+		// cria sinistro com informacões lidas + impressão do resultado
+		mensagemOperacaoRealizada(seg.gerarSinistro(data, endereco, veiculo, cliente));
 	}
 
 	// Transferir seguro
 	public static void operacaoTransferirSeguro() {
 		Seguradora seg;
 		Cliente clienteTransf, clienteReceb;
-		System.out.println("Transferencia de seguro");
+		System.out.println("** Transferencia de seguro **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora na qual deseja realizar a transferencia:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
@@ -344,19 +375,22 @@ public class AppMain {
 		if (clienteTransf == null) return;
 		System.out.println("Digite o numero referente ao cliente que recebera o seguro:");
 		clienteReceb = requisitarCliente(seg);
+		// transferência e impressão do resultado
 		if (seg.transferirSeguro(clienteTransf, clienteReceb))
 			System.out.println("Seguro transferido com sucesso.");
-		else // clienteTransf.equals(clienteReceb)
+		else // quando clienteTransf.equals(clienteReceb)
 			System.out.println("Os clientes selecionados sao os mesmos. Abortando");
 	}
 
 	// Calcular receita
 	public static void operacaoCalcularReceita() {
 		Seguradora seg;
-		System.out.println("Calculo de receita");
+		System.out.println("** Calculo de receita **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora da qual deseja calcular a receita:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
+		// impressão do resultado
 		System.out.println("Receita de " + seg.getNome() + ": " + seg.calcularReceita());
 	}
 
@@ -366,9 +400,10 @@ public class AppMain {
 	public static void operacaoCadastrarCliente() {
 		// pede primeiro nome e endereco (atributos de Cliente)
 		int opcao;
-		Seguradora seg;
+		Seguradora seg; // seguradora em que será cadastrado
 		String nome, endereco;
-		System.out.println("Cadastro de cliente");
+		System.out.println("** Cadastro de cliente **");
+		// leitura
 		System.out.println("Qual tipo de cliente deseja cadastrar?\n" + 
 				"0 - Pessoa Fisica\n1 - Pessoa Juridica");
 		opcao = Leitura.lerIndice(2); // opcões só podem ser 1 ou 2
@@ -379,6 +414,7 @@ public class AppMain {
 		nome = Leitura.lerNome();
 		System.out.print("Digite o endereco de residencia: ");
 		endereco = Leitura.lerString();
+		// cadastro e impressão do resultado, separa em cadastro de ClientePF ou ClientePJ
 		if (opcao == 0) // ClientePF
 			mensagemOperacaoRealizada(operacaoCadastrarClientePF(seg, nome, endereco));
 		else // ClientePJ
@@ -390,19 +426,14 @@ public class AppMain {
 		String cnpj;
 		Date dataFundacao;
 		int qtdeFuncionarios;
+		// leitura
 		System.out.print("Digite o CNPJ do cliente: ");
-		// leitura e verificacão do CNPJ
-		do {
-			cnpj = Leitura.lerString();
-			if (! Validacao.validarCNPJ(cnpj))
-				System.out.println("CNPJ invalido. Tente digitar novamente.");
-			else
-				break;
-		} while (true);
+		cnpj = Leitura.lerCnpj();
 		System.out.print("Digite a data de fundacao (no formato dia/Mês/ano - dd/MM/yyyy): ");
 		dataFundacao = Leitura.lerData();
 		System.out.print("Digite a quantidade de funcionarios: ");
-		qtdeFuncionarios = Leitura.lerInteiro();
+		// qtde funcionários deve estar entre 0 e 99999 (arbitrário)
+		qtdeFuncionarios = Leitura.lerIndice(10000);
 		// cadastro inicial sem carros
 		return seg.cadastrarCliente(new ClientePJ(nome, endereco, cnpj, dataFundacao,
 				qtdeFuncionarios));
@@ -412,15 +443,9 @@ public class AppMain {
 	private static boolean operacaoCadastrarClientePF(Seguradora seg, String nome, String endereco) {
 		String cpf, genero, educacao, classeEconomica;
 		Date dataLicenca, dataNascimento;
+		// leitura
 		System.out.print("Digite o CPF do cliente: ");
-		// leitura e verificacão do CPF
-		do {
-			cpf = Leitura.lerString();
-			if (! Validacao.validarCPF(cpf))
-				System.out.println("CPF invalido. Tente digitar novamente.");
-			else
-				break;
-		} while (true);
+		cpf = Leitura.lerCpf();
 		System.out.print("Digite o genero do cliente: ");
 		genero = Leitura.lerString();
 		System.out.print("Digite o nivel de educacao do cliente: ");
@@ -440,11 +465,12 @@ public class AppMain {
 
 	// Cadastrar veiculo
 	public static void operacaoCadastrarVeiculo() {
-		Seguradora seg;
+		Seguradora seg; // seguradora em que está o dono do veículo
 		Cliente cliente; // cliente que recebe o veículo que está sendo cadastrado
 		String placa, marca, modelo;
 		int anoFabricacao;
-		System.out.println("Cadastro de veiculo");
+		System.out.println("** Cadastro de veiculo **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora na qual o cliente" +
 				"dono do veículo esta cadastrado:");
 		seg = requisitarSeguradora();
@@ -459,16 +485,18 @@ public class AppMain {
 		System.out.print("Digite o modelo do veiculo: ");
 		modelo = Leitura.lerString();
 		System.out.print("Digite o ano de fabricacao do veiculo: ");
-		anoFabricacao = Leitura.lerInteiro();
-		mensagemOperacaoRealizada(cliente.getListaVeiculos().add(new Veiculo(
-				placa, marca, modelo, anoFabricacao)));
-		seg.atualizarValoresSeguro();		
+		// anoFabricacao deve estar entre 0 e 2199 (arbitrário)
+		anoFabricacao = Leitura.lerIndice(2200);
+		// cadastro na lista do cliente + impressão do resultado
+		mensagemOperacaoRealizada(seg.adicionarVeiculoCliente(cliente,
+				new Veiculo(placa, marca, modelo, anoFabricacao)));
 	}
 
 	// Cadastrar seguradora
 	public static void operacaoCadastrarSeguradora() {
 		String nome, telefone, email, endereco;
-		System.out.println("Cadastro de seguradora");
+		System.out.println("** Cadastro de seguradora **");
+		// leitura
 		System.out.print("Digite o nome da seguradora: ");
 		nome = Leitura.lerNome();
 		System.out.print("Digite o telefone da seguradora: ");
@@ -477,7 +505,7 @@ public class AppMain {
 		email = Leitura.lerString();
 		System.out.print("Digite o endereco da seguradora: ");
 		endereco = Leitura.lerString();
-		// cadastro inicial sem clientes e sinistros
+		// cadastro inicial sem clientes e sinistros + impressão do resultado
 		mensagemOperacaoRealizada(listaSeguradoras.add(new Seguradora(
 				nome, telefone, email, endereco)));
 	}
@@ -486,36 +514,45 @@ public class AppMain {
 	public static void operacaoListarClientes() {
 		Seguradora seg;
 		int opcao;
-		System.out.println("Listagem de clientes");
+		boolean imprimiu = false; // para imprimir mensagem se nao tiver clientes
+		System.out.println("** Listagem de clientes **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora da qual deseja listar os clientes:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
 		System.out.println("Qual tipo de cliente deseja listar?\n0 - Todos\n1 - Pessoa Física" +
 				"\n2 - Pessoa Jurídica");
 		opcao = Leitura.lerIndice(3);
+		// impressão do resultado
 		switch (opcao) {
 			case 0: // todos
 				System.out.println("Clientes de " + seg.getNome() + ":");
-				seg.listarClientes("");
+				imprimiu = seg.listarClientes("");
 				break;
 			case 1: // PF
 				System.out.println("Clientes pessoa fisica de " + seg.getNome() + ":");
-				seg.listarClientes("PF");
+				imprimiu = seg.listarClientes("PF");
 				break;
 			case 2: // PJ
 				System.out.println("Clientes pessoa juridica de " + seg.getNome() + ":");
-				seg.listarClientes("PJ");
+				imprimiu = seg.listarClientes("PJ");
 				break;
 		}
+		if (! imprimiu && opcao > 0) // nao imprimiu p/ opcao clientePF ou clientePJ
+			System.out.println("Nao ha clientes do tipo especificado cadastrados.");
+		else if (! imprimiu) // nao imprimiu p/ opcao "todos"
+			System.out.println("Nao ha clientes cadastrados.");
 	}
 	
 	// Listar sinistros por seguradora
 	public static void operacaoListarSinistrosSeguradora() {
 		Seguradora seg;
-		System.out.println("Listagem de sinistros por seguradora");
+		System.out.println("** Listagem de sinistros por seguradora **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora da qual deseja listar os sinistros");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
+		// impressão do resultado
 		System.out.println("Sinistros de " + seg.getNome() + ":");
 		if(! seg.listarSinistros())
 			System.out.println("Nao ha sinistros cadastrados");
@@ -525,7 +562,8 @@ public class AppMain {
 	public static void operacaoListarSinistrosCliente() {
 		Seguradora seg;
 		Cliente cliente;
-		System.out.println("Listagem de sinistros");
+		System.out.println("** Listagem de sinistros **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora contratada pelo cliente" +
 				" do qual deseja listar os sinistros:");
 		seg = requisitarSeguradora();
@@ -533,6 +571,7 @@ public class AppMain {
 		System.out.println("Digite o numero referente ao cliente:");
 		cliente = requisitarCliente(seg);
 		if (cliente == null) return;
+		// impressão do resultado
 		System.out.println("Sinistros de " + cliente.getNome() + ": ");
 		if (! seg.visualizarSinistro(documento(cliente)))
 			System.out.println("Nao ha sinistros cadastrados para esse cliente.");
@@ -542,7 +581,8 @@ public class AppMain {
 	public static void operacaoListarVeiculosCliente() {
 		Seguradora seg;
 		Cliente cliente;
-		System.out.println("Listagem de veiculos por cliente");
+		System.out.println("** Listagem de veiculos por cliente **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora contratada pelo cliente " +
 				"do qual deseja listar:");
 		seg = requisitarSeguradora();
@@ -551,6 +591,7 @@ public class AppMain {
 		cliente = requisitarCliente(seg);
 		if (cliente == null) return;
 		System.out.println("Veiculos de " + cliente.getNome() + ":");
+		// impressão do resultado
 		if (! cliente.listarVeiculos())
 			System.out.println("Nao ha veiculos cadastrados.");
 	}
@@ -558,10 +599,12 @@ public class AppMain {
 	// Listar veiculos por seguradora
 	public static void operacaoListarVeiculosSeguradora() {
 		Seguradora seg;
-		System.out.println("Listagem de veiculo por seguradora");
+		System.out.println("** Listagem de veiculo por seguradora **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora da qual deseja listar:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
+		// impressão do resultado
 		System.out.println("Veiculos cadastrados em " + seg.getNome() + ":");
 		if (! seg.listarVeiculos())
 			System.out.println("Nao ha veiculos cadastrados.");
@@ -571,7 +614,8 @@ public class AppMain {
 	public static void operacaoExcluirCliente() {
 		Seguradora seg;
 		Cliente cliente;
-		System.out.println("Exclusao de cliente");
+		System.out.println("** Exclusao de cliente **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora na qual o cliente " +
 				"que deseja remover esta cadastrado");
 		seg = requisitarSeguradora();
@@ -579,6 +623,7 @@ public class AppMain {
 		System.out.println("Digite o numero referente ao cliente:");
 		cliente = requisitarCliente(seg);
 		if (cliente == null) return;
+		// remocão + impressão do resultado
 		mensagemOperacaoRealizada(seg.removerCliente(documento(cliente)));
 	}
 
@@ -587,7 +632,8 @@ public class AppMain {
 		Seguradora seg;
 		Cliente cliente;
 		Veiculo veiculo;
-		System.out.println("Exclusao de veiculo");
+		System.out.println("** Exclusao de veiculo **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora na qual o " +
 				"dono do veiculo que deseja remover esta cadastrado");
 		seg = requisitarSeguradora();
@@ -598,6 +644,7 @@ public class AppMain {
 		System.out.println("Digite o numero referente ao veiculo que deseja remover:");
 		veiculo = requisitarVeiculo(cliente);
 		if (veiculo == null) return;
+		// remocão + impressão do resultado
 		mensagemOperacaoRealizada(seg.removerVeiculoCliente(cliente, veiculo));
 	}
 
@@ -605,7 +652,8 @@ public class AppMain {
 	public static void operacaoExcluirSinistro() {
 		Seguradora seg;
 		int indexRemov; // indice do sinistro removido em seg.listaSinistros
-		System.out.println("Exclusao de sinistro");
+		System.out.println("** Exclusao de sinistro **");
+		// leitura
 		System.out.println("Digite o numero referente a seguradora cujo " +
 				"sinistro deseja remover");
 		seg = requisitarSeguradora();
@@ -613,6 +661,7 @@ public class AppMain {
 		System.out.println("Digite o numero referente ao sinistro que deseja remover");
 		seg.listarSinistros();
 		indexRemov = Leitura.lerIndice(seg.getListaSinistros().size());
+		// remocão + impressão do resultado
 		mensagemOperacaoRealizada(seg.removerSinistro(seg.getListaSinistros().get(indexRemov)));
 	}
 
@@ -620,6 +669,7 @@ public class AppMain {
 		MenuOperacoes op;
 		inicializacao(); // Inicializa uma seguradora
 		// Usando o menu
+		System.out.println("-------------- Menu --------------");
 		do {
 			exibirMenuExterno();
 			op = lerOpcaoMenuExterno();
