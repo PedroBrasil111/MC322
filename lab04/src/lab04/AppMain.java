@@ -32,7 +32,7 @@ public class AppMain {
 		public static String lerString() {
 			return scanner.nextLine();
 		}
-		/* Lê até que seja dada uma data no formato dd/MM/yyyy e retorna o Date equivalente.
+		/* Lê até que seja dada uma data no formato dd/MM/aaaa e retorna o Date equivalente.
 		 * Imprime mensagem de erro quando data não é dada no formato */
 		public static Date lerData() {
 			String input;
@@ -43,7 +43,7 @@ public class AppMain {
 					data = Data.stringToDate(input);
 					break;
 				}
-				System.out.println("Erro. Data invalida ou fora do formato especificado." +
+				System.out.println("Erro. Data invalida ou fora do formato especificado. " +
 						"Tente digitar novamente.");
 			} while (true);
 			return data;
@@ -113,8 +113,8 @@ public class AppMain {
 		MenuOperacoes menuOpcoes[] = MenuOperacoes.values();
 		System.out.println("** Menu principal **");
 		for (int i = 1; i < menuOpcoes.length; i++)
-			System.out.println(String.valueOf(i) + " - " + menuOpcoes[i].getDescricao());
-		System.out.println("0 - " + menuOpcoes[0].getDescricao());
+			System.out.println(String.valueOf(i) + ". " + menuOpcoes[i].getDescricao());
+		System.out.println("0. " + menuOpcoes[0].getDescricao());
 	}
 	/* exibir submenus
 	 * se a lista de constantes do submenu for percorrida da mesma forma que o meu externo, a opcão Voltar
@@ -126,9 +126,9 @@ public class AppMain {
 		SubmenuOperacoes[] submenu = op.getSubmenu();
 		System.out.println("** " + op.getDescricao() + " **");
 		for(int i = 1; i < submenu.length; i++) {
-			System.out.println(i +" - " + submenu[i].getDescricao());
+			System.out.println(i +". " + submenu[i].getDescricao());
 		}
-		System.out.println("0 - " + submenu[0].getDescricao());
+		System.out.println("0. " + submenu[0].getDescricao());
 	}
 	//ler opcões do menu externo
 	private static MenuOperacoes lerOpcaoMenuExterno() {
@@ -327,7 +327,7 @@ public class AppMain {
 	public static boolean listarSeguradoras() {
 		if (! listaSeguradoras.isEmpty()) {
 			for (int i = 0; i < listaSeguradoras.size(); i++)
-				System.out.println(String.valueOf(i) + " - " +
+				System.out.println(String.valueOf(i) + ". " +
 						listaSeguradoras.get(i).getNome());
 			return true;
 		}
@@ -347,7 +347,7 @@ public class AppMain {
 		System.out.println("Digite o numero referente a seguradora na qual deseja cadastrar o sinistro:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
-		System.out.print("Digite a data de ocorrencia (no formato dia/Mês/ano - dd/MM/yyyy): ");
+		System.out.print("Digite a data de ocorrencia (no formato dia/Mês/ano - dd/MM/aaaa): ");
 		data = Leitura.lerData();
 		System.out.print("Digite o endereco: ");
 		endereco = Leitura.lerString();
@@ -405,7 +405,7 @@ public class AppMain {
 		System.out.println("** Cadastro de cliente **");
 		// leitura
 		System.out.println("Qual tipo de cliente deseja cadastrar?\n" + 
-				"0 - Pessoa Fisica\n1 - Pessoa Juridica");
+				"0. Pessoa Fisica\n1. Pessoa Juridica");
 		opcao = Leitura.lerIndice(2); // opcões só podem ser 1 ou 2
 		System.out.println("Digite o numero referente a seguradora na qual deseja cadastrar");
 		seg = requisitarSeguradora();
@@ -429,7 +429,7 @@ public class AppMain {
 		// leitura
 		System.out.print("Digite o CNPJ do cliente: ");
 		cnpj = Leitura.lerCnpj();
-		System.out.print("Digite a data de fundacao (no formato dia/Mês/ano - dd/MM/yyyy): ");
+		System.out.print("Digite a data de fundacao (no formato dia/Mês/ano - dd/MM/aaaa): ");
 		dataFundacao = Leitura.lerData();
 		System.out.print("Digite a quantidade de funcionarios: ");
 		// qtde funcionários deve estar entre 0 e 99999 (arbitrário)
@@ -453,10 +453,10 @@ public class AppMain {
 		System.out.print("Digite a classe economica do cliente: ");
 		classeEconomica = Leitura.lerString();
 		System.out.print("Digite a data da licenca de motorista do cliente " +
-				"(no formato dia/Mês/ano - dd/MM/yyyy): ");
+				"(no formato dia/Mês/ano - dd/MM/aaaa): ");
 		dataLicenca = Leitura.lerData();
 		System.out.print("Digite a data de nascimento do cliente " + 
-				"(no formato dia/Mês/ano - dd/MM/yyyy): ");
+				"(no formato dia/Mês/ano - dd/MM/aaaa): ");
 		dataNascimento = Leitura.lerData();
 		// cadastro inicial sem carros
 		return seg.cadastrarCliente(new ClientePF(nome, endereco, cpf, genero, dataLicenca,
@@ -520,8 +520,8 @@ public class AppMain {
 		System.out.println("Digite o numero referente a seguradora da qual deseja listar os clientes:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
-		System.out.println("Qual tipo de cliente deseja listar?\n0 - Todos\n1 - Pessoa Física" +
-				"\n2 - Pessoa Jurídica");
+		System.out.println("Qual tipo de cliente deseja listar?\n0. Todos\n1. Pessoa Física" +
+				"\n2. Pessoa Jurídica");
 		opcao = Leitura.lerIndice(3);
 		// impressão do resultado
 		switch (opcao) {
@@ -568,7 +568,7 @@ public class AppMain {
 				" do qual deseja listar os sinistros:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
-		System.out.println("Digite o numero referente ao cliente:");
+		System.out.println("Digite o numero referente ao cliente do qual deseja listar:");
 		cliente = requisitarCliente(seg);
 		if (cliente == null) return;
 		// impressão do resultado
@@ -587,7 +587,7 @@ public class AppMain {
 				"do qual deseja listar:");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
-		System.out.println("Digite o numero referente ao cliente:");
+		System.out.println("Digite o numero referente ao cliente do qual deseja listar:");
 		cliente = requisitarCliente(seg);
 		if (cliente == null) return;
 		System.out.println("Veiculos de " + cliente.getNome() + ":");
@@ -620,7 +620,7 @@ public class AppMain {
 				"que deseja remover esta cadastrado");
 		seg = requisitarSeguradora();
 		if (seg == null) return;
-		System.out.println("Digite o numero referente ao cliente:");
+		System.out.println("Digite o numero referente ao cliente que deseja remover:");
 		cliente = requisitarCliente(seg);
 		if (cliente == null) return;
 		// remocão + impressão do resultado
