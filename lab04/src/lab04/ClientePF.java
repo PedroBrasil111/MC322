@@ -45,7 +45,7 @@ public class ClientePF extends Cliente {
     }
 
     @Override
-    /* Retorna o valor do score para o cliente. Para pessoa jurídica, o score é dado por
+    /* Retorna valor do score para o cliente. Para pessoa jurídica, o score é dado por
      * (VALOR_BASE * FATOR_IDADE * quantidadeCarros). FATOR_BASE varia com a idade do cliente. */
     public double calculaScore() {
         CalcSeguro fatorIdade;

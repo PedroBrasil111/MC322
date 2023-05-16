@@ -32,7 +32,7 @@ public class ClientePJ extends Cliente {
     }
 
     @Override
-    /* Retorna o valor do score para o cliente. Para pessoa jurídica, o score é dado por
+    /* Retorna valor do score para o cliente. Para pessoa jurídica, o score é dado por
      * (VALOR_BASE * (1 + (quantidadeFunc)/100) * quantidadeCarros). */
     public double calculaScore() {
         return CalcSeguro.VALOR_BASE.getValor() * (1 + (qtdeFuncionarios / 100)) *
