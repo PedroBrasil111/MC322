@@ -31,6 +31,7 @@ public class ClientePJ extends Cliente {
 		return str;
     }
 
+    @Override
     /* Retorna o valor do score para o cliente. Para pessoa jurídica, o score é dado por
      * (VALOR_BASE * (1 + (quantidadeFunc)/100) * quantidadeCarros). */
     public double calculaScore() {

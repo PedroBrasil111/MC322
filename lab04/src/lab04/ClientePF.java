@@ -44,6 +44,7 @@ public class ClientePF extends Cliente {
         return str;
     }
 
+    @Override
     /* Retorna o valor do score para o cliente. Para pessoa jurídica, o score é dado por
      * (VALOR_BASE * FATOR_IDADE * quantidadeCarros). FATOR_BASE varia com a idade do cliente. */
     public double calculaScore() {
@@ -53,7 +54,7 @@ public class ClientePF extends Cliente {
             fatorIdade = CalcSeguro.values()[(idade / 30) + 1]; // fator se altera a cada 30 anos
             return CalcSeguro.VALOR_BASE.getValor() * fatorIdade.getValor() *
                     getListaVeiculos().size();
-        } else // idades inválidas / cálculo não especificado
+        } else // idades inválidas / cálculo não especificado -- retorna valor base
             return CalcSeguro.VALOR_BASE.getValor();
     }
 
