@@ -3,7 +3,7 @@ package lab04;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente {
+public abstract class Cliente {
 	// Propriedades
 	private String nome;
 	private String endereco;
@@ -40,11 +40,8 @@ public class Cliente {
 		return str;
 	}
 
-	/* Retorna o valor do score para o cliente. Para clientes do tipo Cliente,
-	 * não é especificada forma de calcular. Portanto, retorna o valor base para essa classe. */
-	public double calculaScore() {
-		return CalcSeguro.VALOR_BASE.getValor();
-	}
+	/* Retorna o valor do score do cliente. */
+	public abstract double calculaScore();
 	/* Adiciona o veiculo v a listaVeiculos, retorna boolean indicando se adicionou */
 	public boolean adicionarVeiculo(Veiculo v) {
 		return listaVeiculos.add(v);
