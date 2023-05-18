@@ -82,10 +82,8 @@ public class Validacao {
 
     // Validacão de nome
     /* Retorna true se o nome é válido, false caso contrário.
-     * Para um nome ser válido, ele deve conter apenas letras e espacos. */
+     * Para que um nome seja válido, ele deve conter apenas letras e espacos. */
     public static boolean validaNome(String nome) {
-        if (nome.length() <= 2 || todosCharIguais(nome)) // nome muito curto ou 1 char repetido
-            return false;
         return nome.matches("[\\p{L} ]+"); // boolean indicando se nome só contêm letras e espacos
     }
 
