@@ -54,17 +54,15 @@ public class AppMain {
 				return false;
 			return true;
 		}
-		/* Dado o tamanho (tam) de um iterável, lê até que seja dado um índice válido e o retorna */
 		public static int lerIndice(int tam) {
 			int pos;
 			do {
 				pos = lerInteiro();
 				// pos >= 0 e pos < tam
 				if (indiceValido(pos, tam))
-					break;
+					return pos;
 				System.out.println("Erro. Digite um valor valido.");
 			} while (true);
-			return pos;
 		}
 		/* Lê até que um nome válido seja dado (nome sem números) e o retorna */
 		public static String lerNome() {
@@ -277,7 +275,7 @@ public class AppMain {
 			pos = Leitura.lerIndice(listaSeguradoras.size()); // leitura da escolha
 			return listaSeguradoras.get(pos); // retorna a seguradora
 		}
-		System.out.println("Nao ha seguradoras cadastradas. Retornando.");
+		System.out.println("Nao ha seguradoras cadastradas. Operacao abortada.");
 		return null;
 	}
 	/* Requisita a escolha de um dos clientes registrados em seg e o retorna.
@@ -288,7 +286,7 @@ public class AppMain {
 			pos = Leitura.lerIndice(seg.getListaClientes().size()); // leitura da escolha
 			return seg.getListaClientes().get(pos); // retorna o cliente
 		}
-		System.out.println("Nao ha clientes cadastrados na seguradora. Retornando");
+		System.out.println("Nao ha clientes cadastrados na seguradora. Operacao abortada.");
 		return null;
 	}
 	/* Requisita a escolha de um dos veiculos registrados sob o cliente.
@@ -299,7 +297,7 @@ public class AppMain {
 			pos = Leitura.lerIndice(cliente.getListaVeiculos().size()); // leitura da escolha
 			return cliente.getListaVeiculos().get(pos); // retorna o veiculo
 		}
-		System.out.println("Nao ha veiculos cadastrados para esse cliente. Retornando.");
+		System.out.println("Nao ha veiculos cadastrados para esse cliente. Operacao abortada.");
 		return null;
 	}
 	/* Imprime "Operacao realizada com sucesso" se operacaoRealizada for true.
@@ -447,11 +445,11 @@ public class AppMain {
 		System.out.print("Digite o CPF do cliente: ");
 		cpf = Leitura.lerCpf();
 		System.out.print("Digite o genero do cliente: ");
-		genero = Leitura.lerString();
+		genero = Leitura.lerNome();
 		System.out.print("Digite o nivel de educacao do cliente: ");
-		educacao = Leitura.lerString();
+		educacao = Leitura.lerNome(); // lerNome() p/ que não tenha números
 		System.out.print("Digite a classe economica do cliente: ");
-		classeEconomica = Leitura.lerString();
+		classeEconomica = Leitura.lerNome(); // lerNome(), mesmo motivo
 		System.out.print("Digite a data da licenca de motorista do cliente " +
 				"(no formato dia/Mês/ano - dd/MM/aaaa): ");
 		dataLicenca = Leitura.lerData();
@@ -659,7 +657,10 @@ public class AppMain {
 		seg = requisitarSeguradora();
 		if (seg == null) return;
 		System.out.println("Digite o numero referente ao sinistro que deseja remover");
-		seg.listarSinistros();
+		if(! seg.listarSinistros()) {
+			System.out.println("Nao ha sinistros cadastrados. Operacao abortada.");
+			return;
+		}
 		indexRemov = Leitura.lerIndice(seg.getListaSinistros().size());
 		// remocão + impressão do resultado
 		mensagemOperacaoRealizada(seg.removerSinistro(seg.getListaSinistros().get(indexRemov)));
