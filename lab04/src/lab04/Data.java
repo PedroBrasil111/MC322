@@ -1,6 +1,6 @@
 package lab04;
 
-/* Classe estática para manipular dados relacionados a Date */
+/* Classe estática para manipular dados relacionados à classe Date */
 
 import java.util.Date;
 import java.util.Calendar;
