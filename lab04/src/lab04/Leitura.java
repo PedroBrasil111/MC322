@@ -1,6 +1,6 @@
 package lab04;
 
-/* Classe para leitura e tratamento da leitura */
+/* Classe com métodos estáticos para leitura e tratamento da leitura */
 
 import java.util.Scanner;
 import java.util.Date;
@@ -8,6 +8,7 @@ import java.util.Date;
 public class Leitura {
 	/* Uma única instância de scanner */
 	private static Scanner scanner = new Scanner(System.in);
+
 	/* Lê até que seja dado um inteiro e o retorna.
 	 * Imprime mensagem de erro quando não é inteiro. */
 	public static int lerInteiro() {
@@ -94,4 +95,9 @@ public class Leitura {
 	public static void fechar() {
 		scanner.close();
 	}
+	/* get */
+	public static Scanner getScanner() {
+		return scanner;
+	}
+
 }
