@@ -1,11 +1,12 @@
 package lab04;
 
-/* Classe de leitura (para só instanciar um scanner) */
+/* Classe para leitura e tratamento da leitura */
 
 import java.util.Scanner;
 import java.util.Date;
 
 public class Leitura {
+	/* Uma única instância de scanner */
 	private static Scanner scanner = new Scanner(System.in);
 	/* Lê até que seja dado um inteiro e o retorna.
 	 * Imprime mensagem de erro quando não é inteiro. */
@@ -16,7 +17,7 @@ public class Leitura {
 			try {
 				return Integer.parseInt(input);
 			} catch (NumberFormatException e) { // não é inteiro
-				System.out.println("Erro. Digite um numero inteiro valido.");
+				System.out.println("Erro - valor invalido. Tente digitar novamente: ");
 			}
 		} while (true);
 	}
@@ -35,8 +36,8 @@ public class Leitura {
 				data = Data.stringToDate(input);
 				break;
 			}
-			System.out.println("Erro. Data invalida ou fora do formato especificado. " +
-					"Tente digitar novamente.");
+			System.out.print("Erro - data invalida ou fora do formato especificado. " +
+					"Tente digitar novamente: ");
 		} while (true);
 		return data;
 	}
@@ -53,7 +54,7 @@ public class Leitura {
 			// pos >= 0 e pos < tam
 			if (indiceValido(pos, tam))
 				return pos;
-			System.out.println("Erro. Digite um valor valido.");
+			System.out.print("Erro - valor invalido. Tente digitar novamente: ");
 		} while (true);
 	}
 	/* Lê até que um nome válido seja dado (nome sem números) e o retorna */
@@ -63,7 +64,7 @@ public class Leitura {
 			nome = lerString();
 			if (Validacao.validaNome(nome))
 				break;
-			System.out.println("Erro. Digite um nome valido.");
+			System.out.print("Erro - palavra/nome invalido. Tente digitar novamente: ");
 		} while (true);
 		return nome;
 	}
@@ -73,24 +74,26 @@ public class Leitura {
 		do {
 			cnpj = lerString();
 			if (! Validacao.validarCNPJ(cnpj))
-				System.out.println("CNPJ invalido. Tente digitar novamente.");
+				System.out.print("Erro - CNPJ invalido. Tente digitar novamente: ");
 			else
 				break;
 		} while (true);
 		return cnpj;
 	}
-	/* Lê até que um CPF válido seja dado e o retorna */
+	/* Lê até que um CPF válido seja dado e o retorna.
+	 * Imprime mensagem de erro se for inválido */
 	public static String lerCpf() {
 		String cpf;
 		do {
 			cpf = Leitura.lerString();
 			if (! Validacao.validarCPF(cpf))
-				System.out.println("CPF invalido. Tente digitar novamente.");
+				System.out.print("Erro - CPF invalido. Tente digitar novamente: ");
 			else
 				break;
 		} while (true);
 		return cpf;
 	}
+	/* Fecha o scanner */
 	public static void fechar() {
 		scanner.close();
 	}
