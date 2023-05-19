@@ -23,10 +23,10 @@ public abstract class Cliente {
 	// toString()
 	/* Cliente - <nome>:
 	 * - Endereco: <endereco>
-	 * - Valor do seguro: <valorSeguro>
+	 * - Valor do seguro: R$<valorSeguro>
 	 * - Veiculo(s): Nenhum veiculo cadastrado OU <veiculo1.placa>, <veiculo2.placa>, ... */
 	public String toString() {
-		String str = String.format("Cliente - %s:\n- Endereco: %s\n- Valor do seguro: %.2f\n" + 
+		String str = String.format("Cliente - %s:\n- Endereco: %s\n- Valor do seguro: R$%.2f\n" + 
 		"- Veiculo(s): ", nome, endereco, valorSeguro);
 		if (listaVeiculos.isEmpty())
 			str += "Nenhum veiculo cadastrado";
