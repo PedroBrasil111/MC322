@@ -23,9 +23,17 @@ public enum MenuOperacoes {
 	}),
 	EXCLUIR("Excluir", new SubmenuOperacoes[] {
 			SubmenuOperacoes.VOLTAR,
+			SubmenuOperacoes.EXCLUIR_SEGURADORA,
 			SubmenuOperacoes.EXCLUIR_CLIENTE,
 			SubmenuOperacoes.EXCLUIR_VEICULO,
 			SubmenuOperacoes.EXCLUIR_SINISTRO
+	}),
+	VISUALIZAR("Visualizar", new SubmenuOperacoes[] {
+			SubmenuOperacoes.VOLTAR,
+			SubmenuOperacoes.IMPRIMIR_SEGURADORA,
+			SubmenuOperacoes.IMPRIMIR_CLIENTE,
+			SubmenuOperacoes.IMPRIMIR_VEICULO,
+			SubmenuOperacoes.IMPRIMIR_SINISTRO
 	}),
 	GERAR_SINISTRO("Gerar Sinistro", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
 	TRANSFERIR_SEGURO("Transferir Seguro", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
