@@ -50,12 +50,12 @@ public abstract class Cliente {
 	public boolean removerVeiculo(Veiculo v) {
 		return listaVeiculos.remove(v);
 	}
-	/* Lista os veiculos em listaVeiculos no formato "<i>. <veiculo.placa>", onde i é o
+	/* Lista os veiculos em listaVeiculos no formato "<i> - <veiculo.placa>", onde i é o
 	 * índice do veículo em listaVeiculos. Retorna boolean indicando se listou algum veiculo */
 	public boolean listarVeiculos() {
 		if (! listaVeiculos.isEmpty()) {
 			for (int i = 0; i < listaVeiculos.size(); i++)
-				System.out.println(String.valueOf(i) + ". " + listaVeiculos.get(i).getPlaca());
+				System.out.println(String.valueOf(i + 1) + " - " + listaVeiculos.get(i).getPlaca());
 			return true;
 		}
 		return false;
