@@ -15,7 +15,12 @@ public enum SubmenuOperacoes {
 	LISTAR_VEICULOS_CLIENTE("Listar veiculos por cliente"),
 	EXCLUIR_CLIENTE("Excluir cliente"),
 	EXCLUIR_VEICULO("Excluir veiculo"),
-	EXCLUIR_SINISTRO("Excluir sininstro");
+	EXCLUIR_SINISTRO("Excluir sininstro"),
+	EXCLUIR_SEGURADORA("Excluir seguradora"),
+	IMPRIMIR_CLIENTE("Visualizar cliente"),
+	IMPRIMIR_VEICULO("Visualizar veiculo"),
+	IMPRIMIR_SINISTRO("Visualizar sinistro"),
+	IMPRIMIR_SEGURADORA("Visualizar seguradora");
 	
 	//atributo
 	private final String descricao;
