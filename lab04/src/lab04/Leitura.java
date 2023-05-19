@@ -41,23 +41,19 @@ public class Leitura {
 		} while (true);
 		return data;
 	}
-	/* Dado o tamanho (tam) de uma lista ou array, retorna se i é um índice válido do iterável. */
-	private static boolean indiceValido(int i, int tam) {
-		if (i < 0 || i >= tam)
-			return false;
-		return true;
-	}
-	public static int lerIndice(int tam) {
+	/* Lê até que seja dado um número inteiro entre ini e fim (inclusive) e o retorna.
+	 * Imprime mensagem de erro se for inválido. */
+	public static int lerIntIntervalo(int ini, int fim) {
 		int pos;
 		do {
 			pos = lerInteiro();
-			// pos >= 0 e pos < tam
-			if (indiceValido(pos, tam))
+			if (pos >= ini && pos <= fim)
 				return pos;
 			System.out.print("Erro - valor invalido. Tente digitar novamente: ");
 		} while (true);
 	}
-	/* Lê até que um nome válido seja dado (nome sem números) e o retorna */
+	/* Lê até que um nome válido seja dado (nome sem números) e o retorna.
+	 * Imprime mensagem de erro se for inválido. */
 	public static String lerNome() {
 		String nome;
 		do {
@@ -68,7 +64,8 @@ public class Leitura {
 		} while (true);
 		return nome;
 	}
-	/* Lê até que um CNPJ válido seja dado e o reteorna */
+	/* Lê até que um CNPJ válido seja dado e o retorna.
+	 * Imprime mensagem de erro se for inválido. */
 	public static String lerCnpj() {
 		String cnpj;
 		do {
@@ -81,7 +78,7 @@ public class Leitura {
 		return cnpj;
 	}
 	/* Lê até que um CPF válido seja dado e o retorna.
-	 * Imprime mensagem de erro se for inválido */
+	 * Imprime mensagem de erro se for inválido. */
 	public static String lerCpf() {
 		String cpf;
 		do {
