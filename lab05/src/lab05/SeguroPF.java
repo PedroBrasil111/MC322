@@ -27,7 +27,7 @@ public class SeguroPF extends Seguro {
         double valor = CalcSeguro.VALOR_BASE.getValor() *
             // FATOR_IDADE muda a cada 30 anos -- posicao idade/30 + 1 em CalcSeguro.values()
             CalcSeguro.values()[Data.calcularIdade(cliente.getDataNasc())/30 + 1].getValor() *
-            (1 + 1./(getSeguradora().getVeiculosPorCliente(cliente).size() + 2)) * // ERRADO
+            (1 + 1./(getSeguradora().getVeiculosPorCliente(cliente).size() + 2)) *
             (2 + getSeguradora().getSinistrosPorCliente(cliente).size()/10.); // ERRADO
         for (Condutor condutor: getListaCondutores())
             qtdeSinistrosPorCondutor += condutor.getListaSinistros().size(); // ERRADO
