@@ -1,7 +1,9 @@
 package lab05;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.List;
 
 public class ClientePJ extends Cliente {
@@ -67,6 +69,7 @@ public class ClientePJ extends Cliente {
         return CalcSeguro.VALOR_BASE.getValor() * (1 + (qtdeFuncionarios / 100)) *
                 getListaVeiculos().size();
     }
+*/
 */
 
     // Getters e setters

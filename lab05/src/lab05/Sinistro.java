@@ -34,8 +34,8 @@ public class Sinistro {
 	 * - Cliente: <cliente.nome> */
 	public String toString() {
 		String str = String.format("Sinistro - id %d:\n- Data: %s\n- Endereco: %s\n" +
-				"- Condutor: %s\n- Seguro: %s", id, Data.dateToString(data), endereco,
-				condutor.getNome(), seguro.getId());
+				"- Seguradora: %s\n- Veiculo: %s\n- Cliente: %s", id, Data.dateToString(data),
+				endereco, seguradora.getNome(), veiculo.getPlaca(), cliente.getNome());
 		return str;
 	}
 

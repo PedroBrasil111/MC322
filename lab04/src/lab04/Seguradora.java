@@ -119,8 +119,8 @@ public class Seguradora {
 	}
 	/* Imprime "i. <cliente.nome> - <cliente.documento>\n" para cada cliente cadastrado com 
 	 * tipoCliente especificado. <cliente. documento> é a string "CPF/CNPJ" e <cliente.documento>
-	 * o número do documento. i vai do intervalo de 1 até o núm. total de clientes de
-	 * tipoCliente. tipoCliente == "PF" para listar ClientePF, tipoCliente == "PJ" para listar
+	 * o número do documento. i vai do intervalo de 0 até o núm. total de clientes de
+	 * tipoCliente - 1. tipoCliente == "PF" para listar ClientePF, tipoCliente == "PJ" para listar
 	 * ClientePJ, e se tipoCliente for diferente dos casos citados, lista todos os clientes. 
 	 * Retorna boolean indicando se imprimiu alguma vez. */
 	public boolean listarClientes(String tipoCliente) {
@@ -129,20 +129,20 @@ public class Seguradora {
 		if (tipoCliente.equals("PF")) {
 			for (i = 0; i < listaClientes.size(); i++)
 				if (listaClientes.get(i) instanceof ClientePF) {
-					System.out.println(++cont + " - " +
+					System.out.println(String.valueOf(cont++) + ". " +
 							strClienteDocumento(listaClientes.get(i)));
 					imprimiu = true;
 				}
 		} else if (tipoCliente.equals("PJ")) {
 				for (i = 0; i < listaClientes.size(); i++)
 				if (listaClientes.get(i) instanceof ClientePJ) {
-					System.out.println(++cont + " - " +
+					System.out.println(String.valueOf(cont++) + ". " +
 							strClienteDocumento(listaClientes.get(i)));
 					imprimiu = true;
 				}
 		} else { // imprime todos os clientes
 			for (i = 0; i < listaClientes.size(); i++) {
-				System.out.println(++cont + " - " +
+				System.out.println(String.valueOf(i) + ". " +
 						strClienteDocumento(listaClientes.get(i)));
 				imprimiu = true;
 			}
@@ -179,14 +179,14 @@ public class Seguradora {
 		calcularPrecoSeguroCliente(c); // recalcula preco pro cliente (pois removeu veiculo)
 		return removeu;
 	}
-	/* Lista todos os veiculos cadastrados na seguradora, no formato "<i> - Placa <veiculo.placa>",
-	 * i vai de 1 ao número de veículos. Retorna boolean indicando se houve impressão. */
+	/* Lista todos os veiculos cadastrados na seguradora, no formato "<i>. Placa <veiculo.placa>",
+	 * i vai de 0 ao número de veículos - 1. Retorna boolean indicando se houve impressão. */
 	public boolean listarVeiculos() {
 		int cont = 0;
 		if (! listaClientes.isEmpty()) {
 			for (Cliente c: listaClientes) 
 				for (Veiculo v: c.getListaVeiculos())
-					System.out.println(++cont + " - Placa " + v.getPlaca());
+					System.out.println(String.valueOf(cont++) + ". Placa " + v.getPlaca());
 			return true;
 		}
 		return false;
@@ -208,25 +208,25 @@ public class Seguradora {
 		return removeu;
 	}
 	/* Imprime todos os sinistros relacionados ao cliente com o documento passado como argumento
-	 * na seguradora, no formato de "<i> - id <sinistro.id>\n", onde i vai de 1 ao número de 
-	 * sinistros. Retorna true caso imprima algum sinistro, false caso contrário. */
+	 * na seguradora, no formato de "<i>. id <sinistro.id>\n", onde i vai de 0 ao número de 
+	 * sinistros - 1. Retorna true caso imprima algum sinistro, false caso contrário. */
 	public boolean visualizarSinistro(String documento) {
 		boolean encontrou = false; // se encontrar o documento, passa a ser true
-		int cont = 0; // contador para imprimir
+		int numSinistros = 0;
 		for (int i = 0; i < listaSinistros.size(); i++) {
 			if (comparaDocumento(listaSinistros.get(i).getCliente(), documento)) {
-				System.out.println(++cont + " - " + listaSinistros.get(i).getId());
+				System.out.println(numSinistros++ + ". " + listaSinistros.get(i).getId());
 				encontrou = true;
 			}
 		}
 		return encontrou;
 	}
-	/* Imprime "<i> - id <sinistro.id>\n" dos sinistros na ordem em que foram cadastrados, onde
+	/* Imprime "<i>. id <sinistro.id>\n" dos sinistros na ordem em que foram cadastrados, onde
 	 * i é o índice do sinistro em listaSinistros. Retorna boolean indicando se houve impressão. */
 	public boolean listarSinistros() {
 		if (! listaSinistros.isEmpty()) {
 			for (int i = 0; i < listaSinistros.size(); i++)
-				System.out.println(i + 1 + " - id " + listaSinistros.get(i).getId());
+				System.out.println(String.valueOf(i) + ". id " + listaSinistros.get(i).getId());
 			return true;
 		}
 		return false;

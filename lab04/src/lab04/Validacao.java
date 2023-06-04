@@ -1,12 +1,13 @@
 package lab04;
 
-/* Classe com métodos estáticos para validacão de CNPJ, CPF, nome e data. */
+/* Classe estática contendo métodos para validacão de CNPJ, CPF, nome e data. */
 
 public class Validacao {
     // Métodos privados
 	/* Retorna o valor inteiro do char na posicão pos de str */
 	private static int charAtToInt(String str, int pos) {
         return str.charAt(pos) - '0';
+		//return Character.getNumericValue(str.charAt(pos));
 	}
 	/* Se todos os caracteres de str forem iguais, retorna true; caso contrário, retorna false */
 	private static boolean todosCharIguais(String str) {
@@ -93,7 +94,7 @@ public class Validacao {
         for (int i = 0; i < arrayString.length; i++) {
             try {
                 arrayInt[i] = Integer.parseInt(arrayString[i]);
-            } catch (NumberFormatException e) { // algum item não é um inteiro
+            } catch (NumberFormatException e) { // alguma posicao não é um inteiro
                 return false;
             }
         }
@@ -138,7 +139,7 @@ public class Validacao {
             return false;
         // construcao de arrayIntData, com [0]: dia, [1]: mes, [2]: ano (em inteiro)
         if (! ArrayStringToInt(arrayData, arrayIntData))
-            return false; // false quando algum item não é um inteiro
+            return false;
         // ano deve estar entre 1700 e 2200 (escolha arbitrária), mes entre 1 e 12 e dia >= 0
         if (arrayIntData[2] < 1700 || arrayIntData[2] > 2200 ||
                 arrayIntData[1] < 1 || arrayIntData[1] > 12 || arrayIntData[0] < 0)

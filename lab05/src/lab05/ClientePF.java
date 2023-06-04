@@ -3,6 +3,8 @@ package lab05;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientePF extends Cliente {
     // Propriedades
@@ -13,6 +15,9 @@ public class ClientePF extends Cliente {
     private final List<Veiculo> listaVeiculos; // ponteiro p/ lista não se altera (final)
 
     // Construtor
+    public ClientePF(String nome, String telefone, String endereco, String email,
+            String cpf, String genero, String educacao, Date dataNasc) {
+        super(nome, telefone, endereco, email);
     public ClientePF(String nome, String telefone, String endereco, String email,
             String cpf, String genero, String educacao, Date dataNasc) {
         super(nome, telefone, endereco, email);
@@ -47,9 +52,43 @@ public class ClientePF extends Cliente {
                     str += ", ";
             }
         }
+        str += String.format("\n- CPF: %s\n- Data de nascimento: %s\n- Genero: %s\n" +
+        "- Educacao: %s\n- Veiculos: ", cpf, Data.dateToString(dataNasc), genero, educacao);
+        if (listaVeiculos.isEmpty())
+            str += "Nenhum veiculo cadastrado";
+        else {
+            for (int i = 0; i < listaVeiculos.size(); i++) {
+                str += listaVeiculos.get(i).getPlaca();
+                if (i != listaVeiculos.size() - 1)
+                    str += ", ";
+            }
+        }
         return str;
     }
 
+    public String documento() {
+        String str = "CPF: " + cpf;
+        return str;
+    }
+	// Adiciona o veiculo v a listaVeiculos, retorna boolean indicando se adicionou
+    public boolean cadastrarVeiculo(Veiculo v) {
+        return listaVeiculos.add(v);
+    }
+	public boolean cadastrarVeiculo(String placa, String marca, String modelo, int anoFabricacao) {
+		return cadastrarVeiculo(new Veiculo(placa, marca, modelo, anoFabricacao));
+	}
+	// Remove o veiculo v de listaVeiculos, retorna boolean indicando se removeu 
+	public boolean removerVeiculo(Veiculo v) {
+		return listaVeiculos.remove(v);
+	}
+    public boolean removerVeiculo(String placa) {
+        for (Veiculo v: listaVeiculos)
+            if (v.getPlaca().equals(placa))
+                return removerVeiculo(v);
+        return false;
+    }
+
+/*
     public String documento() {
         String str = "CPF: " + cpf;
         return str;
@@ -106,10 +145,16 @@ public class ClientePF extends Cliente {
     }
     public void setDataNasc(Date dataNasc) {
         this.dataNasc = dataNasc;
+    public void setDataNasc(Date dataNasc) {
+        this.dataNasc = dataNasc;
     }
     public Date getDataNasc() {
         return dataNasc;
+    public Date getDataNasc() {
+        return dataNasc;
     }
+    public List<Veiculo> getListaVeiculos() {
+        return listaVeiculos;
     public List<Veiculo> getListaVeiculos() {
         return listaVeiculos;
     }

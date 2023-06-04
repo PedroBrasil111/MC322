@@ -23,10 +23,10 @@ public abstract class Cliente {
 	// toString()
 	/* Cliente - <nome>:
 	 * - Endereco: <endereco>
-	 * - Valor do seguro: R$<valorSeguro>
+	 * - Valor do seguro: <valorSeguro>
 	 * - Veiculo(s): Nenhum veiculo cadastrado OU <veiculo1.placa>, <veiculo2.placa>, ... */
 	public String toString() {
-		String str = String.format("Cliente - %s:\n- Endereco: %s\n- Valor do seguro: R$%.2f\n" + 
+		String str = String.format("Cliente - %s:\n- Endereco: %s\n- Valor do seguro: %.2f\n" + 
 		"- Veiculo(s): ", nome, endereco, valorSeguro);
 		if (listaVeiculos.isEmpty())
 			str += "Nenhum veiculo cadastrado";
@@ -50,12 +50,12 @@ public abstract class Cliente {
 	public boolean removerVeiculo(Veiculo v) {
 		return listaVeiculos.remove(v);
 	}
-	/* Lista os veiculos em listaVeiculos no formato "<i> - <veiculo.placa>", onde i é o
+	/* Lista os veiculos em listaVeiculos no formato "<i>. <veiculo.placa>", onde i é o
 	 * índice do veículo em listaVeiculos. Retorna boolean indicando se listou algum veiculo */
 	public boolean listarVeiculos() {
 		if (! listaVeiculos.isEmpty()) {
 			for (int i = 0; i < listaVeiculos.size(); i++)
-				System.out.println(String.valueOf(i + 1) + " - " + listaVeiculos.get(i).getPlaca());
+				System.out.println(String.valueOf(i) + ". " + listaVeiculos.get(i).getPlaca());
 			return true;
 		}
 		return false;
