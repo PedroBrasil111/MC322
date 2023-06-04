@@ -7,21 +7,22 @@ public class Sinistro {
 	private final int id;
 	private Date data;
 	private String endereco;
-	private Seguradora seguradora;
-	private Veiculo veiculo;
-	private Cliente cliente;
+	private Condutor condutor;
+	private Seguro seguro;
+
+	private int gerarId() {
+		return hashCode();
+	}
 
 	// Construtor
-	public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo,
-			Cliente cliente) {
+	public Sinistro(Date data, String endereco, Condutor condutor, Seguro seguro) {
 		// Gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
 		// Porém, esse id varia a cada iteracão do programa.
-		id = hashCode();
+		id = gerarId();
 		this.data = data;
 		this.endereco = endereco;
-		this.seguradora = seguradora;
-		this.veiculo = veiculo;
-		this.cliente = cliente;
+		this.condutor = condutor;
+		this.seguro = seguro;
 	}
 
 	// toString()
@@ -33,8 +34,8 @@ public class Sinistro {
 	 * - Cliente: <cliente.nome> */
 	public String toString() {
 		String str = String.format("Sinistro - id %d:\n- Data: %s\n- Endereco: %s\n" +
-				"- Seguradora: %s\n- Veiculo: %s\n- Cliente: %s", id, Data.dateToString(data),
-				endereco, seguradora.getNome(), veiculo.getPlaca(), cliente.getNome());
+				"- Condutor: %s\n- Seguro: %s", id, Data.dateToString(data), endereco,
+				condutor.getNome(), seguro.getId());
 		return str;
 	}
 
@@ -54,23 +55,17 @@ public class Sinistro {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-	public Seguradora getSeguradora() {
-		return seguradora;
+	public Condutor getCondutor() {
+		return condutor;
 	}
-	public void setSeguradora(Seguradora seguradora) {
-		this.seguradora = seguradora;
+	public void setCondutor(Condutor condutor) {
+		this.condutor = condutor;
 	}
-	public Veiculo getVeiculo() {
-		return veiculo;
+	public Seguro getSeguro() {
+		return seguro;
 	}
-	public void setVeiculo(Veiculo veiculo) {
-		this.veiculo = veiculo;
-	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setSeguro(Seguro seguro) {
+		this.seguro = seguro;
 	}
 
 }
