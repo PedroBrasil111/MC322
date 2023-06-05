@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 public class ClientePJ extends Cliente {
-    // Propriedades
+    // Atributos
     private final String cnpj;
     private Date dataFundacao;
-    private final List<Frota> listaFrota;
+    private List<Frota> listaFrota;
 
     // Construtor
     public ClientePJ(String nome, String telefone, String endereco, String email, String cnpj,
@@ -21,42 +21,88 @@ public class ClientePJ extends Cliente {
 
     // toString()
 	/* ClientePJ - <nome>:
+	 * - Telefone: <telefone>
 	 * - Endereco: <endereco>
-     * - Valor do seguro: <valorSeguro>
-	 * - Veiculo(s): Nenhum veiculo cadastrado OU <veiculo1.placa>, <veiculo2.placa>, ...
+	 * - E-mail: <email>
      * - CNPJ: <cnpj>
-     * - Data de fundacao: <dataFundacao> */
+     * - Data de fundacao: <dataFundacao [dd/MM/aaaa]>
+     * - Quantidade de funcionarios: <qtdeFuncionarios>
+     * - Frotas: "Nenhuma frota cadastrada" OU <frota1.code>, <frota2.code>, ... */
     public String toString() {
         String str = super.toString().replace("Cliente", "ClientePJ");
-        str += String.format("\n- CNPJ: %s\n- Data de fundacao: %s",
-            cnpj, Data.dateToString(dataFundacao));
+        str += String.format("\n- CNPJ: %s\n- Data de fundacao: %s\n" +
+            "- Frotas: ", cnpj, Data.dateToString(dataFundacao));
+        if (! listaFrota.isEmpty()) {
+            str += "Nenhuma frota cadastrada";
+        } else {
+            for (int i = 0; i < listaFrota.size(); i++) {
+                str += listaFrota.get(i).getCode();
+                if (i != listaFrota.size() - 1)
+                    str += ", ";
+            }
+        }
 		return str;
     }
 
-    public String documento() {
+    /* Retorna uma string no formato "CNPJ - <cnpj>". */
+    @Override
+    public String strDocumento() {
         String str = "CNPJ: " + cnpj;
         return str;
     }
+    // TODO - comentar
     public boolean cadastrarFrota(Frota f) {
+        if (listaFrota.contains(f))
+            return false;
         return listaFrota.add(f);
     }
-    public boolean atualizarFrota() {
-        return true;
+    // TODO - comentar
+    private boolean addVeiculoFrota(Frota f, Veiculo v) {
+        if (f.getListaVeiculos().contains(v))
+            return false;
+        return f.addVeiculo(v);
     }
+    // TODO - comentar
+    private boolean removerVeiculoFrota(Frota f, Veiculo v) {
+        return f.addVeiculo(v);
+    }
+    // TODO - comentar
+    private boolean removerFrota(Frota f) {
+        return listaFrota.remove(f);
+    }
+    // TODO - comentar
+    // Alem de adicionar e remover veıculos em uma frota, este metodo tambem deve 
+    // ser capaz de remover a frota inteira.
+    public boolean atualizarFrota(String atualizacao, Frota frota, Veiculo veiculo) {
+        if (! listaFrota.contains(frota))
+            return false;
+        switch (atualizacao) {
+            case "addVeic":
+                return addVeiculoFrota(frota, veiculo);
+            case "rmVeic":
+                return removerVeiculoFrota(frota, veiculo);
+            case "rmFrota":
+                return removerFrota(frota);
+            default:
+                return false;
+        }
+    }
+    // TODO - comentar
+    public boolean atualizarFrota(String atualizacao, Frota frota) {
+        return atualizarFrota(atualizacao, frota, null);
+    }
+    // TODO - n faco ideia de pra q serve esse metodo
     public boolean getVeiculosPorFrota() {
         return true;
     }
-
-
-/*
-    @Override
-    /* Retorna valor do score para o cliente. Para pessoa jurídica, o score é dado por
-     * (VALOR_BASE * (1 + (quantidadeFunc)/100) * quantidadeCarros). 
-    public double calculaScore() {
-        return CalcSeguro.VALOR_BASE.getValor() * (1 + (qtdeFuncionarios / 100)) *
-                getListaVeiculos().size();
-    }
-*/
+    // TODO - comentar
+	public boolean listarFrotas() {
+		if (listaFrota.isEmpty()) // lista vazia
+			return false;
+		for (int i = 0; i < listaFrota.size(); i++)
+			System.out.println(i + " - " + listaFrota.get(i).getCode());
+		return true;
+	}
 
     // Getters e setters
     public String getCnpj() {
@@ -67,6 +113,12 @@ public class ClientePJ extends Cliente {
     }
     public void setDataFundacao(Date dataFundacao) {
         this.dataFundacao = dataFundacao;
+    }
+    public List<Frota> getListaFrota() {
+        return listaFrota;
+    }
+    public void setListaFrota(List<Frota> listaFrota) {
+        this.listaFrota = listaFrota;
     }
 
 }

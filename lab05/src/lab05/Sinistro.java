@@ -3,13 +3,14 @@ package lab05;
 import java.util.Date;
 
 public class Sinistro {
-	// Propriedades
+	// Atributos
 	private final int id;
 	private Date data;
 	private String endereco;
 	private Condutor condutor;
 	private Seguro seguro;
 
+	// TODO(?) - mudar metodo
 	private int gerarId() {
 		return hashCode();
 	}

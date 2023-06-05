@@ -1,7 +1,7 @@
 package lab05;
 
 public class Veiculo {
-	// Propriedades
+	// Atributos
 	private String placa;
 	private String marca;
 	private String modelo;
