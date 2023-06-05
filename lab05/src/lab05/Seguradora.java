@@ -130,6 +130,10 @@ public class Seguradora {
 		// remove os sinistros agregados da lista de cada condutor
 		for (Sinistro sinistro: seguro.getListaSinistros())
 			sinistro.getCondutor().removerSinistro(sinistro);
+		// remove o cliente da seguradora se ele nao possuir seguros
+		for (Seguro seguro: listaClientes)
+			if (getSegurosPorCliente(seguro.getCliente()).size() == 0)
+				listaClientes.remove(cliente);
 		atualizarValoresSeguro(getSegurosPorCliente(seguro.getCliente()));
 		return cancelou; // true se removeu, senão false
 	}

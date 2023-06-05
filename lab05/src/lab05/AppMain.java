@@ -3,48 +3,6 @@ package lab05;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-TODO
--- CADASTRAR --
-seguradora
-cliente (PF/PJ)
-veiculo
-frota
-condutor (?)
-
--- EXCLUIR --
-seguradora --> seguros
-seguro --> sinistros
-cliente --> seguros
-frota --> segurosPJ
-veiculo
-sinistro
-condutor (?)
-
--- LISTAR --
-clientes por seguradora
-seguros por seguradora
-veiculos por clientePF
-frota por clientePJ
-veiculos por frota
-sinistros por seguro
-condutores por seguro
-sinistros por condutor
-
--- GERAR -- 
-sinistro (a partir de seguro)
-seguro (a partir de seguradora)
-
--- IMPRIMIR --
-seguradora
-cliente
-condutor
-sinistro
-veiculo
-seguro
-frota
-*/
-
 /* Classe contendo o método main. Implementa o menu e os métodos necessários
  * para ler instrucões do usuário e realizar as operacões desejadas. */
 
@@ -99,8 +57,6 @@ public class AppMain {
 	private static void executarOpcaoMenuExterno(MenuOperacoes op) {
 		switch(op) {
 			case CADASTROS:
-			case LISTAR:
-			case EXCLUIR:
 			case IMPRIMIR:
 			case GERAR:
 				executarSubmenu(op);
@@ -113,7 +69,7 @@ public class AppMain {
 		}
 	}
 	//executar opcões dos submenus
-	public static void executarOpcaoSubMenu(SubmenuOperacoes opSubmenu) {
+	private static void executarOpcaoSubMenu(SubmenuOperacoes opSubmenu) {
 		switch(opSubmenu) {
 			case CADASTRAR_SEGURADORA:
 				operacaoCadastrarSeguradora();
@@ -130,54 +86,6 @@ public class AppMain {
 			case CADASTRAR_CONDUTOR:
 				operacaoCadastrarCondutor();
 				break;
-			
-			case LISTAR_CLIENTES_SEGURADORA:
-				operacaoListarClientesSeguradora();
-				break;
-			case LISTAR_SEGUROS_SEGURADORA:
-				operacaoListarSegurosSeguradora();
-				break;
-			case LISTAR_VEICULOS_CLIENTE_PF:
-				operacaoListarVeiculosClientePF();
-				break;
-			case LISTAR_FROTAS_CLIENTE_PJ:
-				operacaoListarFrotasClientePJ();
-				break;
-			case LISTAR_VEICULOS_FROTA:
-				operacaoListarVeiculosFrota();
-				break;
-			case LISTAR_SINISTROS_SEGURO:
-				operacaoListarSinistrosSeguro();
-				break;
-			case LISTAR_CONDUTORES_SEGURO:
-				operacaoListarCondutoresSeguro();
-				break;
-			case LISTAR_SINISTROS_CONDUTOR:
-				operacaoListarSinistrosCondutor();
-				break;
-
-			case EXCLUIR_SEGURADORA:
-				operacaoExcluirSeguradora();
-				break;
-			case EXCLUIR_SEGURO:
-				operacaoExcluirSeguro();
-				break;
-			case EXCLUIR_CLIENTE:
-				operacaoExcluirCliente();
-				break;
-			case EXCLUIR_FROTA:
-				operacaoExcluirFrota();
-				break;
-			case EXCLUIR_VEICULO:
-				operacaoExcluirVeiculo();
-				break;
-			case EXCLUIR_SINISTRO:
-				operacaoExcluirSinistro();
-				break;
-			case EXCLUIR_CONDUTOR:
-				operacaoExcluirCondutor();
-				break;
-
 			case IMPRIMIR_SEGURADORA:
 				operacaoImprimirSeguradora();
 				break;
@@ -199,14 +107,12 @@ public class AppMain {
 			case IMPRIMIR_FROTA:
 				operacaoImprimirFrota();
 				break;
-
 			case GERAR_SINISTRO:
 				operacaoGerarSinistro();
 				break; 
 			case GERAR_SEGURO:
 				operacaoGerarSeguro();
 				break;
-			
 			case VOLTAR:
 				break;
 		}
@@ -235,31 +141,9 @@ public class AppMain {
 		Leitura.fechar();
 	}
 
-	//TODO - comentar
-	private static void operacaoCadastrarSeguradora() {
-		// TODO - mover esse metodo p/ ficar com outros cadastros
-		Seguradora seg;
-		String atributos[] = {"o CNPJ", "o nome", "o telefone", "o endereco", "o e-mail"};
-		String leitura[] = new String[5];
-		System.out.println("** Cadastro de seguradora **");
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite " + atributos[i] + " da seguradora: ");
-			if (i == 0)
-				leitura[i] = Leitura.lerCnpj();
-			else if (i == 1)
-				leitura[i] = Leitura.lerNome();
-			else
-				leitura[i] = Leitura.lerString();
-		}
-		seg = new Seguradora(leitura[0], leitura[1], leitura[2], leitura[3], leitura[4]);
-		// checa se já existe seguradora com o mesmo cpf
-		if (! listaSeguradoras.contains(seg))
-			listaSeguradoras.add(seg);
-	}
-
 	/* Imprime "Operacao realizada com sucesso" se operacaoRealizada for true.
 	 * Imprime "Ocorreu um erro. Tente novamente." se operacaoRealizada for false. */
-	public static void mensagemOperacaoRealizada(boolean operacaoRealizada) {
+	private static void mensagemOperacaoRealizada(boolean operacaoRealizada) {
 		if (operacaoRealizada)
 			System.out.println("Operacao realizada com sucesso.");
 		else
@@ -267,7 +151,7 @@ public class AppMain {
 	}
 	/* Requisita a escolha de uma das seguradoras registradas e a retorna.
 	 * Retorna null e imprime mensagem de retorno se nao há seguradoras cadastradas. */
-	public static Seguradora requisitarSeguradora(boolean imprimirMensagem) {
+	private static Seguradora requisitarSeguradora(boolean imprimirMensagem) {
 		int pos;
 		if (imprimirMensagem)
 			System.out.println("Digite o numero referente a seguradora:");
@@ -280,7 +164,7 @@ public class AppMain {
 	}
 	/* Requisita a escolha de um dos clientes registrados em seg e o retorna.
 	 * Retorna null e imprime mensagem de retorno se nao há clientes cadastrados. */
-	public static Cliente requisitarClienteSeguradora(Seguradora seg, String tipoCliente,
+	private static Cliente requisitarClienteSeguradora(Seguradora seg, String tipoCliente,
 			boolean imprimirMensagem) {
 		int pos;
 		if (imprimirMensagem)
@@ -292,7 +176,7 @@ public class AppMain {
 		System.out.println("Nao ha clientes cadastrados. Operacao abortada.");
 		return null;
 	}
-	public static Cliente requisitarCliente(String tipoCliente, boolean imprimirMensagem) {
+	private static Cliente requisitarCliente(String tipoCliente, boolean imprimirMensagem) {
 		// seguradora temporária para usar o método listarClientes em listaClientes de AppMain
 		Seguradora segTemp = new Seguradora(null, null, null, null, null);
 		segTemp.setListaClientes(listaClientes);
@@ -370,7 +254,7 @@ public class AppMain {
 	}
 	/* Lista as seguradoras em listaSeguradoras no formato "i - Seguradora.nome",
 	 * onde i é o índice da seguradora na lista. Retorna boolean indicando se imprimiu. */
-	public static boolean listarSeguradoras() {
+	private static boolean listarSeguradoras() {
 		if (! listaSeguradoras.isEmpty()) {
 			for (int i = 0; i < listaSeguradoras.size(); i++)
 				System.out.println(String.valueOf(i) + ". " +
@@ -382,35 +266,33 @@ public class AppMain {
 
 	/* CADASTRO */
 	//TODO - comentar
-	private static void operacaoCadastrarCliente() {
-		int opcao;
-		System.out.println("** Cadastro de cliente **");
-		System.out.println("Deseja cadastrar um cliente novo ou existente?\n" + 
-				"0 - Novo\n1 - Existente");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			cadastroClienteNovo();
-		} else {
-			cadastroClienteExistente();
-		}
-	}
-	private static void cadastroClienteExistente() {
-		Cliente cliente;
+	private static void operacaoCadastrarSeguradora() {
 		Seguradora seg;
-		cliente = requisitarCliente("", true);
-		if (cliente == null) return;
-		System.out.println("Digite o numero referente a seguradora na qual deseja cadastrar:");
-		seg = requisitarSeguradora(false);
-		if (seg == null) return;
-		mensagemOperacaoRealizada(seg.cadastrarCliente(cliente));
-
+		String atributos[] = {"o CNPJ", "o nome", "o telefone", "o endereco", "o e-mail"};
+		String leitura[] = new String[5];
+		System.out.println("** Cadastro de seguradora **");
+		for (int i = 0; i < atributos.length; i++) {
+			System.out.print("Digite " + atributos[i] + " da seguradora: ");
+			if (i == 0)
+				leitura[i] = Leitura.lerCnpj();
+			else if (i == 1)
+				leitura[i] = Leitura.lerNome();
+			else
+				leitura[i] = Leitura.lerString();
+		}
+		seg = new Seguradora(leitura[0], leitura[1], leitura[2], leitura[3], leitura[4]);
+		// checa se já existe seguradora com o mesmo cpf
+		if (! listaSeguradoras.contains(seg))
+			listaSeguradoras.add(seg);
 	}
-	private static void cadastroClienteNovo() {
+	//TODO - comentar
+	private static void operacaoCadastrarCliente() {
 		int opcao;
 		Cliente cliente;
 		Seguradora seg;
 		String[] atributos = {"o nome", "o telefone", "o endereco", "o email"};
 		String[] leitura = new String[4];
+		System.out.println("** Cadastro de cliente **");
 		System.out.println("Qual tipo de cliente deseja cadastrar?\n" + 
 				"0 - Pessoa Fisica\n1 - Pessoa Juridica");
 		opcao = Leitura.lerIndice(2);
@@ -426,18 +308,10 @@ public class AppMain {
 		else
 			cliente = cadastroClientePJ(leitura[0], leitura[1], leitura[2], leitura[3]);
 		if (listaClientes.contains(cliente)) {
-			System.out.println("O cliente ja esta cadastrado. Operacao abortada.");
+			System.out.println("Erro: o cliente ja havia sido cadastrado.");
 			return;
 		}
 		mensagemOperacaoRealizada(listaClientes.add(cliente));
-		System.out.print("Deseja cadastrar o cliente criado em uma seguradora?\n" + 
-				"0 - Sim\n1 - Nao");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			seg = requisitarSeguradora(true);
-			if (seg == null) return;
-			mensagemOperacaoRealizada(seg.cadastrarCliente(cliente));
-		}
 	}
 	private static ClientePF cadastroClientePF(String nome, String telefone, 
 			String endereco, String email) {
@@ -476,33 +350,22 @@ public class AppMain {
 		Frota frota;
 		Veiculo veiculo;
 		System.out.println("** Cadastro de veiculo **");
-		System.out.println("Deseja cadastrar um veiculo novo ou existente?\n" + 
-				"0 - Novo\n1 - Existente");
+		veiculo = cadastroVeiculoNovo();
+		if (veiculo == null) return;
+		System.out.println("Deseja cadastrar o veiculo em uma frota ou cliente pessoa fisica?\n" +
+				"0 - Frota\n1 - Cliente pessoa fisica");
 		opcao = Leitura.lerIndice(2);
 		if (opcao == 0) {
-			veiculo = cadastroVeiculoNovo();
-			if (listaVeiculos.contains(veiculo)) {
-				System.out.println("O veiculo ja esta cadastrado. Operacao abortada.");
-				return;
-			}
-		} else {
-			veiculo = requisitarVeiculo(true);
-			if (veiculo == null) return;
-		}
-		System.out.println("Onde deseja cadastrar o veiculo?\n0 - Pessoa fisica\n" +
-				"1 - Frota\n2 - Nao atribuir");
-		opcao = Leitura.lerIndice(3);
-		if (opcao == 0) {
-			cliente = requisitarCliente("PF", true);
-			if (cliente == null) return;
-			mensagemOperacaoRealizada(((ClientePF) cliente).cadastrarVeiculo(veiculo));
-		} else if (opcao == 1) {
 			frota = requisitarFrota(true);
 			if (frota == null) return;
 			mensagemOperacaoRealizada(frota.addVeiculo(veiculo));
+		} else {
+			cliente = requisitarCliente("PF", true);
+			if (cliente == null) return;
+			mensagemOperacaoRealizada(cliente.cadastrarVeiculo(veiculo));
 		}
 	}
-	private static Veiculo cadastroVeiculoNovo() {
+	private static void cadastroVeiculoNovo() {
 		String[] atributos = {"a placa", "a marca", "o modelo", "o ano de fabricacao"};
 		String leitura[] = new String[3];
 		int anoFabricacao = 0;
@@ -514,8 +377,13 @@ public class AppMain {
 			else
 				leitura[i] = Leitura.lerString();
 		}
-		veiculo = new Veiculo(leitura[0], leitura[1], leitura[2], anoFabricacao);
-		mensagemOperacaoRealizada(listaVeiculos.add(veiculo));
+		veiculo = new Veiculo(leitura[0], leitura[1], leitura[2], anoFabricacao)
+		if (listaVeiculos.contains(veiculo)) {
+			System.out.println("Erro: O veiculo ja havia sido cadastrado.");
+			return null;
+		}
+		mensagemOperacaoRealizada(listaVeiculos.add(new Veiculo(leitura[0], leitura[1],
+				leitura[2], anoFabricacao)));
 		return veiculo;
 	}
 	private static void operacaoCadastrarFrota() {
@@ -523,23 +391,15 @@ public class AppMain {
 		Frota frota;
 		int opcao;
 		System.out.println("** Cadastro de frota **");
-		System.out.println("Deseja cadastrar uma frota nova ou existente?\n" + 
-				"0 - Nova\n1 - Existente");
 		opcao = Leitura.lerIndice(2);
 		if (opcao == 0) {
 			frota = new Frota();
 			mensagemOperacaoRealizada(listaFrotas.add(frota));
-		} else {
-			frota = requisitarFrota(true);
-			if (frota == null) return;
+			System.out.println("Codigo da frota: " + frota.getCode());
 		}
-		System.out.println("Deseja cadastrar a frota para um cliente?\n0 - Sim\n1 - Nao");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			cliente = requisitarCliente("PJ", true);
-			if (cliente == null) return;
-			mensagemOperacaoRealizada(((ClientePJ) cliente).cadastrarFrota(frota));
-		}
+		System.out.println("Para qual cliente deseja cadastrar a frota?");
+		cliente = requisitarCliente("PJ", false);
+		if (cliente == null) return;
 	}
 	private static void operacaoCadastrarCondutor() {
 		Condutor condutor;
@@ -547,29 +407,17 @@ public class AppMain {
 		Seguro seguro;
 		Seguradora seg;
 		System.out.println("** Cadastro de condutor **");
-		System.out.println("Deseja cadastrar um condutor novo ou existente?\n" + 
-				"0 - Novo\n1 - Existente");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			condutor = cadastroCondutorNovo();
-			if (listaCondutores.contains(condutor)) {
-				System.out.println("O condutor ja esta cadastrado. Operacao abortada.");
-				return;
-			}
-		} else {
-			condutor = requisitarCondutor(true);
-			if (condutor == null) return;
+		condutor = cadastroCondutorNovo();
+		if (listaCondutores.contains(condutor)) {
+			System.out.println("O condutor ja esta cadastrado. Operacao abortada.");
+			return;
 		}
-		System.out.println("Deseja cadastrar o condutor em um seguro?\n0 - Sim\n1 - Nao");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			System.out.println("Digite o numero referente a seguradora que cobre o seguro:");
-			seg = requisitarSeguradora(false);
-			if (seg == null) return;
-			seguro = requisitarSeguroSeguradora(seg, true);
-			if (seguro == null) return;
-			mensagemOperacaoRealizada(seguro.autorizarCondutor(condutor));
-		}
+		System.out.println("Digite o numero referente a seguradora que cobre o seguro do condutor:");
+		seg = requisitarSeguradora(false);
+		if (seg == null) return;
+		seguro = requisitarSeguroSeguradora(seg, true);
+		if (seguro == null) return;
+		mensagemOperacaoRealizada(seguro.autorizarCondutor(condutor));
 	}
 	private static Condutor cadastroCondutorNovo() {
 		String atributos[] = {"o CPF", "o nome", "o telefone", "o endereco", "o email", 
@@ -589,104 +437,13 @@ public class AppMain {
 		}
 		condutor = new Condutor(leitura[0], leitura[1], leitura[2], leitura[3], leitura[4],
 				Data.stringToDate(leitura[5]));
-		
+		if (listaCondutores.contains(condutor)) {
+			System.out.println("Erro: O condutor ja havia sido cadastrado.");
+			return null;
+		}
 		mensagemOperacaoRealizada(listaCondutores.add(condutor));
 		return condutor;
 	}
-
-	/* LISTAR */
-	private static void operacaoListarClientesSeguradora() {
-		Seguradora seg;
-		int opcao;
-		String tipoCliente;
-		System.out.println("** Listar clientes por seguradora **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		System.out.println("Que tipo de cliente deseja listar?\n0 - Pessoa fisica\n" +
-				"1 - Pessoa juridica\n2 - Todos");
-		opcao = Leitura.lerIndice(3);
-		if (opcao == 0)
-			tipoCliente = "PF";
-		else if (opcao == 1)
-			tipoCliente = "PJ";
-		else
-			tipoCliente = "";
-		System.out.println("Listando:");
-		if (! seg.listarClientes(tipoCliente))
-			System.out.println("Nenhum cliente do tipo requisitado cadastrado.");
-	}
-	private static void operacaoListarSegurosSeguradora() {
-		Seguradora seg;
-		System.out.println("** Listar seguros por seguradora **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		System.out.println("Listando: ");
-		if (! seg.listarSeguros())
-			System.out.println("Nenhum seguro cadastrado.");
-	}
-	private static void operacaoListarVeiculosClientePF() {
-		Cliente cliente;
-		System.out.println("** Listar veiculos por cliente pessoa fisica **");
-		cliente = requisitarCliente("PF", true);
-		if (cliente == null) return;
-		System.out.println("Listando: ");
-		if (! ((ClientePF) cliente).listarVeiculos())
-			System.out.println("Nenhum veiculo cadastrado");
-	}
-	private static void operacaoListarFrotasClientePJ() {
-		Cliente cliente;
-		System.out.println("** Listar frotas por cliente pessoa juridica **");
-		cliente = requisitarCliente("PJ", true);
-		if (cliente == null) return;
-		System.out.println("Listando: ");
-		if (! ((ClientePJ) cliente).listarFrotas())
-			System.out.println("Nenhuma frota cadastrada");
-	}
-	private static void operacaoListarVeiculosFrota() {
-		Frota frota;
-		System.out.println("** Listar veiculos por frota **");
-		frota = requisitarFrota(true);
-		if (frota == null) return;
-		System.out.println("Listando: ");
-		if (! frota.listarVeiculos())
-			System.out.println("Nenhum veiculo cadastrado");
-	}
-	private static void operacaoListarSinistrosSeguro() {
-		Seguradora seg;
-		Seguro seguro;
-		System.out.println("** Listar sinistros por seguro **");
-		System.out.println("Digite o numero referente a seguradora que cobre o seguro");
-		seg = requisitarSeguradora(false);
-		if (seg == null) return;
-		seguro = requisitarSeguroSeguradora(seg, true);
-		if (seguro == null) return;
-		System.out.println("Listando: ");
-		if (! seguro.listarSinistros())
-			System.out.println("Nenhum sinistro cadastrado");
-	}
-	private static void operacaoListarCondutoresSeguro() {
-		Seguradora seg;
-		Seguro seguro;
-		System.out.println("** Listar condutores por seguro **");
-		System.out.println("Digite o numero referente a seguradora que cobre o seguro");
-		seg = requisitarSeguradora(false);
-		if (seg == null) return;
-		seguro = requisitarSeguroSeguradora(seg, true);
-		if (seguro == null) return;
-		System.out.println("Listando: ");
-		if (! seguro.listarCondutores())
-			System.out.println("Nenhum condutor cadastrado");
-	}
-	private static void operacaoListarSinistrosCondutor() {
-		Condutor condutor;
-		System.out.println("** Listar sinistros por condutor **");
-		condutor = requisitarCondutor(true);
-		if (condutor == null) return;
-		System.out.println("Listando: ");
-		if (! condutor.listarSinistros())
-			System.out.println("Nenhum sinistro cadastrado");
-	}
-
 
 	/* IMPRIMIR */
 	private static void operacaoImprimirSeguradora() {
@@ -748,91 +505,13 @@ public class AppMain {
 		System.out.println(frota);
 	}
 
-	/* EXCLUIR */
-	private static void operacaoExcluirSeguradora() {
-		Seguradora seg;
-		System.out.println("** Excluir seguradora **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		for (Seguro seguro: seg.getListaSeguros())
-			seg.cancelarSeguro(seguro);
-		mensagemOperacaoRealizada(listaSeguradoras.remove(seg));
-	}
-	private static void operacaoExcluirSeguro() {
-		Seguradora seg;
-		Seguro seguro;
-		System.out.println("** Excluir seguro **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		seguro = requisitarSeguroSeguradora(seg, true);
-		if (seguro == null) return;
-		mensagemOperacaoRealizada(seg.cancelarSeguro(seguro));
-	}
-	private static void excluirClienteSeguradora() {
-		Seguradora seg;
-		Cliente cliente;
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		cliente = requisitarClienteSeguradora(seg, "", true);
-		if (cliente == null) return;
-		mensagemOperacaoRealizada(seg.removerCliente(cliente));
-	}
-	private static void excluirClienteSistema() {
-		Cliente cliente = requisitarCliente("", true);
-		if (cliente == null) return;
-		for (Seguradora seg: listaSeguradoras)
-			seg.removerCliente(cliente);
-		mensagemOperacaoRealizada(listaClientes.remove(cliente));
-		
-	}
-	private static void operacaoExcluirCliente() {
-		int opcao;
-		System.out.println("** Excluir cliente **");
-		System.out.println("Deseja remover o cliente:\n0 - do sistema (todas as seguradoras)\n" + 
-				"1 - de uma seguradora especifica.");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 1)
-			excluirClienteSistema();
-		else
-			excluirClienteSeguradora();
-	}
-	private static void operacaoExcluirFrota() {
-		Frota frota;
-		System.out.println("** Excluir frota **");
-		System.out.println("Deseja remover a frota\n0 - ");
-		frota = requisitarFrota(true);
-		for (Cliente cliente: listaClientes) {
-			if (cliente.getClass() == ClientePJ.class
-					&& ((ClientePJ) cliente).getListaFrota().contains(frota))
-				((ClientePJ) cliente).atualizarFrota("rmFrota", frota);
-		}
-
-	}
-	private static void operacaoExcluirVeiculo() {
-		Veiculo veiculo;
-		System.out.println("** Excluir veiculo **");
-		veiculo = requisitarVeiculo(true);
-		if (veiculo == null) return;
-		for (Cliente cliente: listaClientes) {
-			if (cliente.getClass() == ClientePF.class)
-				((ClientePF) cliente).removerVeiculo(veiculo);
-			else
-				for (Frota frota: ((ClientePJ) cliente).getListaFrota())
-					((ClientePJ) cliente).atualizarFrota("rmVeiculo", frota, veiculo);
-		}
-	}
-	private static void operacaoExcluirSinistro() {
-		
-	}
-	private static void operacaoExcluirCondutor() {
-		
-	}
-
 	/* GERAR */
 	private static void operacaoGerarSinistro() {
-
+		
 	}
 	private static void operacaoGerarSeguro() {
+		Seguradora seg;
+		System.out.println("** Gerar seguro **");
 		
 	}
 	
