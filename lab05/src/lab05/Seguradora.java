@@ -1,17 +1,18 @@
 package lab05;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Seguradora {
-	// Propriedades
+	// Atributos
 	private final String cnpj;
 	private String nome;
 	private String telefone;
 	private String endereco;
 	private String email;
-	private final List<Cliente> listaClientes; // lista com clientes que contratam a seguradora
-	private final List<Seguro> listaSeguros; // lista com seguros da seguradora
+	private List<Cliente> listaClientes; // lista com clientes que contratam a seguradora
+	private List<Seguro> listaSeguros; // lista com seguros da seguradora
 
     // Construtor
 	public Seguradora(String cnpj, String nome, String telefone, String endereco, String email) {
@@ -24,6 +25,13 @@ public class Seguradora {
 		listaClientes = new ArrayList<Cliente>();
 	}
     
+	// toString()
+	/* Seguradora <nome>:
+	 * - Telefone: <telefone>
+	 * - Endereco: <endereco>
+	 * - E-mail: <email>
+	 * - Clientes: "Nenhum cliente cadastrado" OU <cliente1.strDocumento()>, <cliente2.strDocumento()>, ...
+	 * - Seguros: "Nenhum seguro cadastrado" OU <seguro1.id>, <seguro2.id>, ... */
     public String toString() {
         int i;
         String str = String.format("Seguradora %s\n- Telefone: %s\n- Endereco: %s\n- E-mail: %s\n",
@@ -31,47 +39,73 @@ public class Seguradora {
         str += "- Clientes: ";
 		if (! listaClientes.isEmpty()) {
         	for (i = 0; i < listaClientes.size() - 1; i++)
-				str += listaClientes.get(i).documento() + ", ";
-			str += listaClientes.get(listaClientes.size() - 1).documento();
+				str += listaClientes.get(i).strDocumento() + ", ";
+			str += listaClientes.get(listaClientes.size() - 1).strDocumento();
 		} else
-			str += "Nao ha clientes cadastrados";
+			str += "Nenum cliente cadastrado";
 		str += "\n- Seguros: ";
 		if (! listaSeguros.isEmpty()) {
 			for (i = 0; i < listaSeguros.size() - 1; i++)
 				str += listaSeguros.get(i).getId() + ", ";
 			str += listaSeguros.get(listaSeguros.size() - 1).getId();
 		} else
-			str += "Nao ha seguros cadastrados";
+			str += "Nenhum seguro cadastrado";
 		return str;
     }
 
+	// TODO - comentar
 	public boolean listarClientes(String tipoCliente) {
 		boolean imprimiu = false;
 		for (int i = 0; i < listaClientes.size(); i++) {
 			if (tipoCliente == "PF" && listaClientes.get(i).getClass() == ClientePF.class ||
 					tipoCliente == "PJ" && listaClientes.get(i).getClass() == ClientePJ.class ||
 					tipoCliente == "") {
-				System.out.println(i + 1 + " - " + listaClientes.get(i).documento());
+				System.out.println(i + " - " + listaClientes.get(i).strDocumento());
 				imprimiu = true;
 			}
 		}
 		return imprimiu;
 	}
-	// TODO 
-	public boolean gerarSeguro() {
+	// TODO - comentar
+	public boolean listarSeguros() {
+		if (listaSeguros.isEmpty()) // lista vazia
+			return false;
+		for (int i = 0; i < listaSeguros.size(); i++)
+			System.out.println(i + " - " + listaSeguros.get(i).getId());
 		return true;
 	}
-	// TODO 
-	public boolean cancelarSeguro() {
-		return true;
+	// TODO  - comentar
+	public boolean cadastrarCliente(Cliente cliente) {
+		// não cadastra se já está na lista
+		if (listaClientes.contains(cliente))
+			return false;
+		return listaClientes.add(cliente); // true se adicionou, senão false
 	}
-	// TODO 
-	public boolean cadastrarCliente() {
-		return true;
+	// TODO  - comentar
+	public boolean removerCliente(Cliente cliente) {
+		return listaClientes.remove(cliente); // true se removeu, senão false
 	}
-	// TODO 
-	public boolean removerCliente() {
-		return true;
+	// TODO - comentar
+	public boolean gerarSeguro(Date dataInicio, Date dataFim, Frota frota, ClientePJ cliente) {
+		// tenta adicionar o cliente a listaClientes, retorna false e não gera o seguro
+		// se não conseguir
+		if (! cadastrarCliente(cliente))
+			return false;
+		// retorna true se adicionou, senão false
+		return listaSeguros.add(new SeguroPJ(dataInicio, dataFim, this, frota, cliente));
+	}
+	// TODO - comentar
+	public boolean gerarSeguro(Date dataInicio, Date dataFim, Veiculo veiculo, ClientePF cliente) {
+		// tenta adicionar o cliente a listaClientes, retorna false e não gera o seguro
+		// se não conseguir
+		if (! cadastrarCliente(cliente))
+			return false;
+		// retorna true se adicionou, senão false
+		return listaSeguros.add(new SeguroPF(dataInicio, dataFim, this, veiculo, cliente));
+	}
+	// TODO  - comentar
+	public boolean cancelarSeguro(Seguro seguro) {
+		return listaSeguros.remove(seguro); // true se removeu, senão false
 	}
 	// TODO - comentar
 	public List<Seguro> getSegurosPorCliente(Cliente cliente) {
@@ -99,11 +133,15 @@ public class Seguradora {
 			listaSinistros.addAll(seguro.getListaSinistros());
 		return listaSinistros;
 	}
-	// TODO 
+	// TODO  - comentar
 	public double calcularReceita() {
-		return 0.;
+		double receita = 0.;
+		for (Seguro seguro: listaSeguros)
+			receita += seguro.getValorMensal();
+		return receita;
 	}
 
+	// Getters e setters
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -134,8 +172,14 @@ public class Seguradora {
 	public List<Seguro> getListaSeguros() {
 		return listaSeguros;
 	}
+	public void setListaSeguros(List<Seguro> listaSeguros) {
+		this.listaSeguros = listaSeguros;
+	}
 	public List<Cliente> getListaClientes() {
 		return listaClientes;
+	}
+	public void setListaClientes(List<Cliente> listaClientes) {
+		this.listaClientes = listaClientes;
 	}
 
 }

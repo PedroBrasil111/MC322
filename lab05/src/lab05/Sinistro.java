@@ -10,6 +10,7 @@ public class Sinistro {
 	private Condutor condutor;
 	private Seguro seguro;
 
+	// TODO(?) - mudar metodo
 	private int gerarId() {
 		return hashCode();
 	}
@@ -34,8 +35,8 @@ public class Sinistro {
 	 * - Cliente: <cliente.nome> */
 	public String toString() {
 		String str = String.format("Sinistro - id %d:\n- Data: %s\n- Endereco: %s\n" +
-				"- Seguradora: %s\n- Veiculo: %s\n- Cliente: %s", id, Data.dateToString(data),
-				endereco, seguradora.getNome(), veiculo.getPlaca(), cliente.getNome());
+				"- Condutor: %s\n- Seguro: %s", id, Data.dateToString(data), endereco,
+				condutor.getNome(), seguro.getId());
 		return str;
 	}
 

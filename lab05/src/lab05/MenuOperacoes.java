@@ -9,47 +9,61 @@ public enum MenuOperacoes {
 	SAIR("Sair", new SubmenuOperacoes[] {}),
 	CADASTROS("Cadastros", new SubmenuOperacoes[] {
 			SubmenuOperacoes.VOLTAR,
+			SubmenuOperacoes.CADASTRAR_SEGURADORA,
 			SubmenuOperacoes.CADASTRAR_CLIENTE,
 			SubmenuOperacoes.CADASTRAR_VEICULO,
-			SubmenuOperacoes.CADASTRAR_SEGURADORA
+			SubmenuOperacoes.CADASTRAR_FROTA,
+			SubmenuOperacoes.CADASTRAR_CONDUTOR,
 	}),
 	LISTAR("Listar", new SubmenuOperacoes[] {
 			SubmenuOperacoes.VOLTAR,
-			SubmenuOperacoes.LISTAR_CLIENTES,
-			SubmenuOperacoes.LISTAR_SINISTROS_SEGURADORA,
-			SubmenuOperacoes.LISTAR_SINISTROS_CLIENTE,
-			SubmenuOperacoes.LISTAR_VEICULOS_SEGURADORA,
-			SubmenuOperacoes.LISTAR_VEICULOS_CLIENTE
+			SubmenuOperacoes.LISTAR_CLIENTES_SEGURADORA,
+			SubmenuOperacoes.LISTAR_SEGUROS_SEGURADORA,
+			SubmenuOperacoes.LISTAR_VEICULOS_CLIENTE_PF,
+			SubmenuOperacoes.LISTAR_FROTAS_CLIENTE_PJ,
+			SubmenuOperacoes.LISTAR_VEICULOS_FROTA,
+			SubmenuOperacoes.LISTAR_SINISTROS_SEGURO,
+			SubmenuOperacoes.LISTAR_CONDUTORES_SEGURO,
+			SubmenuOperacoes.LISTAR_SINISTROS_CONDUTOR,
 	}),
 	EXCLUIR("Excluir", new SubmenuOperacoes[] {
-			SubmenuOperacoes.VOLTAR,
-			SubmenuOperacoes.EXCLUIR_SEGURADORA,
-			SubmenuOperacoes.EXCLUIR_CLIENTE,
-			SubmenuOperacoes.EXCLUIR_VEICULO,
-			SubmenuOperacoes.EXCLUIR_SINISTRO
+		SubmenuOperacoes.VOLTAR,
+		SubmenuOperacoes.EXCLUIR_SEGURADORA,
+		SubmenuOperacoes.EXCLUIR_SEGURO,
+		SubmenuOperacoes.EXCLUIR_CLIENTE,
+		SubmenuOperacoes.EXCLUIR_FROTA,
+		SubmenuOperacoes.EXCLUIR_VEICULO,
+		SubmenuOperacoes.EXCLUIR_SINISTRO,
+		SubmenuOperacoes.EXCLUIR_CONDUTOR,
 	}),
-	VISUALIZAR("Visualizar", new SubmenuOperacoes[] {
-			SubmenuOperacoes.VOLTAR,
-			SubmenuOperacoes.IMPRIMIR_SEGURADORA,
-			SubmenuOperacoes.IMPRIMIR_CLIENTE,
-			SubmenuOperacoes.IMPRIMIR_VEICULO,
-			SubmenuOperacoes.IMPRIMIR_SINISTRO
+	IMPRIMIR("Visualizar", new SubmenuOperacoes[] {
+		SubmenuOperacoes.VOLTAR,
+		SubmenuOperacoes.IMPRIMIR_SEGURADORA,
+		SubmenuOperacoes.IMPRIMIR_CLIENTE,
+		SubmenuOperacoes.IMPRIMIR_CONDUTOR,
+		SubmenuOperacoes.IMPRIMIR_SINISTRO,
+		SubmenuOperacoes.IMPRIMIR_VEICULO,
+		SubmenuOperacoes.IMPRIMIR_SEGURO,
+		SubmenuOperacoes.IMPRIMIR_FROTA,
 	}),
-	GERAR_SINISTRO("Gerar Sinistro", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
-	TRANSFERIR_SEGURO("Transferir Seguro", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR}),
+	GERAR("Gerar", new SubmenuOperacoes[] {
+		SubmenuOperacoes.VOLTAR,
+		SubmenuOperacoes.GERAR_SINISTRO,
+		SubmenuOperacoes.GERAR_SEGURO,
+	}),
 	CALCULAR_RECEITA("Calcular Receita", new SubmenuOperacoes[] {SubmenuOperacoes.VOLTAR});
-	
-	//atributos
+
+	// Atributos
 	private final String descricao;
 	private final SubmenuOperacoes[] submenu;
-	
-	//Construtor
+
+	// Construtor
 	MenuOperacoes(String descricao, SubmenuOperacoes[] submenu){
 		this.descricao = descricao;
 		this.submenu = submenu;
 	}
 	
-	//getters
+	// Getters
 	public String getDescricao() {
 		return descricao;
 	}
