@@ -26,6 +26,12 @@ public class Veiculo {
 		return str;
 	}
 
+	// TODO - comentar
+    public boolean equals(Veiculo v) {
+        if (v == null || ! placa.equals(v.getPlaca()))
+            return false;
+        return true;
+    }
 	// Getters e setters
 	public String getPlaca() {
 		return placa;

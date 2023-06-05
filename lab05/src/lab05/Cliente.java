@@ -1,4 +1,4 @@
-3package lab05;
+package lab05;
 
 public abstract class Cliente {
 	// Atributos

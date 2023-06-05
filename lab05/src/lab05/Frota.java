@@ -30,6 +30,12 @@ public class Frota {
         }
         return str;
     }
+    // TODO - comentar
+    public boolean equals(Frota f) {
+        if (f == null || ! code.equals(f.getCode()))
+            return false;
+        return true;
+    }
     // TODO - comentar (espelhar ClientePF)
     public boolean listarVeiculos() {
 		if (listaVeiculos.isEmpty()) // lista vazia

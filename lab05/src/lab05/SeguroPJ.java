@@ -1,72 +1,77 @@
 package lab05;
-
 import java.util.Date;
 
-public class Sinistro {
-	// Propriedades
-	private final int id;
-	private Date data;
-	private String endereco;
-	private Condutor condutor;
-	private Seguro seguro;
+public class SeguroPJ extends Seguro {
+    // Atributos
+    Frota frota;
+    ClientePJ cliente;
 
-	// TODO(?) - mudar metodo
-	private int gerarId() {
-		return hashCode();
-	}
+    // Construtor
+    public SeguroPJ(Date dataInicio, Date dataFim, Seguradora seguradora, 
+            Frota frota, ClientePJ cliente) {
+        super(dataInicio, dataFim, seguradora);
+        this.frota = frota;
+        this.cliente = cliente;
+        calcularValor();
+    }
 
-	// Construtor
-	public Sinistro(Date data, String endereco, Condutor condutor, Seguro seguro) {
-		// Gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
-		// Porém, esse id varia a cada iteracão do programa.
-		id = gerarId();
-		this.data = data;
-		this.endereco = endereco;
-		this.condutor = condutor;
-		this.seguro = seguro;
-	}
+    // TODO - comentar
+    @Override
+    public boolean autorizarCondutor(Condutor c) {
+        boolean autorizou = super.autorizarCondutor(c);
+        if (autorizou)
+            calcularValor();
+        return autorizou;
+    }
+    // TODO - comentar
+    public boolean desautorizarCondutor(Condutor c) {
+        boolean desautorizou = super.desautorizarCondutor(c);
+        if (desautorizou)
+            calcularValor();
+        return desautorizou;
+    }
+    // TODO - comentar
+    public boolean gerarSinistro(Date data, Condutor condutor, String endereco) {
+        boolean gerou = super.gerarSinistro(data, condutor, endereco);
+            if (gerou)
+        calcularValor();
+        return gerou;
+    }
+    public boolean removerSinistro(Sinistro s) {
+        boolean removeu = super.removerSinistro(s);
+        if (removeu)
+            calcularValor();
+        return removeu;
+    }
+    public void calcularValor() {
+        double valor;
+        if (frota == null || getSeguradora() == null || cliente == null)
+            return;
+        valor = CalcSeguro.VALOR_BASE.getValor() *
+            // (10 + quantidadeFunc/10)
+            (10 + getListaCondutores().size() / 10.) *
+            // (1 + 1/(quantidadeVeiculos + 2))
+            (1 + 1. / (frota.getListaVeiculos().size() + 2)) *
+            // (1 + 1/(AnosPosFundacao + 2))
+            (1 + 1. / (Data.calcularIdade(cliente.getDataFundacao()) + 2)) *
+            // (2 + quantidadeSinistrosCliente/10)
+            (2 + getSeguradora().getSinistrosPorCliente(cliente).size() / 10.) *
+            // (5 + quantidadeSinistrosConsutor / 10)
+            (5 + quantidadeSinistrosPorCondutor(cliente) / 10.);
+            setValorMensal(valor);
+    }
 
-	// toString()
-	/* Sinistro - id <id>:
-	 * - Data: <data>
-	 * - Endereco: <endereco>
-	 * - Seguradora: <seguradora.nome>
-	 * - Veiculo: <veiculo.placa>
-	 * - Cliente: <cliente.nome> */
-	public String toString() {
-		String str = String.format("Sinistro - id %d:\n- Data: %s\n- Endereco: %s\n" +
-				"- Condutor: %s\n- Seguro: %s", id, Data.dateToString(data), endereco,
-				condutor.getNome(), seguro.getId());
-		return str;
-	}
-
-	// Getters e setters
-	public int getId() {
-		return id;
-	}
-	public Date getData() {
-		return data;
-	}
-	public void setData(Date data) {
-		this.data = data;
-	}
-	public String getEndereco() {
-		return endereco;
-	}
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-	public Condutor getCondutor() {
-		return condutor;
-	}
-	public void setCondutor(Condutor condutor) {
-		this.condutor = condutor;
-	}
-	public Seguro getSeguro() {
-		return seguro;
-	}
-	public void setSeguro(Seguro seguro) {
-		this.seguro = seguro;
-	}
-
+    // Getters e setters
+    public void setFrota(Frota frota) {
+        this.frota = frota;
+    }
+    public Frota getFrota() {
+        return frota;
+    }
+    public void setCliente(ClientePJ cliente) {
+        this.cliente = cliente;
+    }
+    public ClientePJ getCliente() {
+        return cliente;
+    }
 }

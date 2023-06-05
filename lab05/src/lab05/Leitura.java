@@ -3,7 +3,6 @@ package lab05;
 /* Classe de leitura (para só instanciar um scanner) */
 
 import java.util.Scanner;
-import java.util.Date;
 
 public class Leitura {
 	private static Scanner scanner = new Scanner(System.in);

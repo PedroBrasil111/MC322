@@ -54,6 +54,12 @@ public class Seguradora {
     }
 
 	// TODO - comentar
+	public boolean equals(Seguradora s) {
+		if (s == null || ! cnpj.equals(s.getCnpj()))
+			return false;
+		return true;
+	}
+	// TODO - comentar
 	public boolean listarClientes(String tipoCliente) {
 		boolean imprimiu = false;
 		for (int i = 0; i < listaClientes.size(); i++) {
@@ -83,29 +89,49 @@ public class Seguradora {
 	}
 	// TODO  - comentar
 	public boolean removerCliente(Cliente cliente) {
-		return listaClientes.remove(cliente); // true se removeu, senão false
+		boolean removeu = listaClientes.remove(cliente); // true se removeu, senão false
+		for (Seguro seguro: getSegurosPorCliente(cliente))
+			cancelarSeguro(seguro);
+		return removeu;
+	}
+	// TODO - comentar
+	private void atualizarValoresSeguro(List<Seguro> listaSeguros) {
+		for (Seguro seguro: listaSeguros)
+			seguro.calcularValor();
 	}
 	// TODO - comentar
 	public boolean gerarSeguro(Date dataInicio, Date dataFim, Frota frota, ClientePJ cliente) {
+		boolean gerou;
 		// tenta adicionar o cliente a listaClientes, retorna false e não gera o seguro
 		// se não conseguir
 		if (! cadastrarCliente(cliente))
 			return false;
+		gerou = listaSeguros.add(new SeguroPJ(dataInicio, dataFim, this, frota, cliente));
+		for (Seguro seguro: listaSeguros)
+			seguro.calcularValor();
 		// retorna true se adicionou, senão false
-		return listaSeguros.add(new SeguroPJ(dataInicio, dataFim, this, frota, cliente));
+		return gerou;
 	}
 	// TODO - comentar
 	public boolean gerarSeguro(Date dataInicio, Date dataFim, Veiculo veiculo, ClientePF cliente) {
+		boolean gerou;
 		// tenta adicionar o cliente a listaClientes, retorna false e não gera o seguro
 		// se não conseguir
 		if (! cadastrarCliente(cliente))
 			return false;
+		gerou = listaSeguros.add(new SeguroPF(dataInicio, dataFim, this, veiculo, cliente));
+		atualizarValoresSeguro(getSegurosPorCliente(cliente));
 		// retorna true se adicionou, senão false
-		return listaSeguros.add(new SeguroPF(dataInicio, dataFim, this, veiculo, cliente));
+		return gerou;
 	}
 	// TODO  - comentar
 	public boolean cancelarSeguro(Seguro seguro) {
-		return listaSeguros.remove(seguro); // true se removeu, senão false
+		boolean cancelou = listaSeguros.remove(seguro); // remove o seguro da lista
+		// remove os sinistros agregados da lista de cada condutor
+		for (Sinistro sinistro: seguro.getListaSinistros())
+			sinistro.getCondutor().removerSinistro(sinistro);
+		atualizarValoresSeguro(getSegurosPorCliente(seguro.getCliente()));
+		return cancelou; // true se removeu, senão false
 	}
 	// TODO - comentar
 	public List<Seguro> getSegurosPorCliente(Cliente cliente) {
@@ -132,6 +158,22 @@ public class Seguradora {
 		for (Seguro seguro: getSegurosPorCliente(cliente))
 			listaSinistros.addAll(seguro.getListaSinistros());
 		return listaSinistros;
+	}
+	public List<Seguro> getSegurosPorFrota(Frota frota) {
+		List<Seguro> listaSeguros = new ArrayList<Seguro>();
+		for (Seguro seguro: listaSeguros)
+			if (seguro.getClass() == SeguroPJ.class &&
+					((SeguroPJ) seguro).getFrota().equals(frota))
+				listaSeguros.add(seguro);
+		return listaSeguros;
+	}
+	public List<Seguro> getSegurosPorVeiculo(Veiculo veiculo) {
+		List<Seguro> listaSeguros = new ArrayList<Seguro>();
+		for (Seguro seguro: listaSeguros)
+			if (seguro.getClass() == SeguroPF.class &&
+					((SeguroPF) seguro).getVeiculo().equals(veiculo))
+				listaSeguros.add(seguro);
+		return listaSeguros;
 	}
 	// TODO  - comentar
 	public double calcularReceita() {

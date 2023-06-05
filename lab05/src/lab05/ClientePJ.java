@@ -43,7 +43,12 @@ public class ClientePJ extends Cliente {
         }
 		return str;
     }
-
+    // TODO - comentar
+    public boolean equals(ClientePJ c) {
+        if (c == null || ! cnpj.equals(c.getCnpj()))
+            return false;
+        return true;
+    }
     /* Retorna uma string no formato "CNPJ - <cnpj>". */
     @Override
     public String strDocumento() {

@@ -10,7 +10,7 @@ public class ClientePF extends Cliente {
     private String genero;
     private String educacao;
     private Date dataNasc;
-    private final List<Veiculo> listaVeiculos; // ponteiro p/ lista não se altera (final)
+    private List<Veiculo> listaVeiculos; // ponteiro p/ lista não se altera (final)
 
     // Construtor
     public ClientePF(String nome, String telefone, String endereco, String email,
@@ -48,6 +48,13 @@ public class ClientePF extends Cliente {
         }
         return str;
     }
+
+    // TODO - comentar
+    public boolean equals(ClientePF c) {
+        if (c == null || ! cpf.equals(c.getCpf()))
+            return false;
+        return true;
+    }
     /* Retorna uma string no formato "CPF: <cpf>". */
     @Override
     public String strDocumento() {
@@ -64,6 +71,8 @@ public class ClientePF extends Cliente {
     }
 	// Adiciona o veiculo v a listaVeiculos, retorna boolean indicando se adicionou
     public boolean cadastrarVeiculo(Veiculo v) {
+        if (listaVeiculos.contains(v))
+            return false;
         return listaVeiculos.add(v);
     }
 	// Remove o veiculo v de listaVeiculos, retorna boolean indicando se removeu 
@@ -95,6 +104,9 @@ public class ClientePF extends Cliente {
     }
     public List<Veiculo> getListaVeiculos() {
         return listaVeiculos;
+    }
+    public void setListaVeiculos(List<Veiculo> listaVeiculos) {
+        this.listaVeiculos = listaVeiculos;
     }
 
 }

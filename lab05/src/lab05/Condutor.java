@@ -1,4 +1,4 @@
-p3package lab05;
+package lab05;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +50,17 @@ public class Condutor {
     }
 
     // TODO - comentar
-    public boolean adicinarSinistro(Sinistro s) {
+    public boolean equals(Condutor c) {
+        if (c == null || ! cpf.equals(c.getCpf()))
+            return false;
+        return true;
+    }
+    // TODO - comentar
+    public boolean adicionarSinistro(Sinistro s) {
         return listaSinistros.add(s);
+    }
+    public boolean removerSinistro(Sinistro s) {
+        return listaSinistros.remove(s);
     }
     // TODO - comentar
     public List<Sinistro> getSinistrosPorSeguradora(Seguradora seguradora) {

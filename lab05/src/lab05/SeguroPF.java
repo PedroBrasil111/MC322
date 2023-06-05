@@ -1,5 +1,4 @@
 package lab05;
-
 import java.util.Date;
 
 public class SeguroPF extends Seguro {
@@ -13,30 +12,44 @@ public class SeguroPF extends Seguro {
         super(dataInicio, dataFim, seguradora);
         this.veiculo = veiculo;
         this.cliente = cliente;
+        if (cliente != null && getSeguradora() != null)
+            calcularValor();
     }
 
     // TODO - comentar
     @Override
     public boolean autorizarCondutor(Condutor c) {
-        boolean retorno = super.autorizarCondutor(c);
-        calcularValor();
-        return retorno;
+        boolean autorizou = super.autorizarCondutor(c);
+        if (autorizou)
+            calcularValor();
+        return autorizou;
     }
     // TODO - comentar
     public boolean desautorizarCondutor(Condutor c) {
-        boolean retorno = super.desautorizarCondutor(c);
-        calcularValor();
-        return retorno;
+        boolean desautorizou = super.desautorizarCondutor(c);
+        if (desautorizou)
+            calcularValor();
+        return desautorizou;
     }
     // TODO - comentar
     public boolean gerarSinistro(Date data, Condutor condutor, String endereco) {
-        boolean retorno = super.gerarSinistro(data, condutor, endereco);
+        boolean gerou = super.gerarSinistro(data, condutor, endereco);
+            if (gerou)
         calcularValor();
-        return retorno;
+        return gerou;
+    }
+    public boolean removerSinistro(Sinistro s) {
+        boolean removeu = super.removerSinistro(s);
+        if (removeu)
+            calcularValor();
+        return removeu;
     }
     // TODO - comentar
     public void calcularValor() {
-        double valor = CalcSeguro.VALOR_BASE.getValor() *
+        double valor;
+        if (getSeguradora() == null || cliente == null)
+            return;
+        valor = CalcSeguro.VALOR_BASE.getValor() *
             // FATOR_IDADE muda a cada 30 anos -- indice idade/30 + 1 em CalcSeguro.values()
             CalcSeguro.values()[Data.calcularIdade(cliente.getDataNasc())/30 + 1].getValor() *
             // (1 + 1 / (quantidadeVeiculos + 2))
@@ -61,5 +74,4 @@ public class SeguroPF extends Seguro {
     public void setCliente(ClientePF cliente) {
         this.cliente = cliente;
     }
-
 }

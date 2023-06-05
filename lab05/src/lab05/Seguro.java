@@ -63,6 +63,9 @@ public abstract class Seguro {
             return false;
         return listaSinistros.add(new Sinistro(data, endereco, condutor, this));
     }
+    public boolean removerSinistro(Sinistro s) {
+        return listaSinistros.remove(s);
+    }
     // TODO - comentar
     protected int quantidadeSinistrosPorCondutor(Cliente c) {
         int qtdeSinistrosCondutor = 0;
@@ -71,6 +74,7 @@ public abstract class Seguro {
         return qtdeSinistrosCondutor;
     }
     public abstract void calcularValor();
+    public abstract Cliente getCliente();
 
     // Getters e setters
     public int getId() {
