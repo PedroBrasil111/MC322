@@ -1,0 +1,4 @@
+INDEX VERSION 1.132+C:\Users\Pedro\Desktop\git\MC322-turmaB\.metadata\.plugins\org.eclipse.jdt.core
+367468583.index
+3614477979.index
+1865797976.index
