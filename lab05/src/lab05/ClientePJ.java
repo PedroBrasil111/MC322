@@ -61,41 +61,35 @@ public class ClientePJ extends Cliente {
             return false;
         return listaFrota.add(f);
     }
-    /* Adiciona o veiculo v à frota f. Retorna boolean indicando se adicionou. */
-    private boolean addVeiculoFrota(Frota f, Veiculo v) { 
-        return f.addVeiculo(v);
+    /* Retorna o indice em listaFrota da frota com frota.code == code. Se nao estiver, retorna -1. */
+    private int indiceFrota(String code) {
+        for (int i = 0; i < listaFrota.size(); i++)
+            if (listaFrota.get(i).getCode() == code)
+                return i;
+        return -1;
     }
-    /* Remove o veiculo v da frota f. Retorna boolean indicando se removeu. */
-    private boolean removerVeiculoFrota(Frota f, Veiculo v) {
-        return f.addVeiculo(v);
+    /* Adiciona o veiculo a frota se ela estiver em listaFrota,
+     * retorna boolean indicando se adicionou. */
+    public boolean atualizarFrota(Frota frota, Veiculo veiculo) {
+        if (listaFrota.contains(frota))
+            return frota.addVeiculo(veiculo);
+        return false;
     }
-    /* Remove a frota f da lista de frotas. Retorna boolean indicando se removeu. */
-    private boolean removerFrota(Frota f) {
-        return listaFrota.remove(f);
+    /* Remove o veiculo com veiculo.placa == placa da frota se ela estiver em listaFrota, 
+     * retorna boolean indicando se removeu. */
+    public boolean atualizarFrota(Frota frota, String placa) {
+        if (listaFrota.contains(frota))
+            return frota.removeVeiculo(placa);
+        return false;
     }
-    /* Dependendo do valor de "atualizacao", realiza uma operacão diferente:
-     * "addVeic" para adicionar veiculo à frota,
-     * "rmVeic" para remover veiculo da frota,
-     * "rmFrota" para remover a frota do cliente.
-     * Retorna boolean indicando se a operacão ocorreu. */
-    public boolean atualizarFrota(String atualizacao, Frota frota, Veiculo veiculo) {
-        if (! listaFrota.contains(frota))
+    /* Remove a frota com frota.code = code de listasFrotas,
+     * retorna boolean indicando se removeu. */
+    public boolean atualizarFrota(String code) {
+        int index = indiceFrota(code);
+        if (index < 0)
             return false;
-        switch (atualizacao) {
-            case "addVeic":
-                return addVeiculoFrota(frota, veiculo);
-            case "rmVeic":
-                return removerVeiculoFrota(frota, veiculo);
-            case "rmFrota":
-                return removerFrota(frota);
-            default:
-                return false;
-        }
-    }
-    /* Se atualizacao for "rmFrota", remove a frota do cliente.
-     * Retorna boolean indicando se removeu. */
-    public boolean atualizarFrota(String atualizacao, Frota frota) {
-        return atualizarFrota(atualizacao, frota, null);
+        listaFrota.remove(index);
+        return true;
     }
     // TODO - n faco ideia de pra q serve esse metodo
     public boolean getVeiculosPorFrota() {
