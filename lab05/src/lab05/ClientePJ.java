@@ -91,9 +91,15 @@ public class ClientePJ extends Cliente {
         listaFrota.remove(index);
         return true;
     }
-    // TODO - n faco ideia de pra q serve esse metodo
-    public boolean getVeiculosPorFrota() {
-        return true;
+    /* Retorna uma lista com os veiculos contidos na frota com frota.code == code em listaFrota,
+     * retorna null se a frota nao estiver na lista. */
+    public List<Veiculo> getVeiculosPorFrota(String code) {
+        int index = indiceFrota(code);
+        if (index < 0)
+            return null;
+        ArrayList<Veiculo> copia = new ArrayList<Veiculo>();
+        copia.addAll(listaFrota.get(index).getListaVeiculos());
+        return copia;
     }
     /* Lista as frotas cadastradas para o cliente no formato "i - <frota[i].code>,"
      * onde i é o índice da frota na lista. Retorna boolean indicando se imprimiu. */
