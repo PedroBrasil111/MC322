@@ -649,7 +649,7 @@ public class AppMain {
 		if (seguro == null) return;
 		Condutor condutor = requisitarCondutor(listaCondutores);
 		if (condutor == null) return;
-		seguro.autorizarCondutor(condutor);
+		msgOperacaoRealizada(seguro.autorizarCondutor(condutor));
 	}
 
 	/* Opcao gerar */
