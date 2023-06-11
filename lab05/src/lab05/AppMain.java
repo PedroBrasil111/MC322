@@ -644,7 +644,7 @@ public class AppMain {
 				seguro.calcularValor();
 	}
 	/* Le opcoes e adiciona um condutor a um seguro */
-	private static void operacaoAddCondutorSeguro() {
+	private static void operacaoAddCondutorSeguro() {	
 		Seguro seguro = requisitarSeguro();
 		if (seguro == null) return;
 		Condutor condutor = requisitarCondutor(listaCondutores);
