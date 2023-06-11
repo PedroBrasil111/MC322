@@ -113,7 +113,7 @@ public class Seguradora {
 		boolean gerou;
 		cadastrarCliente(cliente); // cadastra o cliente
 		gerou = listaSeguros.add(new SeguroPJ(dataInicio, dataFim, this, frota, cliente));
-		// TODO - necessário atualizar todos ? - a favor: pode ser q um condutor esteja em outro seguro
+		// atualiza valores - nao eh necessario mudar todos, mas a implementacao seria maior
 		atualizarValoresSeguro();
 		// retorna true se adicionou, senão false
 		return gerou;
@@ -125,7 +125,7 @@ public class Seguradora {
 		// se não conseguir
 		cadastrarCliente(cliente); // cadastra o cliente
 		gerou = listaSeguros.add(new SeguroPF(dataInicio, dataFim, this, veiculo, cliente));
-		// TODO - espelhar método acima
+		// atualiza valores - nao eh necessario mudar todos, mas a implementacao seria maior
 		atualizarValoresSeguro();
 		// retorna true se adicionou, senão false
 		return gerou;
@@ -139,10 +139,19 @@ public class Seguradora {
 		// remove o cliente de listaClientes se ele nao possuir seguros
 		if (getSegurosPorCliente(seguro.getCliente()).size() == 0)
 			listaClientes.remove(seguro.getCliente());
-		// TODO - necessário mudar todos?
+		// atualiza valores - nao eh necessario mudar todos, mas a implementacao seria maior
 		atualizarValoresSeguro();
 		return cancelou; // true se removeu, senão false
 	}
+	/* Retorna a receita total dos seguros */
+	public double calcularReceita() {
+		double receita = 0.;
+		for (Seguro seguro: listaSeguros)
+			receita += seguro.getValorMensal();
+		return receita;
+	}
+
+	// Getters e setters
 	/* Retorna lista com os seguros contratados pelo cliente na seguradora */
 	public List<Seguro> getSegurosPorCliente(Cliente cliente) {
 		List<Seguro> listaSeguros = new ArrayList<Seguro>();
@@ -195,15 +204,6 @@ public class Seguradora {
 				listaSeguros.add(seguro);
 		return listaSeguros;
 	}
-	/* Retorna a receita total dos seguros */
-	public double calcularReceita() {
-		double receita = 0.;
-		for (Seguro seguro: listaSeguros)
-			receita += seguro.getValorMensal();
-		return receita;
-	}
-
-	// Getters e setters
 	public String getCnpj() {
 		return cnpj;
 	}
