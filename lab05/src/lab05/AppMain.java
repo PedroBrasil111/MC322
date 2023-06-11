@@ -18,6 +18,7 @@ public class AppMain {
 	private static List<Condutor> listaCondutores = new ArrayList<Condutor>();
 
 	/* Classe aninhada para leitura */
+
 	private static class Leitura {
 		private static Scanner scanner = new Scanner(System.in);
 		/* Lê até que seja dado um inteiro e o retorna.
@@ -107,13 +108,13 @@ public class AppMain {
 	}
 
 	/* Métodos para os menus (adaptados de https://github.com/rebecapadovani/ExemploEnumMenu) */
+
 	//exibir menu externo
 	private static void exibirMenuExterno() {
 		MenuOperacoes menuOpcoes[] = MenuOperacoes.values();
 		System.out.println("\n** Menu principal **");
-		for (int i = 1; i < menuOpcoes.length; i++)
+		for (int i = 0; i < menuOpcoes.length; i++)
 			System.out.println(String.valueOf(i) + " - " + menuOpcoes[i].getDescricao());
-		System.out.println("0 - " + menuOpcoes[0].getDescricao());
 	}
 	/* exibir submenus
 	 * se a lista de constantes do submenu for percorrida da mesma forma que o meu externo, a opcão Voltar
@@ -123,15 +124,13 @@ public class AppMain {
 	private static void exibirSubmenu(MenuOperacoes op) {
 		SubmenuOperacoes[] submenu = op.getSubmenu();
 		System.out.println("\n** " + op.getDescricao() + " **");
-		for(int i = 1; i < submenu.length; i++)
+		for(int i = 0; i < submenu.length; i++)
 			System.out.println(i +" - " + submenu[i].getDescricao());
-		System.out.println("0 - " + submenu[0].getDescricao());
 	}
 	//ler opcões do menu externo
 	private static MenuOperacoes lerOpcaoMenuExterno() {
 		int opUsuario;
 		MenuOperacoes opUsuarioConst;
-		//System.out.print("Digite uma opcao: ");
 		opUsuario = Leitura.lerIndice(MenuOperacoes.values().length);
 		opUsuarioConst = MenuOperacoes.values()[opUsuario];
 		return opUsuarioConst;
@@ -140,7 +139,6 @@ public class AppMain {
 	private static SubmenuOperacoes lerOpcaoSubmenu(MenuOperacoes op) {
 		int opUsuario;
 		SubmenuOperacoes opUsuarioConst;
-		//System.out.print("Digite uma opcao: ");
 		opUsuario = Leitura.lerIndice(op.getSubmenu().length);
 		opUsuarioConst = op.getSubmenu()[opUsuario];
 		return opUsuarioConst;
@@ -151,6 +149,7 @@ public class AppMain {
 			case CADASTROS:
 			case ADICIONAR:
 			case GERAR:
+			case EXCLUIR:
 			case IMPRIMIR:
 				executarSubmenu(op);
 				break;
@@ -163,7 +162,8 @@ public class AppMain {
 	}
 	//executar opcões dos submenus
 	private static void executarOpcaoSubMenu(SubmenuOperacoes opSubmenu) {
-		System.out.println("\n** " + opSubmenu.getDescricao() + " **");
+		if (opSubmenu != SubmenuOperacoes.VOLTAR)
+			System.out.println("\n** " + opSubmenu.getDescricao() + " **");
 		switch(opSubmenu) {
 			case CADASTRAR_SEGURADORA:
 				operacaoCadastrarSeguradora();
@@ -197,6 +197,12 @@ public class AppMain {
 				break; 
 			case GERAR_SEGURO:
 				operacaoGerarSeguro();
+				break;
+			case EXCLUIR_SEGURO:
+				operacaoExcluirSeguro();
+				break;
+			case EXCLUIR_SINISTRO:
+				operacaoExcluirSinistro();
 				break;
 			case IMPRIMIR_SEGURADORA:
 				operacaoImprimirSeguradora();
@@ -235,7 +241,8 @@ public class AppMain {
 
 	/* Metodo de inicializacao.
 	 * Inicializa uma seguradora e outros objetos associados e chama alguns dos métodos */
-	public static void inicializacao() {
+
+	private static void inicializacao() {
 		// instanciando objetos iniciais
 		// é esperado que outros objetos sejam instanciados através do menu,
 		// onde é feita validacão dos dados. A instanciacão pelo construtor não valida os dados.
@@ -338,127 +345,14 @@ public class AppMain {
 	}
 
 	/* Metodos de impressao e leitura */
+
 	/* Imprime "Operacao realizada com sucesso" se operacaoRealizada for true.
 	 * Imprime "Ocorreu um erro. Tente novamente." se operacaoRealizada for false. */
-	private static void mensagemOperacaoRealizada(boolean operacaoRealizada) {
+	private static void msgOperacaoRealizada(boolean operacaoRealizada) {
 		if (operacaoRealizada)
 			System.out.println("Operacao realizada com sucesso.");
 		else
 			System.out.println("Ocorreu um erro. Tente novamente.");
-	}
-	/* Requisita a escolha de uma das seguradoras registradas e a retorna.
-	 * Retorna null e imprime mensagem de retorno se nao há seguradoras cadastradas. */
-	private static Seguradora requisitarSeguradora() {
-		int pos;
-		System.out.println("Digite o numero referente a seguradora:");
-		if (listarSeguradoras()) {
-			pos = Leitura.lerIndice(listaSeguradoras.size()); // leitura da escolha
-			return listaSeguradoras.get(pos); // retorna a seguradora
-		}
-		System.out.println("Nao ha seguradoras cadastradas. Operacao abortada.");
-		return null;
-	}
-	/* Requisita a escolha de um dos clientes registrados em seg e o retorna.
-	 * Retorna null e imprime mensagem de retorno se nao há clientes cadastrados. */
-	private static Cliente requisitarClienteSeguradora(Seguradora seg, String tipoCliente) {
-		int pos;
-		System.out.println("Digite o numero referente ao cliente:");
-		if (seg.listarClientes(tipoCliente)) {
-			pos = Leitura.lerIndice(seg.getListaClientes().size()); // leitura da escolha
-			return seg.getListaClientes().get(pos); // retorna o cliente
-		}
-		System.out.println("Nao ha clientes cadastrados. Operacao abortada.");
-		return null;
-	}
-	private static Cliente requisitarCliente(String tipoCliente) {
-		// seguradora temporária para usar o método listarClientes em listaClientes de AppMain
-		Seguradora segTemp = new Seguradora(null, null, null, null, null);
-		segTemp.setListaClientes(listaClientes);
-		return requisitarClienteSeguradora(segTemp, tipoCliente);
-	}
-	private static Frota requisitarFrotaCliente(ClientePJ cliente) {
-		int pos;
-		System.out.println("Digite o numeror referente a frota:");
-		if (cliente.listarFrotas()) {
-			pos = Leitura.lerIndice(cliente.getListaFrota().size());
-			return cliente.getListaFrota().get(pos);
-		}
-		System.out.println("Nao ha frotas cadastradas/disponiveis. Operacao abortada.");
-		return null;
-	}
-	private static Frota requisitarFrotaDisponivel() {
-		ClientePJ clienteTemp = new ClientePJ(null, null, null, null, null, null);
-		clienteTemp.setListaFrota(listaFrotasDisponiveis);
-		return requisitarFrotaCliente(clienteTemp);
-	}
-	private static Frota requisitarFrotaCadastrada() {
-		ClientePJ clienteTemp = new ClientePJ(null, null, null, null, null, null);
-		clienteTemp.setListaFrota(listaFrotasCadastradas);
-		return requisitarFrotaCliente(clienteTemp);
-	}
-	private static Veiculo requisitarVeiculoFrota(Frota frota) {
-		int pos;
-		System.out.println("Digite o numero referente ao veiculo:");
-		if (frota.listarVeiculos()) {
-			pos = Leitura.lerIndice(frota.getListaVeiculos().size());
-			return frota.getListaVeiculos().get(pos);
-		}
-		System.out.println("Nao ha veiculos cadastrados/disponiveis. Operacao abortada.");
-		return null;
-	}
-	private static Veiculo requisitarVeiculoClientePF(ClientePF cliente) {
-		Frota frotaTemp = new Frota();
-		frotaTemp.setListaVeiculos(cliente.getListaVeiculos());
-		return requisitarVeiculoFrota(frotaTemp);
-	}
-	private static Veiculo requisitarVeiculoDisponivel() {
-		Frota frotaTemp = new Frota();
-		frotaTemp.setListaVeiculos(listaVeiculosDisponiveis);
-		return requisitarVeiculoFrota(frotaTemp);
-	}
-	private static Veiculo requisitarVeiculoCadastrado() {
-		Frota frotaTemp = new Frota();
-		frotaTemp.setListaVeiculos(listaVeiculosCadastrados);
-		return requisitarVeiculoFrota(frotaTemp);
-	}
-	private static Condutor requisitarCondutorSeguro(Seguro seguro) {
-		int pos;
-		System.out.println("Digite o numero referente ao condutor:");
-		if (seguro.listarCondutores()) {
-			pos = Leitura.lerIndice(seguro.getListaCondutores().size());
-			return seguro.getListaCondutores().get(pos);
-		}
-		System.out.println("Nao ha condutores cadastrados. Operacao abortada.");
-		return null;
-	}
-	private static Condutor requisitarCondutor() {
-		Seguro seguroTemp = new SeguroPF(null, null, null, null, null);
-		seguroTemp.setListaCondutores(listaCondutores);
-		return requisitarCondutorSeguro(seguroTemp);
-	}
-	private static Seguro requisitarSeguro() {
-		int pos;
-		Seguradora seguradora = requisitarSeguradora();
-		if (seguradora == null) return null;
-		System.out.println("Digite o numero referente ao seguro:");
-		if (seguradora.listarSeguros()) {
-			pos = Leitura.lerIndice(seguradora.getListaSeguros().size());
-			return seguradora.getListaSeguros().get(pos);
-		}
-		System.out.println("Nao ha seguros cadastrados. Operacao abortada.");
-		return null;
-	}
-	private static Sinistro requisitarSinistro() {
-		int pos;
-		Seguro seguro = requisitarSeguro();
-		if (seguro == null) return null;
-		System.out.println("Digite o numero referente ao sinistro:");
-		if (seguro.listarSinistros()) {
-			pos = Leitura.lerIndice(seguro.getListaSinistros().size());
-			return seguro.getListaSinistros().get(pos);
-		}
-		System.out.println("Nao ha sinistros cadastrados. Operacao abortada.");
-		return null;
 	}
 	/* Lista as seguradoras em listaSeguradoras no formato "i - Seguradora.nome",
 	 * onde i é o índice da seguradora na lista. Retorna boolean indicando se imprimiu. */
@@ -471,7 +365,120 @@ public class AppMain {
 		}
 		return false;
 	}
-	
+	/* Requisita a escolha de uma das seguradoras registradas no sistema e a retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem seguradoras cadastradas. */
+	private static Seguradora requisitarSeguradora() {
+		int pos;
+		System.out.println("Digite o numero referente a seguradora:");
+		if (listarSeguradoras()) {
+			pos = Leitura.lerIndice(listaSeguradoras.size()); // leitura da escolha
+			return listaSeguradoras.get(pos); // retorna a seguradora
+		}
+		System.out.println("Nao ha seguradoras cadastradas. Operacao abortada.");
+		return null;
+	}
+	/* Requisita a escolha de um dos clientes registrados no sistema e o retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem clientes cadastrados.
+	 * tipoCliente define o tipo de cliente a ser listado -- "PF", "PJ" ou "" (todos) */
+	private static Cliente requisitarCliente(String tipoCliente) {
+		// seguradora temporária para usar o método listarClientes de Seguradora
+		Seguradora segTemp = new Seguradora(null, null, null, null, null);
+		int pos;
+		segTemp.setListaClientes(listaClientes);
+		System.out.println("Digite o numero referente ao cliente:");
+		if (segTemp.listarClientes(tipoCliente)) {
+			pos = Leitura.lerIndice(segTemp.getListaClientes().size()); // leitura da escolha
+			return segTemp.getListaClientes().get(pos); // retorna o cliente
+		}
+		System.out.println("Nao ha clientes cadastrados. Operacao abortada.");
+		return null;
+	}
+	/* Requisita a escolha de uma das frotas registradas em cliente e a retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem frotas cadastradas. */
+	private static Frota requisitarFrotaCliente(ClientePJ cliente) {
+		int pos;
+		System.out.println("Digite o numero referente a frota:");
+		if (cliente.listarFrotas()) {
+			pos = Leitura.lerIndice(cliente.getListaFrota().size());
+			return cliente.getListaFrota().get(pos);
+		}
+		System.out.println("Nao ha frotas cadastradas/disponiveis. Operacao abortada.");
+		return null;
+	}
+	/* Requisita a escolha de uma das frotas em listaFrota e a retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem frotas cadastradas. */
+	private static Frota requisitarFrota(List<Frota> listaFrota) {
+		// cliente temporario para usar o metodo requisitarFrotaCliente
+		ClientePJ clienteTemp = new ClientePJ(null, null, null, null, null, null);
+		clienteTemp.setListaFrota(listaFrota);
+		return requisitarFrotaCliente(clienteTemp);
+	}
+	/* Requisita a escolha de um dos veiculos registrados em listaVeic e o retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem veiculos cadastrados. */
+	private static Veiculo requisitarVeiculo(List<Veiculo> listaVeic) {
+		Frota frotaTemp = new Frota();
+		int pos;
+		// cria frota temporaria com a lista para utilizar metodo listarVeiculos de Frota
+		frotaTemp.setListaVeiculos(listaVeic);
+		System.out.println("Digite o numero referente ao veiculo:");
+		if (frotaTemp.listarVeiculos()) {
+			pos = Leitura.lerIndice(frotaTemp.getListaVeiculos().size());
+			return frotaTemp.getListaVeiculos().get(pos);
+		}
+		System.out.println("Nao ha veiculos cadastrados/disponiveis. Operacao abortada.");
+		return null;
+	}
+	/* Requisita a escolha de um dos condutores registrados no seguro e o retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem condutores cadastrados. */
+	private static Condutor requisitarCondutorSeguro(Seguro seguro) {
+		int pos;
+		System.out.println("Digite o numero referente ao condutor:");
+		if (seguro.listarCondutores()) {
+			pos = Leitura.lerIndice(seguro.getListaCondutores().size());
+			return seguro.getListaCondutores().get(pos);
+		}
+		System.out.println("Nao ha condutores cadastrados. Operacao abortada.");
+		return null;
+	}
+	/* Requisita a escolha de um dos condutores registrados em listaCondut e o retorna.
+	 * Retorna null e imprime mensagem de retorno se nao houverem condutores cadastrados. */
+	private static Condutor requisitarCondutor(List<Condutor> listaCondut) {
+		// cria seguro temporario com a lista para utilizar metodo requisitarCondutorSeguro
+		Seguro seguroTemp = new SeguroPF(null, null, null, null, null);
+		seguroTemp.setListaCondutores(listaCondut);
+		return requisitarCondutorSeguro(seguroTemp);
+	}
+	/* Requisita a escolha de um seguro e o retorna. Retorna null e imprime mensagem de retorno
+	 * se nao houverem seguradoras ou seguros cadastrados. */
+	private static Seguro requisitarSeguro() {
+		int pos;
+		Seguradora seguradora = requisitarSeguradora();
+		if (seguradora == null) return null;
+		System.out.println("Digite o numero referente ao seguro:");
+		if (seguradora.listarSeguros()) {
+			pos = Leitura.lerIndice(seguradora.getListaSeguros().size());
+			return seguradora.getListaSeguros().get(pos);
+		}
+		System.out.println("Nao ha seguros cadastrados. Operacao abortada.");
+		return null;
+	}
+	/* Requisita a escolha de um sinistro e o retorna. Retorna null e imprime mensagem de retorno
+	 * se nao houverem seguradoras, seguros ou sinistros cadastrados. */
+	private static Sinistro requisitarSinistro() {
+		int pos;
+		Seguro seguro = requisitarSeguro();
+		if (seguro == null) return null;
+		System.out.println("Digite o numero referente ao sinistro:");
+		if (seguro.listarSinistros()) {
+			pos = Leitura.lerIndice(seguro.getListaSinistros().size());
+			return seguro.getListaSinistros().get(pos);
+		}
+		System.out.println("Nao ha sinistros cadastrados. Operacao abortada.");
+		return null;
+	}
+
+	/* Opcao cadastrar */
+
 	/* Le nome, telefone, endereco e e-mail */
 	private static String[] lerCliente() {
 		String atributos[] = {"nome", "telefone", "endereco", "e-mail"};
@@ -523,7 +530,7 @@ public class AppMain {
 	private static void operacaoCadastrarSeguradora() {
 		Seguradora seguradora = lerSeguradora();
 		if (! listaSeguradoras.contains(seguradora))
-			mensagemOperacaoRealizada(listaSeguradoras.add(seguradora));
+			msgOperacaoRealizada(listaSeguradoras.add(seguradora));
 		else
 			System.out.println("A seguradora nao foi cadastrada. Motivo: ja estava cadastrada");
 	}
@@ -546,7 +553,7 @@ public class AppMain {
 			cliente = lerClientePJ(atributos[0], atributos[1], atributos[2], atributos[3]);
 		}
 		if (! listaClientes.contains(cliente))
-			mensagemOperacaoRealizada(listaClientes.add(cliente));
+			msgOperacaoRealizada(listaClientes.add(cliente));
 		else
 			System.out.println("O cliente nao foi cadastrado pois ja o havia sido.");
 	}
@@ -569,7 +576,7 @@ public class AppMain {
 		Veiculo veiculo = lerVeiculo();
 		if (! listaVeiculosCadastrados.contains(veiculo) &&
 				listaVeiculosCadastrados.add(veiculo)) {
-			mensagemOperacaoRealizada(listaVeiculosDisponiveis.add(veiculo));
+			msgOperacaoRealizada(listaVeiculosDisponiveis.add(veiculo));
 		} else
 			System.out.println("O veiculo nao foi cadastrado pois ja o havia sido.");
 	}
@@ -578,7 +585,7 @@ public class AppMain {
 		Frota frota = new Frota();
 		if (! listaFrotasCadastradas.contains(frota) &&
 				listaFrotasCadastradas.add(frota)) {
-			mensagemOperacaoRealizada(listaFrotasDisponiveis.add(frota));
+			msgOperacaoRealizada(listaFrotasDisponiveis.add(frota));
 			System.out.println("Code da frota: " + frota.getCode());
 		} else
 			System.out.println("A frota nao foi cadastrada pois ja o havia sido.");
@@ -598,37 +605,38 @@ public class AppMain {
 	private static void operacaoCadastrarCondutor() {
 		Condutor condutor = lerCondutor();
 		if (! listaCondutores.contains(condutor))
-			mensagemOperacaoRealizada(listaCondutores.add(condutor));
+			msgOperacaoRealizada(listaCondutores.add(condutor));
 		else
 			System.out.println("O condutor nao foi cadastrado pois ja o havia sido.");
 	}
 
-	/* Metodos para adicionar objetos as listas */
+	/* Opcao adicionar (adicionar a lista) */
+
 	/* Le opcoes e adiciona um dos veiculo disponiveis a um clientePF */
 	private static void operacaoAddVeiculoCliente() {
 		Cliente cliente = requisitarCliente("PF");
 		if (cliente == null) return;
-		Veiculo veiculo = requisitarVeiculoDisponivel();
+		Veiculo veiculo = requisitarVeiculo(listaVeiculosDisponiveis);
 		if (veiculo == null) return;
-		mensagemOperacaoRealizada(((ClientePF) cliente).cadastrarVeiculo(veiculo));
+		msgOperacaoRealizada(((ClientePF) cliente).cadastrarVeiculo(veiculo));
 		listaVeiculosDisponiveis.remove(veiculo);
 	}
 	/* Le opcoes e adiciona uma das frotas disponiveis a um clientePJ */
 	private static void operacaoAddFrotaCliente() {
 		Cliente cliente = requisitarCliente("PJ");
 		if (cliente == null) return;
-		Frota frota = requisitarFrotaDisponivel();
+		Frota frota = requisitarFrota(listaFrotasDisponiveis);
 		if (frota == null) return;
-		mensagemOperacaoRealizada(((ClientePJ) cliente).cadastrarFrota(frota));
+		msgOperacaoRealizada(((ClientePJ) cliente).cadastrarFrota(frota));
 		listaFrotasDisponiveis.remove(frota);
 	}
 	/* Le opcoes e adiciona um dos veiculos disponiveis a uma frota */
 	private static void operacaoAddVeiculoFrota() {
-		Veiculo veiculo = requisitarVeiculoDisponivel();
+		Veiculo veiculo = requisitarVeiculo(listaVeiculosDisponiveis);
 		if (veiculo == null) return;
-		Frota frota = requisitarFrotaDisponivel();
+		Frota frota = requisitarFrota(listaFrotasDisponiveis);
 		if (frota == null) return;
-		mensagemOperacaoRealizada(frota.addVeiculo(veiculo));
+		msgOperacaoRealizada(frota.addVeiculo(veiculo));
 		listaVeiculosDisponiveis.remove(veiculo);
 		// necessario atualizar preco dos seguros nos quais a frota esta cadastrada
 		for (Seguradora seguradora: listaSeguradoras)
@@ -639,12 +647,13 @@ public class AppMain {
 	private static void operacaoAddCondutorSeguro() {
 		Seguro seguro = requisitarSeguro();
 		if (seguro == null) return;
-		Condutor condutor = requisitarCondutor();
+		Condutor condutor = requisitarCondutor(listaCondutores);
 		if (condutor == null) return;
 		seguro.autorizarCondutor(condutor);
 	}
 
-	/* Metodos para gerar sinistro e seguro */
+	/* Opcao gerar */
+
 	/* Le e retorna vetor de String com posicoes 0 - dataInicio, 1 - dataFim do seguro */
 	private static String[] lerAtributosSeguro() {
 		String[] datas = new String[2];
@@ -663,14 +672,14 @@ public class AppMain {
 		Cliente cliente = requisitarCliente("");
 		if (cliente == null) return;
 		if (cliente instanceof ClientePF) { // SeguroPF
-			veiculo = requisitarVeiculoClientePF((ClientePF) cliente);
+			veiculo = requisitarVeiculo(((ClientePF) cliente).getListaVeiculos());
 			if (veiculo == null) return;
-			mensagemOperacaoRealizada(seguradora.gerarSeguro(Data.stringToDate(datas[0]),
+			msgOperacaoRealizada(seguradora.gerarSeguro(Data.stringToDate(datas[0]),
 					Data.stringToDate(datas[1]), veiculo, (ClientePF) cliente));
 		} else { // SeguroPJ
 			frota = requisitarFrotaCliente((ClientePJ) cliente);
 			if (frota == null) return;
-			mensagemOperacaoRealizada(seguradora.gerarSeguro(Data.stringToDate(datas[0]),
+			msgOperacaoRealizada(seguradora.gerarSeguro(Data.stringToDate(datas[0]),
 					Data.stringToDate(datas[1]), frota, (ClientePJ) cliente));
 		}
 		System.out.println("ID do seguro: " + seguradora.getListaSeguros().
@@ -692,13 +701,14 @@ public class AppMain {
 		Condutor condutor = requisitarCondutorSeguro(seguro);
 		if (condutor == null) return;
 		String[] atributos = lerAtributosSinistro(); // data, endereco
-		mensagemOperacaoRealizada(seguro.gerarSinistro(Data.stringToDate(atributos[0]),
+		msgOperacaoRealizada(seguro.gerarSinistro(Data.stringToDate(atributos[0]),
 				condutor, atributos[1]));
 		System.out.println("ID do sinistro: " + seguro.getListaSinistros().
 				get(seguro.getListaSinistros().size() - 1).getId());
 	}
 
-	/* Metodos para visualizar/imprimir objetos */
+	/* Opcao visualizar */
+
 	/* Le opcao e imprime seguradora */
 	private static void operacaoImprimirSeguradora() {
 		Seguradora seg = requisitarSeguradora();
@@ -713,19 +723,19 @@ public class AppMain {
 	}
 	/* Le opcao e imprime veiculo */
 	private static void operacaoImprimirVeiculo() {
-		Veiculo veiculo = requisitarVeiculoCadastrado();
+		Veiculo veiculo = requisitarVeiculo(listaVeiculosCadastrados);
 		if (veiculo == null) return;
 		System.out.println(veiculo);
 	}
 	/* Le opcao e imprime frota */
 	private static void operacaoImprimirFrota() {
-		Frota frota = requisitarFrotaCadastrada();
+		Frota frota = requisitarFrota(listaFrotasCadastradas);
 		if (frota == null) return;
 		System.out.println(frota);
 	}
 	/* Le opcao e imprime condutor */
 	private static void operacaoImprimirCondutor() {
-		Condutor condutor = requisitarCondutor();
+		Condutor condutor = requisitarCondutor(listaCondutores);
 		if (condutor == null) return;
 		System.out.println(condutor);
 	}
@@ -742,7 +752,23 @@ public class AppMain {
 		System.out.println(sinistro);
 	}
 
+	/* Opcao excluir */
+
+	/* Le opcao e exclui seguro */
+	private static void operacaoExcluirSeguro() {
+		Seguro seguro = requisitarSeguro();
+		if (seguro == null) return;
+		msgOperacaoRealizada(seguro.getSeguradora().cancelarSeguro(seguro));
+	}
+	/* Le opcao e exclui sinistro */
+	private static void operacaoExcluirSinistro() {
+		Sinistro sinistro = requisitarSinistro();
+		if (sinistro == null) return;
+		msgOperacaoRealizada(sinistro.getSeguro().removerSinistro(sinistro));
+	}
+
 	/* Opcao imprimir receita */
+
 	/* Le opcao de seguradora e imprime sua receita */
 	private static void operacaoCalcularReceita() {
 		Seguradora seguradora = requisitarSeguradora();

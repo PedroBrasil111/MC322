@@ -20,6 +20,9 @@ public enum SubmenuOperacoes {
 	GERAR_SINISTRO("Gerar sinistro"),
 	GERAR_SEGURO("Gerar seguro"),
 
+	EXCLUIR_SINISTRO("Excluir sinistro"),
+	EXCLUIR_SEGURO("Excluir seguro"),
+
 	IMPRIMIR_SEGURADORA("Visualizar seguradora"),
 	IMPRIMIR_CLIENTE("Visualizar cliente"),
 	IMPRIMIR_CONDUTOR("Visualizar condutor"),

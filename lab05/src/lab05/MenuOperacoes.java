@@ -27,6 +27,11 @@ public enum MenuOperacoes {
 		SubmenuOperacoes.GERAR_SEGURO,
 		SubmenuOperacoes.GERAR_SINISTRO
 	}),
+	EXCLUIR("Excluir", new SubmenuOperacoes[] {
+		SubmenuOperacoes.VOLTAR,
+		SubmenuOperacoes.EXCLUIR_SEGURO,
+		SubmenuOperacoes.EXCLUIR_SINISTRO
+	}),
 	IMPRIMIR("Visualizar", new SubmenuOperacoes[] {
 		SubmenuOperacoes.VOLTAR,
 		SubmenuOperacoes.IMPRIMIR_SEGURADORA,
