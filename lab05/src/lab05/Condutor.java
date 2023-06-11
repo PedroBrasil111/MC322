@@ -54,16 +54,20 @@ public class Condutor {
         return str;
     }
 
-    /* Retorna boolean indicando se o condutor c é igual. Comparacão é feita por CPF. */
-    public boolean equals(Condutor c) {
-        if (c == null || ! cpf.equals(c.getCpf()))
-            return false;
-        return true;
+    /* Retorna boolean indicando se o objeto obj eh igual. Comparacão é feita por CPF. */
+    @Override
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+        if (obj == null || getClass() != obj.getClass())
+			return false;
+        return cpf.equals(((Condutor) obj).getCpf());
     }
 	/* Adiciona o sinistro s à lista, retorna boolean indicando se adicionou */
     public boolean adicionarSinistro(Sinistro s) {
         return listaSinistros.add(s);
     }
+    /* Remove o sinistro s da lista, retorna boolean indicando se removeu */
     public boolean removerSinistro(Sinistro s) {
         return listaSinistros.remove(s);
     }

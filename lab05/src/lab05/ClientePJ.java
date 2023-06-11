@@ -43,11 +43,14 @@ public class ClientePJ extends Cliente {
         }
 		return str;
     }
-    /* Retorna boolean indicando se o cliente c é igual. Comparacão é feita por CNPJ. */
-    public boolean equals(ClientePJ c) {
-        if (c == null || ! cnpj.equals(c.getCnpj()))
-            return false;
-        return true;
+    /* Retorna boolean indicando se o objeto obj eh igual. Comparacão é feita por CNPJ. */
+    @Override
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+        if (obj == null || getClass() != obj.getClass())
+			return false;
+        return cnpj.equals(((ClientePJ) obj).getCnpj());
     }
     /* Retorna uma string no formato "CNPJ <cnpj>". */
     @Override

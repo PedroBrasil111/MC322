@@ -49,11 +49,14 @@ public class ClientePF extends Cliente {
         return str;
     }
 
-    /* Retorna boolean indicando se o cliente c é igual. Comparacão é feita por CPF. */
-    public boolean equals(ClientePF c) {
-        if (c == null || ! cpf.equals(c.getCpf()))
-            return false;
-        return true;
+    /* Retorna boolean indicando se o objeto obj eh igual. Comparacão é feita por CPF. */
+    @Override
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+        if (obj == null || getClass() != obj.getClass())
+			return false;
+        return cpf.equals(((ClientePF) obj).getCpf());
     }
     /* Retorna uma string no formato "CPF <cpf>". */
     @Override

@@ -52,11 +52,14 @@ public class Seguradora {
 		return str;
     }
 
-    /* Retorna boolean indicando se a seguradora s é igual. Comparacão é feita por CNPJ. */
-	public boolean equals(Seguradora s) {
-		if (s == null || ! cnpj.equals(s.getCnpj()))
+    /* Retorna boolean indicando se o objeto obj eh igual. Comparacão é feita por CNPJ. */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+        if (obj == null || getClass() != obj.getClass())
 			return false;
-		return true;
+        return cnpj.equals(((Seguradora) obj).getCnpj());
 	}
     /* Lista os clientes que contratam a seguradora no formato "i - <cliente[i].strDocumento()>,"
      * onde i é o índice do cliente na lista. Se "tipoCliente" for:
@@ -70,7 +73,8 @@ public class Seguradora {
 			if (tipoCliente == "PF" && listaClientes.get(i).getClass() == ClientePF.class ||
 					tipoCliente == "PJ" && listaClientes.get(i).getClass() == ClientePJ.class ||
 					tipoCliente == "") {
-				System.out.println(i + " - " + listaClientes.get(i).strDocumento());
+				System.out.println(i + " - " + listaClientes.get(i).getNome() + " - "
+						+ listaClientes.get(i).strDocumento());
 				imprimiu = true;
 			}
 		}
@@ -107,10 +111,7 @@ public class Seguradora {
 	/* Gera um novo seguroPJ a partir dos parâmetros. Retorna boolean indicando se adicionou. */
 	public boolean gerarSeguro(Date dataInicio, Date dataFim, Frota frota, ClientePJ cliente) {
 		boolean gerou;
-		// tenta adicionar o cliente a listaClientes, retorna false e não gera o seguro
-		// se não conseguir
-		if (! cadastrarCliente(cliente))
-			return false;
+		cadastrarCliente(cliente); // cadastra o cliente
 		gerou = listaSeguros.add(new SeguroPJ(dataInicio, dataFim, this, frota, cliente));
 		// TODO - necessário atualizar todos ? - a favor: pode ser q um condutor esteja em outro seguro
 		atualizarValoresSeguro();
@@ -122,8 +123,7 @@ public class Seguradora {
 		boolean gerou;
 		// tenta adicionar o cliente a listaClientes, retorna false e não gera o seguro
 		// se não conseguir
-		if (! cadastrarCliente(cliente))
-			return false;
+		cadastrarCliente(cliente); // cadastra o cliente
 		gerou = listaSeguros.add(new SeguroPF(dataInicio, dataFim, this, veiculo, cliente));
 		// TODO - espelhar método acima
 		atualizarValoresSeguro();
@@ -154,7 +154,6 @@ public class Seguradora {
 		}
 		return listaSeguros;
 	}
-	// TODO - método necessário ?
 	/* Retorna lista com os seguros nos quais o condutor está cadastrado na seguradora */
 	public List<Seguro> getSegurosPorCondutor(Condutor condutor) {
 		List<Seguro> listaSeguros = new ArrayList<Seguro>();
@@ -178,7 +177,6 @@ public class Seguradora {
 			listaSinistros.addAll(seguro.getListaSinistros());
 		return listaSinistros;
 	}
-	// TODO - método necessário ?
 	/* Retorna lista com os segurosPJ que contêm a frota. */
 	public List<Seguro> getSegurosPorFrota(Frota frota) {
 		List<Seguro> listaSeguros = new ArrayList<Seguro>();
@@ -188,7 +186,6 @@ public class Seguradora {
 				listaSeguros.add(seguro);
 		return listaSeguros;
 	}
-	// TODO - método necessário ?
 	/* Retorna lista com os segurosPF que contêm o veículo. */
 	public List<Seguro> getSegurosPorVeiculo(Veiculo veiculo) {
 		List<Seguro> listaSeguros = new ArrayList<Seguro>();

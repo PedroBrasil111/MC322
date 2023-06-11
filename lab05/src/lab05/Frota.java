@@ -38,11 +38,14 @@ public class Frota {
         String str = String.valueOf(hashCode());
         return str;
     }
-    /* Retorna boolean indicando se a frota f é igual. Comparacão é feita por code. */
-    public boolean equals(Frota f) {
-        if (f == null || ! code.equals(f.getCode()))
-            return false;
-        return true;
+    /* Retorna boolean indicando se o objeto obj é igual. Comparacão é feita por code. */
+    @Override
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+        if (obj == null || getClass() != obj.getClass())
+			return false;
+        return code.equals(((Frota) obj).getCode());
     }
     /* Lista os veiculos cadastrados para a frota no formato "i - <veiculo[i].placa>,"
      * onde i é o índice do veiculo na lista. Retorna boolean indicando se imprimiu. */

@@ -26,11 +26,14 @@ public class Veiculo {
 		return str;
 	}
 
-    /* Retorna boolean indicando se o veiculo v é igual. Comparacão é feita por placa. */
-    public boolean equals(Veiculo v) {
-        if (v == null || ! placa.equals(v.getPlaca()))
-            return false;
-        return true;
+    /* Retorna boolean indicando se o objeto obj eh igual. Comparacão é feita por placa. */
+	@Override
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+        if (obj == null || getClass() != obj.getClass())
+			return false;
+        return placa.equals(((Veiculo) obj).getPlaca());
     }
 
 	// Getters e setters
