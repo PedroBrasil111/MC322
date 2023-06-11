@@ -93,17 +93,24 @@ public abstract class Seguro {
      * Retorna boolean indicando se gerou. O condutor deve estar incluso no seguro. */
     public boolean gerarSinistro(Date data, Condutor condutor, String endereco) {
         Sinistro sinistro;
+        boolean gerou;
         // se o condutor não está incluso no seguro, não cria o sinistro e retorna false
         if (! listaCondutores.contains((condutor)))
             return false;
         sinistro = new Sinistro(data, endereco, condutor, this);
         // adiciona o sinistro à lista do condutor
         condutor.adicionarSinistro(sinistro);
-        return listaSinistros.add(sinistro);
+        gerou = listaSinistros.add(sinistro);
+        calcularValor();
+        return gerou;
     }
 	/* Remove o sinistro s de listaSinistros, retorna boolean indicando se removeu */
     public boolean removerSinistro(Sinistro s) {
-        return listaSinistros.remove(s);
+        boolean removeu = listaSinistros.remove(s);
+        for (Condutor condutor: listaCondutores)
+            condutor.getListaSinistros().remove(s);
+        calcularValor();
+        return removeu;
     }
 	/* Retorna a quantidade de sinistros que os condutores possuem na seguradora */
     protected int quantidadeSinistrosPorCondutor() {
