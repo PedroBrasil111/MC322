@@ -63,7 +63,16 @@ public class Frota {
     public boolean removeVeiculo(Veiculo v) {
         return listaVeiculos.remove(v);
     }
-
+    /* Remove o veiculo com veiculo.placa == placa de listaVeiculos,
+     * retorna boolean indicando se removeu. */
+    public boolean removeVeiculo(String placa) {
+        for (int i = 0; i < listaVeiculos.size(); i++)
+            if (listaVeiculos.get(i).getPlaca() == placa) {
+                listaVeiculos.remove(i);
+                return true;
+            }
+        return false;
+    }
     // Getters e setters
     public String getCode() {
         return code;
