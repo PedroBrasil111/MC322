@@ -76,7 +76,7 @@ public abstract class Seguro {
             return false;
         for (int i = 0; i < listaCondutores.size(); i++)
             System.out.println(i + " - " + listaCondutores.get(i).getNome() +
-                    " CPF - " + listaCondutores.get(i).getCpf());
+                    " - CPF " + listaCondutores.get(i).getCpf());
         return true;
     }
 	/* Adiciona o condutor c a listaCondutores, retorna boolean indicando se adicionou */
