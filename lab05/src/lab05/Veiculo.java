@@ -26,12 +26,13 @@ public class Veiculo {
 		return str;
 	}
 
-	// TODO - comentar
+    /* Retorna boolean indicando se o veiculo v é igual. Comparacão é feita por placa. */
     public boolean equals(Veiculo v) {
         if (v == null || ! placa.equals(v.getPlaca()))
             return false;
         return true;
     }
+
 	// Getters e setters
 	public String getPlaca() {
 		return placa;

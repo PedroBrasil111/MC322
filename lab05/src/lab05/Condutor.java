@@ -25,6 +25,11 @@ public class Condutor {
         this.dataNasc = dataNasc;
         listaSinistros = new ArrayList<Sinistro>();
     }
+    public Condutor(ClientePF cliente) {
+        // Gera a partir dos dados de um clientePF
+        this(cliente.getCpf(), cliente.getNome(), cliente.getTelefone(), cliente.getEndereco(),
+            cliente.getEmail(), cliente.getDataNasc());
+    }
 
     // toString()
     /* Condutor - <nome>:
@@ -39,7 +44,7 @@ public class Condutor {
         String str = String.format("Condutor - %s:\n- CPF: %s\n- Telefone: %s\n- Endereco: %s\n" +
                 "- E-mail: %s\n- Data de nascimento: %s\n- Sinistros: ", nome, cpf, telefone,
                 endereco, email, Data.dateToString(dataNasc));
-        if (! listaSinistros.isEmpty()) {
+        if (listaSinistros.isEmpty()) {
             str += "Nenhum sinistro cadastrado";
         } else {
             for (int i = 0; i < listaSinistros.size() - 1; i++)
@@ -49,20 +54,20 @@ public class Condutor {
         return str;
     }
 
-    // TODO - comentar
+    /* Retorna boolean indicando se o condutor c é igual. Comparacão é feita por CPF. */
     public boolean equals(Condutor c) {
         if (c == null || ! cpf.equals(c.getCpf()))
             return false;
         return true;
     }
-    // TODO - comentar
+	/* Adiciona o sinistro s à lista, retorna boolean indicando se adicionou */
     public boolean adicionarSinistro(Sinistro s) {
         return listaSinistros.add(s);
     }
     public boolean removerSinistro(Sinistro s) {
         return listaSinistros.remove(s);
     }
-    // TODO - comentar
+    /* Retorna lista contendo todos os sinistros do condutor na seguradora */
     public List<Sinistro> getSinistrosPorSeguradora(Seguradora seguradora) {
         ArrayList<Sinistro> listaRetorno = new ArrayList<Sinistro>();
         for (Sinistro sinistro: listaSinistros)
@@ -70,6 +75,8 @@ public class Condutor {
                 listaRetorno.add(sinistro);
         return listaRetorno;
     }
+    /* Lista os sinistros cadastrados para o condutor no formato "i - <sinistro[i].id>,"
+     * onde i é o índice do sinistro na lista. Retorna boolean indicando se imprimiu. */
     public boolean listarSinistros() {
 		if (listaSinistros.isEmpty()) // lista vazia
 			return false;

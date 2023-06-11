@@ -15,34 +15,24 @@ public class SeguroPJ extends Seguro {
         calcularValor();
     }
 
-    // TODO - comentar
+    // toString()
+    /* SeguroPJ - id <id>:
+     * - Data de inicio: <Data.dateToString(dataInicio)>
+     * - Data de fim: <Data.dateToString(dataFim)>
+     * - Seguradora: <seguradora.nome>
+     * - Valor mensal: <valorMensal>
+     * - Sinistros: Nenhum sinistro cadastrado OU <sinistro1.id>, <sinistro2.id>, ...
+     * - Condutores: Nenhum condutor cadastrado OU <condutor1.cpf>, <condutor2.cpf>, ... 
+     * - Frota: <frota.code>
+     * - Cliente: <cliente.strDocumento()> */
+    public String toString() {
+        String str = super.toString().replaceFirst("Seguro", "SeguroPJ");
+        str += "\n- Frota: " + frota.getCode() + "\n- Cliente: " + cliente.strDocumento();
+        return str;
+    }
+
+    /* Atribui o valor do seguro */
     @Override
-    public boolean autorizarCondutor(Condutor c) {
-        boolean autorizou = super.autorizarCondutor(c);
-        if (autorizou)
-            calcularValor();
-        return autorizou;
-    }
-    // TODO - comentar
-    public boolean desautorizarCondutor(Condutor c) {
-        boolean desautorizou = super.desautorizarCondutor(c);
-        if (desautorizou)
-            calcularValor();
-        return desautorizou;
-    }
-    // TODO - comentar
-    public boolean gerarSinistro(Date data, Condutor condutor, String endereco) {
-        boolean gerou = super.gerarSinistro(data, condutor, endereco);
-            if (gerou)
-        calcularValor();
-        return gerou;
-    }
-    public boolean removerSinistro(Sinistro s) {
-        boolean removeu = super.removerSinistro(s);
-        if (removeu)
-            calcularValor();
-        return removeu;
-    }
     public void calcularValor() {
         double valor;
         if (frota == null || getSeguradora() == null || cliente == null)
@@ -56,9 +46,46 @@ public class SeguroPJ extends Seguro {
             (1 + 1. / (Data.calcularIdade(cliente.getDataFundacao()) + 2)) *
             // (2 + quantidadeSinistrosCliente/10)
             (2 + getSeguradora().getSinistrosPorCliente(cliente).size() / 10.) *
-            // (5 + quantidadeSinistrosConsutor / 10)
-            (5 + quantidadeSinistrosPorCondutor(cliente) / 10.);
+            // (5 + quantidadeSinistrosCondutor / 10)
+            (5 + quantidadeSinistrosPorCondutor() / 10.);
             setValorMensal(valor);
+    }
+	/* Adiciona o condutor c a listaCondutores, retorna boolean indicando se adicionou.
+     * Atualiza o valor do seguro. */
+    @Override
+    public boolean autorizarCondutor(Condutor c) {
+        boolean autorizou = super.autorizarCondutor(c);
+        if (autorizou)
+            calcularValor();
+        return autorizou;
+    }
+	/* Remove o condutor c de listaCondutores, retorna boolean indicando se removeu.
+     * Atualiza o valor do seguro. */
+    @Override
+    public boolean desautorizarCondutor(Condutor c) {
+        boolean desautorizou = super.desautorizarCondutor(c);
+        if (desautorizou)
+            calcularValor();
+        return desautorizou;
+    }
+    /* Gera um sinistro a partir dos parâmetros e o adiciona a listaSinistros.
+     * Retorna boolean indicando se gerou. O condutor deve estar incluso no seguro.
+     * Atualiza o valor do seguro. */
+    @Override
+    public boolean gerarSinistro(Date data, Condutor condutor, String endereco) {
+        boolean gerou = super.gerarSinistro(data, condutor, endereco);
+            if (gerou)
+        calcularValor();
+        return gerou;
+    }
+	/* Remove o sinistro s de listaSinistros, retorna boolean indicando se removeu.
+     * Atualiza o valor do seguro. */
+    @Override
+    public boolean removerSinistro(Sinistro s) {
+        boolean removeu = super.removerSinistro(s);
+        if (removeu)
+            calcularValor();
+        return removeu;
     }
 
     // Getters e setters
@@ -74,4 +101,5 @@ public class SeguroPJ extends Seguro {
     public ClientePJ getCliente() {
         return cliente;
     }
+
 }

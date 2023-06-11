@@ -10,15 +10,8 @@ public class Sinistro {
 	private Condutor condutor;
 	private Seguro seguro;
 
-	// TODO(?) - mudar metodo
-	private int gerarId() {
-		return hashCode();
-	}
-
 	// Construtor
 	public Sinistro(Date data, String endereco, Condutor condutor, Seguro seguro) {
-		// Gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
-		// Porém, esse id varia a cada iteracão do programa.
 		id = gerarId();
 		this.data = data;
 		this.endereco = endereco;
@@ -38,6 +31,13 @@ public class Sinistro {
 				"- Condutor: %s\n- Seguro: %s", id, Data.dateToString(data), endereco,
 				condutor.getNome(), seguro.getId());
 		return str;
+	}
+
+	/* Retorna um id único para o objeto. */
+	private int gerarId() {
+		// Gera um id aleatório baseado no endereco de memória (único p/ cada objeto).
+		// Porém, esse id varia a cada iteracão do programa.
+		return hashCode();
 	}
 
 	// Getters e setters

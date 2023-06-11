@@ -32,7 +32,7 @@ public class ClientePJ extends Cliente {
         String str = super.toString().replace("Cliente", "ClientePJ");
         str += String.format("\n- CNPJ: %s\n- Data de fundacao: %s\n" +
             "- Frotas: ", cnpj, Data.dateToString(dataFundacao));
-        if (! listaFrota.isEmpty()) {
+        if (listaFrota.isEmpty()) {
             str += "Nenhuma frota cadastrada";
         } else {
             for (int i = 0; i < listaFrota.size(); i++) {
@@ -43,41 +43,41 @@ public class ClientePJ extends Cliente {
         }
 		return str;
     }
-    // TODO - comentar
+    /* Retorna boolean indicando se o cliente c é igual. Comparacão é feita por CNPJ. */
     public boolean equals(ClientePJ c) {
         if (c == null || ! cnpj.equals(c.getCnpj()))
             return false;
         return true;
     }
-    /* Retorna uma string no formato "CNPJ - <cnpj>". */
+    /* Retorna uma string no formato "CNPJ <cnpj>". */
     @Override
     public String strDocumento() {
-        String str = "CNPJ: " + cnpj;
+        String str = "CNPJ " + cnpj;
         return str;
     }
-    // TODO - comentar
+    /* Insere a frota f na lista de frotas (se for única). Retorna boolean indicando se inseriu. */
     public boolean cadastrarFrota(Frota f) {
         if (listaFrota.contains(f))
             return false;
         return listaFrota.add(f);
     }
-    // TODO - comentar
-    private boolean addVeiculoFrota(Frota f, Veiculo v) {
-        if (f.getListaVeiculos().contains(v))
-            return false;
+    /* Adiciona o veiculo v à frota f. Retorna boolean indicando se adicionou. */
+    private boolean addVeiculoFrota(Frota f, Veiculo v) { 
         return f.addVeiculo(v);
     }
-    // TODO - comentar
+    /* Remove o veiculo v da frota f. Retorna boolean indicando se removeu. */
     private boolean removerVeiculoFrota(Frota f, Veiculo v) {
         return f.addVeiculo(v);
     }
-    // TODO - comentar
+    /* Remove a frota f da lista de frotas. Retorna boolean indicando se removeu. */
     private boolean removerFrota(Frota f) {
         return listaFrota.remove(f);
     }
-    // TODO - comentar
-    // Alem de adicionar e remover veıculos em uma frota, este metodo tambem deve 
-    // ser capaz de remover a frota inteira.
+    /* Dependendo do valor de "atualizacao", realiza uma operacão diferente:
+     * "addVeic" para adicionar veiculo à frota,
+     * "rmVeic" para remover veiculo da frota,
+     * "rmFrota" para remover a frota do cliente.
+     * Retorna boolean indicando se a operacão ocorreu. */
     public boolean atualizarFrota(String atualizacao, Frota frota, Veiculo veiculo) {
         if (! listaFrota.contains(frota))
             return false;
@@ -92,7 +92,8 @@ public class ClientePJ extends Cliente {
                 return false;
         }
     }
-    // TODO - comentar
+    /* Se atualizacao for "rmFrota", remove a frota do cliente.
+     * Retorna boolean indicando se removeu. */
     public boolean atualizarFrota(String atualizacao, Frota frota) {
         return atualizarFrota(atualizacao, frota, null);
     }
@@ -100,7 +101,8 @@ public class ClientePJ extends Cliente {
     public boolean getVeiculosPorFrota() {
         return true;
     }
-    // TODO - comentar
+    /* Lista as frotas cadastradas para o cliente no formato "i - <frota[i].code>,"
+     * onde i é o índice da frota na lista. Retorna boolean indicando se imprimiu. */
 	public boolean listarFrotas() {
 		if (listaFrota.isEmpty()) // lista vazia
 			return false;

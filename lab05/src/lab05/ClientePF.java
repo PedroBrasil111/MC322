@@ -49,19 +49,20 @@ public class ClientePF extends Cliente {
         return str;
     }
 
-    // TODO - comentar
+    /* Retorna boolean indicando se o cliente c é igual. Comparacão é feita por CPF. */
     public boolean equals(ClientePF c) {
         if (c == null || ! cpf.equals(c.getCpf()))
             return false;
         return true;
     }
-    /* Retorna uma string no formato "CPF: <cpf>". */
+    /* Retorna uma string no formato "CPF <cpf>". */
     @Override
     public String strDocumento() {
-        String str = "CPF: " + cpf;
+        String str = "CPF " + cpf;
         return str;
     }
-    // TODO - comentar (espelhar Frota)
+    /* Lista os veiculos cadastrados para o cliente no formato "i - <veiculo[i].placa>,"
+     * onde i é o índice do veiculo na lista. Retorna boolean indicando se imprimiu. */
     public boolean listarVeiculos() {
         if (listaVeiculos.isEmpty()) // lista vazia
             return false;
@@ -69,13 +70,13 @@ public class ClientePF extends Cliente {
             System.out.println(i + " - " + listaVeiculos.get(i).getPlaca());
         return true;
     }
-	// Adiciona o veiculo v a listaVeiculos, retorna boolean indicando se adicionou
+	/* Adiciona o veiculo v a listaVeiculos, retorna boolean indicando se adicionou */
     public boolean cadastrarVeiculo(Veiculo v) {
         if (listaVeiculos.contains(v))
             return false;
         return listaVeiculos.add(v);
     }
-	// Remove o veiculo v de listaVeiculos, retorna boolean indicando se removeu 
+	/* Remove o veiculo v de listaVeiculos, retorna boolean indicando se removeu */
 	public boolean removerVeiculo(Veiculo v) {
 		return listaVeiculos.remove(v);
 	}

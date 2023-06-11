@@ -72,46 +72,46 @@ public class AppMain {
 	private static void executarOpcaoSubMenu(SubmenuOperacoes opSubmenu) {
 		switch(opSubmenu) {
 			case CADASTRAR_SEGURADORA:
-				operacaoCadastrarSeguradora();
+				// operacaoCadastrarSeguradora();
 				break;
 			case CADASTRAR_CLIENTE:
-				operacaoCadastrarCliente();
+				// operacaoCadastrarCliente();
 				break;
 			case CADASTRAR_VEICULO:
-				operacaoCadastrarVeiculo();
+				// operacaoCadastrarVeiculo();
 				break;
 			case CADASTRAR_FROTA:
-				operacaoCadastrarFrota();
+				// operacaoCadastrarFrota();
 				break;
 			case CADASTRAR_CONDUTOR:
-				operacaoCadastrarCondutor();
+				// operacaoCadastrarCondutor();
 				break;
 			case IMPRIMIR_SEGURADORA:
-				operacaoImprimirSeguradora();
+				// operacaoImprimirSeguradora();
 				break;
 			case IMPRIMIR_CLIENTE:
-				operacaoImprimirCliente();
+				// operacaoImprimirCliente();
 				break;
 			case IMPRIMIR_CONDUTOR:
-				operacaoImprimirCondutor();
+				// operacaoImprimirCondutor();
 				break;
 			case IMPRIMIR_SINISTRO:
-				operacaoImprimirSinistro();
+				// operacaoImprimirSinistro();
 				break;
 			case IMPRIMIR_VEICULO:
-				operacaoImprimirVeiculo();
+				// operacaoImprimirVeiculo();
 				break;
 			case IMPRIMIR_SEGURO:
-				operacaoImprimirSeguro();
+				// operacaoImprimirSeguro();
 				break;
 			case IMPRIMIR_FROTA:
-				operacaoImprimirFrota();
+				// operacaoImprimirFrota();
 				break;
 			case GERAR_SINISTRO:
-				operacaoGerarSinistro();
+				// operacaoGerarSinistro();
 				break; 
 			case GERAR_SEGURO:
-				operacaoGerarSeguro();
+				// operacaoGerarSeguro();
 				break;
 			case VOLTAR:
 				break;
@@ -127,9 +127,99 @@ public class AppMain {
 		} while (opSubmenu != SubmenuOperacoes.VOLTAR);
 	}
 
+	/* Metodo de inicializacao.
+	 * Inicializa uma seguradora e outros objetos associados e chama alguns dos métodos */
+	public static void inicializacao() {
+		// instanciando objetos iniciais
+		// é esperado que outros objetos sejam instanciados através do menu,
+		// onde é feita validacão dos dados. A instanciacão pelo construtor não valida os dados.
+		Seguradora unicampSeg = new Seguradora("68.011.474/0001-72", "Unicamp Seguros",
+			"+55(19)1234-5678", "Ciclo Basico", "contato@unicampseguros.com");
+		Seguradora uspSeg = new Seguradora("27.567.062/0001-36", "USP Seguros", "+55(19)1421-5930",
+			"São Paulo", "contato@uspseguros.com");
+		Veiculo v1 = new Veiculo("ABC1D23", "Toyota", "Corolla", 2015);
+		Veiculo v2 = new Veiculo("EFG4H56", "Volkswagen", "Jetta", 2014);
+		Veiculo v3 = new Veiculo("IJK7L89", "Chevrolet", "Corsa", 2002);
+		Veiculo v4 = new Veiculo("MNO1P23", "Volkswagen", "Fusca", 1994);
+		Veiculo v5 = new Veiculo("PCA9C20", "Toyota", "Corolla", 2002);
+		Veiculo v6 = new Veiculo("OPM1F03", "Volkswagen", "Jetta", 2010);
+		ClientePF ana = new ClientePF("Ana", "+55(19)91234-5678", "Instituto de Computacao",
+			"ana@gmail.com", "123.456.789-09", "Feminino", "Superior completo", Data.stringToDate("12/10/1995"));
+		ClientePF beto = new ClientePF("Beto", "+55(19)98923-1043", "Instutto de Quimica",
+			 "beto@gmail.com", "781.812.330-00", "Masculino", "Cursando superior", Data.stringToDate("29/02/2002"));
+		ClientePJ meta = new ClientePJ("Meta", "+55(19)98934-2318", "Instituto de Computacao",
+			"meta@gmail.com", "12.345.678/0001-95", Data.stringToDate("04/02/2004"));
+		Condutor anaCondutor = new Condutor(ana);
+		Condutor betoCondutor = new Condutor(beto);
+		Condutor carlosCondutor = new Condutor("615.255.980-40", "Carlos", "+55(19)94213-7653",
+			"Instituto de Economia", "carlos@gmail.com", Data.stringToDate("29/01/2004"));
+		ClientePJ google = new ClientePJ("Google", "+55(19)941042-1953", "FEEC",
+			"google@gmail.com", "02.649.275/0001-86", Data.stringToDate("04/09/1998"));
+		Frota frotaMeta1 = new Frota();
+		Frota frotaMeta2 = new Frota();
+		Frota frotaGoogle = new Frota();
+		// adicionando às listas
+		listaSeguradoras.add(unicampSeg);
+		listaSeguradoras.add(uspSeg);
+		listaVeiculos.add(v1);
+		listaVeiculos.add(v2);
+		listaVeiculos.add(v3);
+		listaVeiculos.add(v4);
+		listaVeiculos.add(v5);
+		listaVeiculos.add(v6);
+		listaClientes.add(ana);
+		listaClientes.add(beto);
+		listaClientes.add(meta);
+		listaClientes.add(google);
+		listaCondutores.add(anaCondutor);
+		listaCondutores.add(betoCondutor);
+		listaCondutores.add(carlosCondutor);
+		listaFrotas.add(frotaMeta1);
+		listaFrotas.add(frotaMeta2);
+		listaFrotas.add(frotaGoogle);
+		// cadastrando frotas
+		meta.cadastrarFrota(frotaMeta1);
+		meta.atualizarFrota("addVeic", frotaMeta1, v1);
+		meta.atualizarFrota("addVeic", frotaMeta1, v2);
+		meta.cadastrarFrota(frotaMeta2);
+		meta.atualizarFrota("addVeic", frotaMeta2, v3);
+		google.cadastrarFrota(frotaGoogle);
+		google.atualizarFrota("addVeic", frotaGoogle, v4);
+		// cadastrando veiculos para cada clientePF
+		ana.cadastrarVeiculo(v5);
+		beto.cadastrarVeiculo(v6);
+		// gerando seguros
+		unicampSeg.gerarSeguro(Data.stringToDate("12/03/2021"), Data.stringToDate("12/03/2023"), v5, ana);
+		Seguro seguroAna = unicampSeg.getListaSeguros().get(0);
+		unicampSeg.gerarSeguro(Data.stringToDate("10/09/2021"), Data.stringToDate("10/09/2023"), frotaMeta1, meta);
+		Seguro seguroMeta1 = unicampSeg.getListaSeguros().get(1);
+		uspSeg.gerarSeguro(Data.stringToDate("10/09/2020"), Data.stringToDate("10/09/2024"), frotaGoogle, google);
+		Seguro seguroGoogle = uspSeg.getListaSeguros().get(0);
+		uspSeg.gerarSeguro(Data.stringToDate("31/05/2022"), Data.stringToDate("31/05/2023"), v6, beto);
+		Seguro seguroBeto = uspSeg.getListaSeguros().get(1);
+		uspSeg.gerarSeguro(Data.stringToDate("14/12/2022"), Data.stringToDate("14/12/2024"), frotaMeta2, meta);
+		Seguro seguroMeta2 = uspSeg.getListaSeguros().get(2);
+		// autorizando condutores
+		seguroAna.autorizarCondutor(anaCondutor);
+		seguroAna.autorizarCondutor(carlosCondutor);
+		seguroMeta1.autorizarCondutor(anaCondutor);
+		seguroGoogle.autorizarCondutor(betoCondutor);
+		seguroBeto.autorizarCondutor(betoCondutor);
+		seguroMeta2.autorizarCondutor(anaCondutor);
+		// gerando sinistros
+		seguroAna.gerarSinistro(Data.stringToDate("14/02/2022"), carlosCondutor, "IFGW");
+		Sinistro sinistroAna = seguroAna.getListaSinistros().get(0);
+		seguroAna.gerarSinistro(Data.stringToDate("24/09/2022"), anaCondutor, "Ciclo Basico");
+		seguroMeta1.gerarSinistro(Data.stringToDate("12/12/2021"), anaCondutor, "IMECC");
+		seguroBeto.gerarSinistro(Data.stringToDate("23/02/2023"), betoCondutor, "Instituto de Biologia");
+		// imprimindo
+		System.out.println(unicampSeg + "\n\n" + v1 + "\n\n" + beto + "\n\n" + meta + "\n\n" + frotaMeta1 +
+			"\n\n" + anaCondutor + "\n\n" + seguroBeto + "\n\n" + seguroMeta1 + "\n\n" + sinistroAna);
+	}
+	
 	public static void main(String[] args) {
 		MenuOperacoes op;
-		// inicializacao(); // Inicializa uma seguradora
+		inicializacao(); // Inicializa objetos
 		// Usando o menu
 		System.out.println("-------------- Menu --------------");
 		do {
@@ -140,7 +230,6 @@ public class AppMain {
 		System.out.println("Saiu do sistema.");
 		Leitura.fechar();
 	}
-
 	/* Imprime "Operacao realizada com sucesso" se operacaoRealizada for true.
 	 * Imprime "Ocorreu um erro. Tente novamente." se operacaoRealizada for false. */
 	private static void mensagemOperacaoRealizada(boolean operacaoRealizada) {
@@ -264,255 +353,5 @@ public class AppMain {
 		return false;
 	}
 
-	/* CADASTRO */
-	//TODO - comentar
-	private static void operacaoCadastrarSeguradora() {
-		Seguradora seg;
-		String atributos[] = {"o CNPJ", "o nome", "o telefone", "o endereco", "o e-mail"};
-		String leitura[] = new String[5];
-		System.out.println("** Cadastro de seguradora **");
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite " + atributos[i] + " da seguradora: ");
-			if (i == 0)
-				leitura[i] = Leitura.lerCnpj();
-			else if (i == 1)
-				leitura[i] = Leitura.lerNome();
-			else
-				leitura[i] = Leitura.lerString();
-		}
-		seg = new Seguradora(leitura[0], leitura[1], leitura[2], leitura[3], leitura[4]);
-		// checa se já existe seguradora com o mesmo cpf
-		if (! listaSeguradoras.contains(seg))
-			listaSeguradoras.add(seg);
-	}
-	//TODO - comentar
-	private static void operacaoCadastrarCliente() {
-		int opcao;
-		Cliente cliente;
-		Seguradora seg;
-		String[] atributos = {"o nome", "o telefone", "o endereco", "o email"};
-		String[] leitura = new String[4];
-		System.out.println("** Cadastro de cliente **");
-		System.out.println("Qual tipo de cliente deseja cadastrar?\n" + 
-				"0 - Pessoa Fisica\n1 - Pessoa Juridica");
-		opcao = Leitura.lerIndice(2);
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite " + atributos[i] + " do cliente: ");
-			if (i == 0)
-				leitura[i] = Leitura.lerNome();
-			else
-				leitura[i] = Leitura.lerString();
-		}
-		if (opcao == 0)
-			cliente = cadastroClientePF(leitura[0], leitura[1], leitura[2], leitura[3]);
-		else
-			cliente = cadastroClientePJ(leitura[0], leitura[1], leitura[2], leitura[3]);
-		if (listaClientes.contains(cliente)) {
-			System.out.println("Erro: o cliente ja havia sido cadastrado.");
-			return;
-		}
-		mensagemOperacaoRealizada(listaClientes.add(cliente));
-	}
-	private static ClientePF cadastroClientePF(String nome, String telefone, 
-			String endereco, String email) {
-		String[] atributos = {"o CPF", "o genero", "o nivel de educacao",
-				"a data de nascimento (dd/MM/aaaa)"};
-		String leitura[] = new String[4];
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite " + atributos[i] + " do cliente: ");
-			if (i == 0)
-				leitura[i] = Leitura.lerCpf();
-			else if (i == 3)
-				leitura[i] = Leitura.lerData();
-			else
-				leitura[i] = Leitura.lerString();
-		}
-		return new ClientePF(nome, telefone, endereco, email, leitura[0], leitura[1], leitura[2],
-				Data.stringToDate(leitura[3]));
-	}
-	private static ClientePJ cadastroClientePJ(String nome, String telefone, 
-			String endereco, String email) {
-		String[] atributos = {"o CNPJ", "a data de fundacao"};
-		String leitura[] = new String[2];
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite o " + atributos[i] + " do cliente: ");
-			if (i == 0)
-				leitura[i] = Leitura.lerCnpj();
-			else
-				leitura[i] = Leitura.lerData();
-		}
-		return new ClientePJ(nome, telefone, endereco, email, leitura[0],
-				Data.stringToDate(leitura[1]));
-	}
-	private static void operacaoCadastrarVeiculo() {
-		int opcao;
-		Cliente cliente;
-		Frota frota;
-		Veiculo veiculo;
-		System.out.println("** Cadastro de veiculo **");
-		veiculo = cadastroVeiculoNovo();
-		if (veiculo == null) return;
-		System.out.println("Deseja cadastrar o veiculo em uma frota ou cliente pessoa fisica?\n" +
-				"0 - Frota\n1 - Cliente pessoa fisica");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			frota = requisitarFrota(true);
-			if (frota == null) return;
-			mensagemOperacaoRealizada(frota.addVeiculo(veiculo));
-		} else {
-			cliente = requisitarCliente("PF", true);
-			if (cliente == null) return;
-			mensagemOperacaoRealizada(cliente.cadastrarVeiculo(veiculo));
-		}
-	}
-	private static void cadastroVeiculoNovo() {
-		String[] atributos = {"a placa", "a marca", "o modelo", "o ano de fabricacao"};
-		String leitura[] = new String[3];
-		int anoFabricacao = 0;
-		Veiculo veiculo;
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite " + atributos[i] + " do veiculo: ");
-			if (i == 3)
-				anoFabricacao = Leitura.lerIndice(2200);
-			else
-				leitura[i] = Leitura.lerString();
-		}
-		veiculo = new Veiculo(leitura[0], leitura[1], leitura[2], anoFabricacao)
-		if (listaVeiculos.contains(veiculo)) {
-			System.out.println("Erro: O veiculo ja havia sido cadastrado.");
-			return null;
-		}
-		mensagemOperacaoRealizada(listaVeiculos.add(new Veiculo(leitura[0], leitura[1],
-				leitura[2], anoFabricacao)));
-		return veiculo;
-	}
-	private static void operacaoCadastrarFrota() {
-		Cliente cliente;
-		Frota frota;
-		int opcao;
-		System.out.println("** Cadastro de frota **");
-		opcao = Leitura.lerIndice(2);
-		if (opcao == 0) {
-			frota = new Frota();
-			mensagemOperacaoRealizada(listaFrotas.add(frota));
-			System.out.println("Codigo da frota: " + frota.getCode());
-		}
-		System.out.println("Para qual cliente deseja cadastrar a frota?");
-		cliente = requisitarCliente("PJ", false);
-		if (cliente == null) return;
-	}
-	private static void operacaoCadastrarCondutor() {
-		Condutor condutor;
-		int opcao;
-		Seguro seguro;
-		Seguradora seg;
-		System.out.println("** Cadastro de condutor **");
-		condutor = cadastroCondutorNovo();
-		if (listaCondutores.contains(condutor)) {
-			System.out.println("O condutor ja esta cadastrado. Operacao abortada.");
-			return;
-		}
-		System.out.println("Digite o numero referente a seguradora que cobre o seguro do condutor:");
-		seg = requisitarSeguradora(false);
-		if (seg == null) return;
-		seguro = requisitarSeguroSeguradora(seg, true);
-		if (seguro == null) return;
-		mensagemOperacaoRealizada(seguro.autorizarCondutor(condutor));
-	}
-	private static Condutor cadastroCondutorNovo() {
-		String atributos[] = {"o CPF", "o nome", "o telefone", "o endereco", "o email", 
-		"a data de nascimento (dd/MM/aaaa)"};
-		String leitura[] = new String[6];
-		Condutor condutor;
-		for (int i = 0; i < atributos.length; i++) {
-			System.out.print("Digite " + atributos[i] + " do condutor: ");
-			if (i == 0)
-				leitura[i] = Leitura.lerCpf();
-			else if (i == 1)
-				leitura[i] = Leitura.lerNome();
-			else if (i == 5)
-				leitura[i] = Leitura.lerData();
-			else
-				leitura[i] = Leitura.lerString();
-		}
-		condutor = new Condutor(leitura[0], leitura[1], leitura[2], leitura[3], leitura[4],
-				Data.stringToDate(leitura[5]));
-		if (listaCondutores.contains(condutor)) {
-			System.out.println("Erro: O condutor ja havia sido cadastrado.");
-			return null;
-		}
-		mensagemOperacaoRealizada(listaCondutores.add(condutor));
-		return condutor;
-	}
-
-	/* IMPRIMIR */
-	private static void operacaoImprimirSeguradora() {
-		Seguradora seg;
-		System.out.println("** Visualizar seguradora **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		System.out.println(seg);
-	}
-	private static void operacaoImprimirCliente() {
-		Cliente cliente;
-		System.out.println("** Visualizar cliente **");
-		cliente = requisitarCliente("", true);
-		if (cliente == null) return;
-		System.out.println(cliente);
-	}
-	private static void operacaoImprimirCondutor() {
-		Condutor condutor;
-		System.out.println("** Visualizar condutor **");
-		condutor = requisitarCondutor(true);
-		if (condutor == null) return;
-		System.out.println(condutor);
-	}
-	private static void operacaoImprimirSinistro() {
-		Sinistro sinistro;
-		Seguradora seg;
-		Seguro seguro;
-		System.out.println("** Visualizar sinistro **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		seguro = requisitarSeguroSeguradora(seg, true);
-		if (seguro == null) return;
-		sinistro = requisitarSinistroSeguro(seguro, true);
-		if (sinistro == null) return;
-		System.out.println(sinistro);
-	}
-	private static void operacaoImprimirVeiculo() {
-		Veiculo veiculo;
-		System.out.println("** Visualizar veiculo **");
-		veiculo = requisitarVeiculo(true);
-		if (veiculo == null) return;
-		System.out.println(veiculo);
-	}
-	private static void operacaoImprimirSeguro() {
-		Seguradora seg;
-		Seguro seguro;
-		System.out.println("** Visualizar seguro **");
-		seg = requisitarSeguradora(true);
-		if (seg == null) return;
-		seguro = requisitarSeguroSeguradora(seg, true);
-		if (seguro == null) return;
-		System.out.println(seguro);
-	}
-	private static void operacaoImprimirFrota() {
-		Frota frota;
-		System.out.println("** Visualizar frota **");
-		frota = requisitarFrota(true);
-		if (frota == null) return;
-		System.out.println(frota);
-	}
-
-	/* GERAR */
-	private static void operacaoGerarSinistro() {
-		
-	}
-	private static void operacaoGerarSeguro() {
-		Seguradora seg;
-		System.out.println("** Gerar seguro **");
-		
-	}
 	
 }

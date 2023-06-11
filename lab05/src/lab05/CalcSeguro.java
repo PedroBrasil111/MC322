@@ -4,9 +4,9 @@ package lab05;
 
 public enum CalcSeguro {
     VALOR_BASE (10.), // valor base
-    FATOR_0 (1.25), // entre 18 e 30 anos
-    FATOR_30 (1.),  // entre 30 e 60 anos
-    FATOR_60 (1.5); // entre 60 e 90 anos
+    FATOR_30 (1.25), // idade < 30
+    FATOR_30_60 (1.),  // 30 <= idade <= 60
+    FATOR_60 (1.5); // idade > 60
 
     private final double valor;
 
