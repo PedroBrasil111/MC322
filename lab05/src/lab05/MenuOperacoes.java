@@ -7,7 +7,7 @@ package lab05;
 
 public enum MenuOperacoes {
 	SAIR("Sair", new SubmenuOperacoes[] {}),
-	CADASTROS("Cadastros", new SubmenuOperacoes[] {
+	CADASTROS("Cadastrar", new SubmenuOperacoes[] {
 		SubmenuOperacoes.VOLTAR,
 		SubmenuOperacoes.CADASTRAR_SEGURADORA,
 		SubmenuOperacoes.CADASTRAR_CLIENTE,
