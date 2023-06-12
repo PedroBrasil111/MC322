@@ -46,8 +46,8 @@ public class AppMain {
 				input = Leitura.lerString();
 				if (Validacao.validaData(input))
 					return input;
-				System.out.println("Erro. Data invalida ou fora do formato especificado. " +
-						"Tente digitar novamente.");
+				System.out.println("Erro. Data invalida ou fora do formato especificado " + 
+						"(dd/mm/aaaa). Tente digitar novamente.");
 			} while (true);
 		}
 		/* Dado o tamanho (tam) de uma lista ou array, retorna se i é um índice válido do iterável. */
@@ -64,7 +64,7 @@ public class AppMain {
 				// pos >= 0 e pos < tam
 				if (indiceValido(pos, tam))
 					return pos;
-				System.out.println("Erro. Digite um valor valido: ");
+				System.out.println("Erro. Digite um valor valido. ");
 			} while (true);
 		}
 		/* Lê até que um nome válido seja dado (nome sem números) e o retorna */
