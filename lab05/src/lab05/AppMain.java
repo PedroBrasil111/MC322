@@ -46,8 +46,8 @@ public class AppMain {
 				input = Leitura.lerString();
 				if (Validacao.validaData(input))
 					return input;
-				System.out.println("Erro. Data invalida ou fora do formato especificado " + 
-						"(dd/mm/aaaa). Tente digitar novamente.");
+				System.out.print("Erro. Data invalida ou fora do formato especificado " + 
+						"(dd/mm/aaaa). Tente digitar novamente: ");
 			} while (true);
 		}
 		/* Dado o tamanho (tam) de uma lista ou array, retorna se i é um índice válido do iterável. */
@@ -56,6 +56,7 @@ public class AppMain {
 				return false;
 			return true;
 		}
+		/* Le ate que seja dado um indice valido (entre 0 inclusive e tam exclusive) */
 		public static int lerIndice(int tam) {
 			int pos;
 			do {
@@ -102,6 +103,7 @@ public class AppMain {
 			} while (true);
 			return cpf;
 		}
+		/* Fecha o scanner */
 		public static void fechar() {
 			scanner.close();
 		}
@@ -327,7 +329,7 @@ public class AppMain {
 		seguroBeto.gerarSinistro(Data.stringToDate("23/02/2023"), betoCondutor, "Instituto de Biologia");
 		// imprimindo
 		System.out.println(unicampSeg + "\n\n" + v1 + "\n\n" + beto + "\n\n" + meta + "\n\n" + frotaMeta1 +
-			"\n\n" + anaCondutor + "\n\n" + seguroBeto + "\n\n" + seguroMeta1 + "\n\n" + sinistroAna);
+			"\n\n" + anaCondutor + "\n\n" + seguroBeto + "\n\n" + seguroMeta1 + "\n\n" + sinistroAna + "\n");
 	}
 
 	public static void main(String[] args) {
@@ -477,7 +479,7 @@ public class AppMain {
 		return null;
 	}
 
-	/* Opcao cadastrar */
+	/* Menu cadastrar */
 
 	/* Le nome, telefone, endereco e e-mail */
 	private static String[] lerCliente() {
@@ -610,7 +612,7 @@ public class AppMain {
 			System.out.println("O condutor nao foi cadastrado pois ja o havia sido.");
 	}
 
-	/* Opcao adicionar (adicionar a lista) */
+	/* Menu adicionar (adicionar a lista) */
 
 	/* Le opcoes e adiciona um dos veiculo disponiveis a um clientePF */
 	private static void operacaoAddVeiculoCliente() {
@@ -634,7 +636,7 @@ public class AppMain {
 	private static void operacaoAddVeiculoFrota() {
 		Veiculo veiculo = requisitarVeiculo(listaVeiculosDisponiveis);
 		if (veiculo == null) return;
-		Frota frota = requisitarFrota(listaFrotasDisponiveis);
+		Frota frota = requisitarFrota(listaFrotasCadastradas);
 		if (frota == null) return;
 		msgOperacaoRealizada(frota.addVeiculo(veiculo));
 		listaVeiculosDisponiveis.remove(veiculo);
@@ -652,7 +654,7 @@ public class AppMain {
 		msgOperacaoRealizada(seguro.autorizarCondutor(condutor));
 	}
 
-	/* Opcao gerar */
+	/* Menu gerar */
 
 	/* Le e retorna vetor de String com posicoes 0 - dataInicio, 1 - dataFim do seguro */
 	private static String[] lerAtributosSeguro() {
@@ -752,7 +754,7 @@ public class AppMain {
 		System.out.println(sinistro);
 	}
 
-	/* Opcao excluir */
+	/* Menu excluir */
 
 	/* Le opcao e exclui seguro */
 	private static void operacaoExcluirSeguro() {
@@ -767,13 +769,13 @@ public class AppMain {
 		msgOperacaoRealizada(sinistro.getSeguro().removerSinistro(sinistro));
 	}
 
-	/* Opcao imprimir receita */
+	/* Menu calcular receita */
 
 	/* Le opcao de seguradora e imprime sua receita */
 	private static void operacaoCalcularReceita() {
 		Seguradora seguradora = requisitarSeguradora();
 		if (seguradora == null) return;
-		System.out.printf("Receita de %s: R$ %.2f", seguradora.getNome(),
+		System.out.printf("Receita de %s: R$ %.2f\n", seguradora.getNome(),
 				seguradora.calcularReceita());
 	}
 }
